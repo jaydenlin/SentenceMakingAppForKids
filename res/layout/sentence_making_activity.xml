@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/chatListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/form"
+        android:layout_alignParentTop="true" >
+    </ListView>
+	<RelativeLayout
+	    android:id="@+id/quizView"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/speechView" >
+	    <ImageView 
+		    android:id="@+id/sentence_photo"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/ic_launcher"
+		/>
+	</RelativeLayout>    
+    <RelativeLayout
+        android:id="@+id/speechView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" >
+		
+        <ImageButton
+	        android:id="@+id/answerButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_margin="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginTop="10dp"
+	        android:contentDescription="@string/speak"
+	        android:src="@android:drawable/ic_btn_speak_now" />
+    </RelativeLayout>
+
+</RelativeLayout>
