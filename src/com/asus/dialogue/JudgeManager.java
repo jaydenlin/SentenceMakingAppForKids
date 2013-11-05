@@ -5,4 +5,5 @@ public interface JudgeManager {
 	public void onRightAnwser();
 	public void onConfused();
 	public void onAsked();
+	public void onTeach();
 }

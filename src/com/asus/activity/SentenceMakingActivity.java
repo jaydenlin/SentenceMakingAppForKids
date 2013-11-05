@@ -21,12 +21,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import de.svenjacobs.loremipsum.LoremIpsum;
-import android.speech.tts.TextToSpeech;
 
 public class SentenceMakingActivity extends Activity {
 	
 	////////////////////////
-	///Degug
+	///Debug
 	////////////////////////
 	protected static final String TAG = SentenceMakingActivity.class.getSimpleName();
 	
