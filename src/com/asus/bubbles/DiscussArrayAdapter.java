@@ -48,9 +48,7 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 		}
 
 		wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
-
 		OneComment coment = getItem(position);
-
 		countryName = (TextView) row.findViewById(R.id.comment);
 		//set up properties
 		countryName.setText(coment.comment);
