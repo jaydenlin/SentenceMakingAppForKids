@@ -9,6 +9,7 @@ public class DialogueDispather implements JudgeManager{
 	public static DialogueDispather instance;
 	private Question question;
 	private String answer;
+	private String matchedAnswer;
 	private String[] keywords;
 	private OntologyData ontologyData;
 	private DiscussArrayAdapter adapter;
@@ -38,7 +39,10 @@ public class DialogueDispather implements JudgeManager{
 	
 	private void onAskingAdj(){
 		keywords=ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
-		if( IsMatchAnswerFail()){
+		if(keywords!=null){
+			onConfused();
+		}
+		else if(IsMatchAnswerFail()){
 			onWrongAnwser();
 		}else{
 			onRightAnwser();
@@ -48,7 +52,10 @@ public class DialogueDispather implements JudgeManager{
 	
 	private void onAskingNoun(){
 		keywords=ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
-		if( IsMatchAnswerFail()){
+		if(keywords!=null){
+			onConfused();
+		}
+		else if(IsMatchAnswerFail()){
 			onWrongAnwser();
 		}else{
 			onRightAnwser();
@@ -61,7 +68,7 @@ public class DialogueDispather implements JudgeManager{
 		for(int i=0;i<keywords.length;i++){	
 			if (answer.indexOf(keywords[i]) != -1){ 
 				isFail = false;
-				
+				matchedAnswer = keywords[i];
 				break;
 			}else{
 				//do nothing
@@ -74,20 +81,22 @@ public class DialogueDispather implements JudgeManager{
 	@Override
 	public void onWrongAnwser() {
 		// TODO Auto-generated method stub
-		
+		adapter.add(new OneComment(true, answer+"? 再想想看有沒有更好的詞"));
+		onTeach();
 	}
 
 	@Override
 	public void onRightAnwser() {
 		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, answer+"! 造詞造得不錯哦!好棒!"));
-		//addDerivedQuestionFormAnwser(keywords[i]);
+		adapter.add(new OneComment(true, answer+question.questionPhrase+"! 造詞造得不錯哦!好棒!"));
+		addDerivedQuestionFormAnwser(matchedAnswer);
 	}
 
 	@Override
 	public void onConfused() {
 		// TODO Auto-generated method stub
-		
+		adapter.add(new OneComment(true, answer+"! 嗚嗚~這題我也還沒想到答案呢!我們換一題吧"));
+			//addRandomQuestion();
 	}
 
 	@Override
@@ -99,7 +108,17 @@ public class DialogueDispather implements JudgeManager{
 	@Override
 	public void onTeach() {
 		// TODO Auto-generated method stub
-		
+		if(question.isAskingAdj){
+			String demo= ontologyData.getOneRandomNounForOneAdj(answer);
+			if(demo!=null){
+				adapter.add(new OneComment(true, answer+"是用在..例如: "+answer+demo));
+			};
+		}else{
+			String demo= ontologyData.getOneRandomAdjForOneNoun(answer);
+			if(demo!=null){
+				adapter.add(new OneComment(true, answer+"是用在..例如: "+demo+answer));
+			};
+		}
 	}
 	
 	private void addDerivedQuestionFormAnwser(String matchedKeyword){
