@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
+import com.asus.dialogue.DialogueDispather;
 import com.asus.dialogue.Question;
 import com.asus.ontologyData.OntologyData;
 import android.app.Activity;
@@ -109,7 +110,8 @@ public class SentenceMakingActivity extends Activity {
 		                ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 		                //add answers to the screen
 		                adapter.add(new OneComment(false, text.get(0)));
-		                judge(text.get(0));
+		                DialogueDispather.getInstance(question, text.get(0), adapter).start();
+		                //judge(text.get(0));
 		            }
 		            break;
 		        }

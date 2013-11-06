@@ -17,6 +17,9 @@ public class DialogueDispather implements JudgeManager{
 	public static DialogueDispather getInstance(Question question, String answer,DiscussArrayAdapter adapter){
 		if(instance==null){
 			instance = new DialogueDispather(question,answer,adapter);
+		}else{
+			instance.question = question;
+			instance.answer = answer;
 		}
 		return instance;
 	}
@@ -26,7 +29,6 @@ public class DialogueDispather implements JudgeManager{
 		this.answer = answer;
 		this.adapter = adapter;
 		this.ontologyData=OntologyData.getInstance();
-		
 	}
 	
 	public void start(){
@@ -39,7 +41,7 @@ public class DialogueDispather implements JudgeManager{
 	
 	private void onAskingAdj(){
 		keywords=ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
-		if(keywords!=null){
+		if(keywords==null){
 			onConfused();
 		}
 		else if(IsMatchAnswerFail()){
@@ -52,7 +54,7 @@ public class DialogueDispather implements JudgeManager{
 	
 	private void onAskingNoun(){
 		keywords=ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
-		if(keywords!=null){
+		if(keywords==null){
 			onConfused();
 		}
 		else if(IsMatchAnswerFail()){
