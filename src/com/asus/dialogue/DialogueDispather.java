@@ -1,8 +1,20 @@
 package com.asus.dialogue;
 
+import java.io.IOException;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import android.text.Html.TagHandler;
+
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
-import com.asus.ontologyData.OntologyData;
+import com.asus.data.OntologyData;
 
 public class DialogueDispather implements JudgeManager{
 	
@@ -64,22 +76,6 @@ public class DialogueDispather implements JudgeManager{
 		}
 	}
 	
-	
-	private boolean IsMatchAnswerFail(){
-		boolean isFail=true;
-		for(int i=0;i<keywords.length;i++){	
-			if (answer.indexOf(keywords[i]) != -1){ 
-				isFail = false;
-				matchedAnswer = keywords[i];
-				break;
-			}else{
-				//do nothing
-			}
-		}
-		return isFail;
-	}
-	
-	
 	@Override
 	public void onWrongAnwser() {
 		// TODO Auto-generated method stub
@@ -90,7 +86,11 @@ public class DialogueDispather implements JudgeManager{
 	@Override
 	public void onRightAnwser() {
 		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, answer+question.questionPhrase+"! 造詞造得不錯哦!好棒!"));
+		if(question.isAskingAdj){
+			adapter.add(new OneComment(true, answer+question.questionPhrase+"! 造詞造得不錯哦!好棒!"));
+		}else{
+			adapter.add(new OneComment(true, question.questionPhrase+answer+"! 造詞造得不錯哦!好棒!"));
+		}
 		addDerivedQuestionFormAnwser(matchedAnswer);
 	}
 
@@ -110,24 +110,41 @@ public class DialogueDispather implements JudgeManager{
 	@Override
 	public void onTeach() {
 		// TODO Auto-generated method stub
+		String teachDemo;
 		if(question.isAskingAdj){
-			String demo= ontologyData.getOneRandomNounForOneAdj(answer);
-			if(demo!=null){
-				adapter.add(new OneComment(true, answer+"是用在..例如: "+answer+demo));
+			teachDemo= ontologyData.getOneRandomNounForOneAdj(answer);//find noun as teach demo
+			if(teachDemo!=null){
+				adapter.add(new OneComment(true, answer+"是用在..例如: "+answer+teachDemo));
 			};
 		}else{
-			String demo= ontologyData.getOneRandomAdjForOneNoun(answer);
-			if(demo!=null){
-				adapter.add(new OneComment(true, answer+"是用在..例如: "+demo+answer));
+			teachDemo= ontologyData.getOneRandomAdjForOneNoun(answer);//find adj as teach demo
+			if(teachDemo!=null){
+				adapter.add(new OneComment(true, answer+"是用在..例如: "+teachDemo+answer));
 			};
 		}
+		
+//		HttpClient client = new DefaultHttpClient();
+//		HttpGet get = new HttpGet("http://zh.wikipedia.org/wiki/%E9%A6%AC%E8%8B%B1%E4%B9%9D");
+//		try {
+//			HttpResponse response = client.execute(get);
+//			HttpEntity resEntity = response.getEntity();
+//			String result = EntityUtils.toString(resEntity);
+//		} catch (ClientProtocolException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		
 	}
 	
 	private void addDerivedQuestionFormAnwser(String matchedKeyword){
 		if(question.isAskingAdj){
 			question.isAskingAdj=false;
 			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, question.questionPhrase+"______"));
+			adapter.add(new OneComment(true, question.questionPhrase+"的______"));
 		}else{
 			question.isAskingAdj=true;
 			question.questionPhrase = matchedKeyword;
@@ -135,5 +152,18 @@ public class DialogueDispather implements JudgeManager{
 		}
 	}
 	
+	private boolean IsMatchAnswerFail(){
+		boolean isFail=true;
+		for(int i=0;i<keywords.length;i++){	
+			if (answer.indexOf(keywords[i]) != -1){ 
+				isFail = false;
+				matchedAnswer = keywords[i];
+				break;
+			}else{
+				//do nothing
+			}
+		}
+		return isFail;
+	}
 	
 }	

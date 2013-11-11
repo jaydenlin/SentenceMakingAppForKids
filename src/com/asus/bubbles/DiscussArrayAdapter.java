@@ -24,6 +24,9 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 
 	@Override
 	public void add(OneComment object) {
+		if(countries.size()>=5){
+			countries.remove(0);
+		}
 		countries.add(object);
 		super.add(object);
 	}
@@ -31,22 +34,24 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 	public DiscussArrayAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
 	}
-
+	
+	@Override
 	public int getCount() {
 		return this.countries.size();
 	}
-
+	
+	@Override
 	public OneComment getItem(int index) {
 		return this.countries.get(index);
 	}
-
+	
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		if (row == null) {
 			LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.bubble_listitem_view, parent, false);
 		}
-
 		wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
 		OneComment coment = getItem(position);
 		countryName = (TextView) row.findViewById(R.id.comment);
@@ -57,7 +62,7 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 
 		return row;
 	}
-
+	
 	public Bitmap decodeToBitmap(byte[] decodedByte) {
 		return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
 	}

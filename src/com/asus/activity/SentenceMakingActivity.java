@@ -5,9 +5,9 @@ import java.util.Random;
 
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
+import com.asus.data.OntologyData;
 import com.asus.dialogue.DialogueDispather;
 import com.asus.dialogue.Question;
-import com.asus.ontologyData.OntologyData;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -143,72 +143,4 @@ public class SentenceMakingActivity extends Activity {
 //		}
 	}
 	
-	private void addDerivedQuestionFormAnwser(String matchedKeyword){
-		if(question.isAskingAdj){
-			question.isAskingAdj=false;
-			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, question.questionPhrase+"______"));
-		}else{
-			question.isAskingAdj=true;
-			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, "______的"+question.questionPhrase));
-		}
-	}
-	
-
-	private static int getRandomInteger(int aStart, int aEnd) {
-		if (aStart > aEnd) {
-			throw new IllegalArgumentException("Start cannot exceed End.");
-		}
-		long range = (long) aEnd - (long) aStart + 1;
-		long fraction = (long) (range * random.nextDouble());
-		int randomNumber = (int) (fraction + aStart);
-		return randomNumber;
-	}
-	
-	private void judge(String answer) {
-		
-		boolean isFail = true;
-		String[] keywords;
-		if(question.isAskingAdj){
-			keywords=ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
-		}else{
-			keywords=ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
-		}
-		
-		if(keywords==null){
-			adapter.add(new OneComment(true, answer+"! 嗚嗚~這題我也還沒想到答案呢!我們換一題吧"));
-			isFail=false;
-			//addRandomQuestion();
-		}
-		
-		//String[] keywords= {"紅的","紅色","圓形","美麗","圓的","美麗的","美的","大的","好吃的","碩大","黃的","綠的","難吃","小的","香的"};
-		for(int i=0;i<keywords.length;i++){	
-			if (answer.indexOf(keywords[i]) != -1){ 
-				adapter.add(new OneComment(true, answer+"! 造詞造得不錯哦!好棒!"));
-				addDerivedQuestionFormAnwser(keywords[i]);
-				isFail = false;
-				break;
-			}else{
-				
-			}
-		}
-		
-		if(isFail){
-			adapter.add(new OneComment(true, answer+"? 再想想看有沒有更好的詞"));
-			if(question.isAskingAdj){
-				String demo= ontologyData.getOneRandomNounForOneAdj(answer);
-				if(demo!=null){
-					adapter.add(new OneComment(true, answer+"是用在..例如: "+answer+demo));
-				};
-			}else{
-				String demo= ontologyData.getOneRandomAdjForOneNoun(answer);
-				if(demo!=null){
-					adapter.add(new OneComment(true, answer+"是用在..例如: "+demo+answer));
-				};
-			}
-			
-		}
-	}
-
 }
