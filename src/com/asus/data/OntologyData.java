@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.asus.dialogue.DBHelper;
+
 public class OntologyData {
 	
 	private HashMap<String,String[]> NounToAdjective = new HashMap<String, String[]>();
@@ -29,6 +31,7 @@ public class OntologyData {
 		MatchedAdjArrayForNoun="臭的,臭臭的,橢圓的,扁的,扁扁的,黏黏的,硬硬的,青的,青色的,綠的,綠色的,綠綠的,黃綠的,黃綠色的,土黃的,土黃色的,咖啡色,咖啡色的,黑的,黑色的,黑黑的,暗黑的,黑漆漆的,慢的,慢慢的,小的,小小的,圓圓的,髒髒的,髒兮兮的,健康的,生病的,疲憊的,特別的,乾淨的,溫馴的,前面的,後面的,左邊的,右邊的,中間的,裡面的,上面的,下面的,左前方的,右前方的,左後方的,右後方的".split(",");NounToAdjective.put("烏龜" , MatchedAdjArrayForNoun);
 		MatchedAdjArrayForNoun="香的,香香的,淡的,淡淡的,濃的,濃濃的,刺鼻的,作嘔的,腥腥的,騷騷的,無味的,香噴噴的,酸的,酸酸的,甜的,甜甜的,鹹的,鹹鹹的,辣的,辣辣的,苦的,苦苦的,美味的,澀的,澀澀的,清淡的,長長的,滑滑的,柔柔的,冰冷的,涼的,紅色的,橙色的,,橘色的,黃色的,綠色的,黃綠色的,土黃色的,咖啡色,咖啡色的,藍色的,藍藍的,水藍色,紫色的,白色的,白白的,乳白色,乳白色的,黑的,黑色的,粉紅色的,金色的,黃金色的,銀色的,壞的,好的,,新的,全新的,特別的,優良的,前面的,後面的,左邊的,右邊的,中間的,裡面的,上面的,下面的,左前方的,右前方的,左後方的,右後方的".split(",");NounToAdjective.put("洗髮精" , MatchedAdjArrayForNoun);
 
+		
 		MatchedNounArrayForAdj="蘋果,香蕉".split(",");AdjectiveToNoun.put("好吃的", MatchedNounArrayForAdj);
 		MatchedNounArrayForAdj="香蕉".split(",");AdjectiveToNoun.put("黃色的", MatchedNounArrayForAdj);
 		MatchedNounArrayForAdj="香蕉".split(",");AdjectiveToNoun.put("黃的", MatchedNounArrayForAdj);
@@ -49,7 +52,7 @@ public class OntologyData {
 	}
 	
 	//////////////////////////////////////////
-	////Find Anwser
+	////Find Answer
 	/////////////////////////////////////////
 	public String[] getMatchedAdjArrayForOneNoun(String noun){
 		if(NounToAdjective.containsKey(noun)){

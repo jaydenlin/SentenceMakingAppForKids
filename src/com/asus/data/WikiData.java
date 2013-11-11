@@ -12,19 +12,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
-
 import com.asus.asyctask.AsyncTaskResponse;
-
-
 import android.os.AsyncTask;
-import android.text.Html.TagHandler;
 import android.util.Log;
 
 public class WikiData {
 	
 	private final String TAG=this.getClass().getSimpleName();
 	private static WikiData instance;
-	private HttpClient httpClient;
 	private AsyncTaskResponse<String> delegate=null;
 	HtmlCleaner htmlCleaner;
 	public static WikiData getInstance(AsyncTaskResponse<String> delegate){

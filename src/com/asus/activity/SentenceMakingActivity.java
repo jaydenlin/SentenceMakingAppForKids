@@ -3,21 +3,21 @@ package com.asus.activity;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.data.OntologyData;
-import com.asus.data.WikiData;
+import com.asus.dialogue.DBHelper;
 import com.asus.dialogue.DialogueDispather;
 import com.asus.dialogue.Question;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -124,6 +124,17 @@ public class SentenceMakingActivity extends Activity {
 		
 		sentenceAnimation.start();
 		addRandomQuestion();
+		//this.deleteDatabase("ontology.db");
+		DBHelper dbHelper = new DBHelper(this);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+	
+		ContentValues values = new ContentValues();
+		//values.put(dbHelper.C_ID, 1);
+		values.put(dbHelper.C_NOUN, "¤e¤l");
+		values.put(dbHelper.C_ADJ, "¦y¾Uªº");
+		values.put(dbHelper.C_PHOTO_ID, R.drawable.fork);
+		db.insertOrThrow(dbHelper.TABLE_NAME, null, values);
+		
 		
 	}
 	
@@ -157,11 +168,14 @@ public class SentenceMakingActivity extends Activity {
 	///Methods
 	///////////////////////		
 	private void addRandomQuestion() {
+		//sentencePhoto.setBackgroundResource(R.drawable.fork);
 		
+		//randomly ask adj or noun
 		if(getRandomInteger(0, 1) == 0 ? true : false){
 			question.questionPhrase = ontologyData.getOneRandomNoun();
 			question.isAskingAdj =true;
 			adapter.add(new OneComment(true, "______ªº"+question.questionPhrase));
+			
 		}else{
 			question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.isAskingAdj =false;
