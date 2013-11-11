@@ -24,7 +24,7 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 
 	@Override
 	public void add(OneComment object) {
-		if(countries.size()>=5){
+		if(countries.size()>=4){
 			countries.remove(0);
 		}
 		countries.add(object);

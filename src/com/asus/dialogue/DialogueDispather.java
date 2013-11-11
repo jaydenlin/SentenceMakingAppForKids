@@ -1,6 +1,7 @@
 package com.asus.dialogue;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,9 +13,11 @@ import org.apache.http.util.EntityUtils;
 
 import android.text.Html.TagHandler;
 
+import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.data.OntologyData;
+import com.asus.data.WikiData;
 
 public class DialogueDispather implements JudgeManager{
 	
@@ -24,12 +27,14 @@ public class DialogueDispather implements JudgeManager{
 	private String matchedAnswer;
 	private String[] keywords;
 	private OntologyData ontologyData;
+	private WikiData wikiData;
 	private DiscussArrayAdapter adapter;
 	
 	public static DialogueDispather getInstance(Question question, String answer,DiscussArrayAdapter adapter){
 		if(instance==null){
 			instance = new DialogueDispather(question,answer,adapter);
 		}else{
+			//update question and answer
 			instance.question = question;
 			instance.answer = answer;
 		}
@@ -41,6 +46,13 @@ public class DialogueDispather implements JudgeManager{
 		this.answer = answer;
 		this.adapter = adapter;
 		this.ontologyData=OntologyData.getInstance();
+		this.wikiData = WikiData.getInstance(new AsyncTaskResponse<String>() {
+			
+			@Override
+			public void processFinish(String output) {
+				DialogueDispather.this.adapter.add(new OneComment(true, output));
+			}
+		}); 
 	}
 	
 	public void start(){
@@ -85,7 +97,6 @@ public class DialogueDispather implements JudgeManager{
 
 	@Override
 	public void onRightAnwser() {
-		// TODO Auto-generated method stub
 		if(question.isAskingAdj){
 			adapter.add(new OneComment(true, answer+question.questionPhrase+"! 造詞造得不錯哦!好棒!"));
 		}else{
@@ -98,7 +109,7 @@ public class DialogueDispather implements JudgeManager{
 	public void onConfused() {
 		// TODO Auto-generated method stub
 		adapter.add(new OneComment(true, answer+"! 嗚嗚~這題我也還沒想到答案呢!我們換一題吧"));
-			//addRandomQuestion();
+	    addRandomQuestion();
 	}
 
 	@Override
@@ -115,41 +126,53 @@ public class DialogueDispather implements JudgeManager{
 			teachDemo= ontologyData.getOneRandomNounForOneAdj(answer);//find noun as teach demo
 			if(teachDemo!=null){
 				adapter.add(new OneComment(true, answer+"是用在..例如: "+answer+teachDemo));
+			}else{
+				wikiData.getWikiData(answer);
 			};
 		}else{
 			teachDemo= ontologyData.getOneRandomAdjForOneNoun(answer);//find adj as teach demo
 			if(teachDemo!=null){
 				adapter.add(new OneComment(true, answer+"是用在..例如: "+teachDemo+answer));
+			}else{
+				wikiData.getWikiData(answer);
 			};
 		}
-		
-//		HttpClient client = new DefaultHttpClient();
-//		HttpGet get = new HttpGet("http://zh.wikipedia.org/wiki/%E9%A6%AC%E8%8B%B1%E4%B9%9D");
-//		try {
-//			HttpResponse response = client.execute(get);
-//			HttpEntity resEntity = response.getEntity();
-//			String result = EntityUtils.toString(resEntity);
-//		} catch (ClientProtocolException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		
 	}
 	
 	private void addDerivedQuestionFormAnwser(String matchedKeyword){
 		if(question.isAskingAdj){
 			question.isAskingAdj=false;
 			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, question.questionPhrase+"的______"));
+			adapter.add(new OneComment(true, question.questionPhrase+"______"));
 		}else{
 			question.isAskingAdj=true;
 			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, "______的"+question.questionPhrase));
+			adapter.add(new OneComment(true, "______"+question.questionPhrase));
 		}
+	}
+	
+	private void addRandomQuestion() {
+		
+		if(getRandomInteger(0, 1) == 0 ? true : false){
+			question.questionPhrase = ontologyData.getOneRandomNoun();
+			question.isAskingAdj =true;
+			adapter.add(new OneComment(true, "______的"+question.questionPhrase));
+		}else{
+			question.questionPhrase = ontologyData.getOneRandomAdj();
+			question.isAskingAdj =false;
+			adapter.add(new OneComment(true, question.questionPhrase+"______"));
+		}
+	}
+	
+	private static int getRandomInteger(int aStart, int aEnd) {
+		Random random = new Random();
+		if (aStart > aEnd) {
+			throw new IllegalArgumentException("Start cannot exceed End.");
+		}
+		long range = (long) aEnd - (long) aStart + 1;
+		long fraction = (long) (range * random.nextDouble());
+		int randomNumber = (int) (fraction + aStart);
+		return randomNumber;
 	}
 	
 	private boolean IsMatchAnswerFail(){

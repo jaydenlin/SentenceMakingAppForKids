@@ -3,9 +3,11 @@ package com.asus.activity;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.data.OntologyData;
+import com.asus.data.WikiData;
 import com.asus.dialogue.DialogueDispather;
 import com.asus.dialogue.Question;
 import android.app.Activity;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -75,6 +78,31 @@ public class SentenceMakingActivity extends Activity {
 		
 		adapter = new DiscussArrayAdapter(getApplicationContext(), R.layout.bubble_listitem_view);
 		chatListView.setAdapter(adapter);
+//		chatListView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+//			
+//			@Override
+//			public void onChildViewRemoved(View parent, View child) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//			@Override
+//			public void onChildViewAdded(View parent, View child) {
+//				chatListView.post(new Runnable() {
+//					@Override
+//					public void run() {
+//						if(chatListView.getCount()>=1){
+//							Log.w("",Integer.toString(chatListView.getCount()));
+//							chatListView.setSelection(chatListView.getCount()-1);
+//							//chatListView.setStackFromBottom(true);
+//							//chatListView.setTranscriptMode(mode)
+//						}
+//					}
+//				});
+//				
+//			}
+//		});
+//		
 		
 		sentenceAnimation = AnimationUtils.loadAnimation(this, R.layout.quiz_animation);
 		sentencePhoto.setAnimation(sentenceAnimation);
@@ -119,28 +147,37 @@ public class SentenceMakingActivity extends Activity {
 	        }
 	 }
 	 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
 	///////////////////////
 	///Methods
 	///////////////////////		
 	private void addRandomQuestion() {
 		
-//		if(getRandomInteger(0, 1) == 0 ? true : false){
-			question.questionPhrase = "Ä«ªG";
+		if(getRandomInteger(0, 1) == 0 ? true : false){
+			question.questionPhrase = ontologyData.getOneRandomNoun();
 			question.isAskingAdj =true;
 			adapter.add(new OneComment(true, "______ªº"+question.questionPhrase));
-//		}else{
-//			question.questionPhrase = ontologyData.getOneRandomNoun();
-//			question.isAskingAdj =false;
-//			adapter.add(new OneComment(true, question.questionPhrase+"ªº______"));
-//		}
-//		for (int i = 0; i < 6; i++) {
-//			boolean left = getRandomInteger(0, 1) == 0 ? true : false;
-//			int word = getRandomInteger(1, 10);
-//			int start = getRandomInteger(1, 40);
-//			String words = ipsum.getWords(word, start);
-//
-//			adapter.add(new OneComment(left, words));
-//		}
+		}else{
+			question.questionPhrase = ontologyData.getOneRandomAdj();
+			question.isAskingAdj =false;
+			adapter.add(new OneComment(true, question.questionPhrase+"______"));
+		}
+	}
+	
+	
+	private static int getRandomInteger(int aStart, int aEnd) {
+		if (aStart > aEnd) {
+			throw new IllegalArgumentException("Start cannot exceed End.");
+		}
+		long range = (long) aEnd - (long) aStart + 1;
+		long fraction = (long) (range * random.nextDouble());
+		int randomNumber = (int) (fraction + aStart);
+		return randomNumber;
 	}
 	
 }
