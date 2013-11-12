@@ -25,18 +25,21 @@ public class OntologyData {
 	
 	private OntologyData(){
 		
-		MatchedAdjArrayForNoun="å¥½åƒçš„,é»ƒè‰²çš„,é»ƒçš„,é•·çš„,é•·é•·çš„,é•·çš„,å½å½çš„".split(",");NounToAdjective.put("é¦™è•‰" , MatchedAdjArrayForNoun);
-		MatchedAdjArrayForNoun="ç´…çš„,ç´…è‰²çš„,åœ“å½¢,ç¾éº—,åœ“çš„,ç¾éº—çš„,ç¾çš„,å¤§çš„,å¥½åƒçš„,ç¢©å¤§,ç¶ çš„,é›£åƒ,å°çš„,é¦™çš„".split(",");NounToAdjective.put("è˜‹æœ" , MatchedAdjArrayForNoun);
+		MatchedAdjArrayForNoun="¦n¦Yªº,¶À¦âªº,¶Àªº,ªøªº,ªøªøªº,ªøªº,ÅsÅsªº".split(",");NounToAdjective.put("­»¿¼" , MatchedAdjArrayForNoun);
+		MatchedAdjArrayForNoun="¬õªº,¬õ¦âªº,¶ê§Î,¬üÄR,¶êªº,¬üÄRªº,¬üªº,¤jªº,¦n¦Yªº,ºÓ¤j,ºñªº,Ãø¦Y,¤pªº,­»ªº".split(",");NounToAdjective.put("Ä«ªG" , MatchedAdjArrayForNoun);
+		MatchedAdjArrayForNoun="­»ªº,­»­»ªº,¯äªº,¯ä¯äªº,²Hªº,²H²Hªº,¿@ªº,¿@¿@ªº,¨ë»óªº,§@¹Ãªº,¸{¸{ªº,ÄÌÄÌªº,µL¨ıªº,­»¼Q¼Qªº,»Äªº,»Ä»Äªº,²¢ªº,²¢²¢ªº,ÄĞªº,ÄĞÄĞªº,»¶ªº,»¶»¶ªº,­Wªº,­W­Wªº,¬ü¨ıªº,Àßªº,ÀßÀßªº,²M²Hªº,·Æ·Æªº,¦B§Nªº,²Dªº,·xªº,·Å·xªº,¼öªº,·Å¼öªº,¿Sªº,«Cªº,«C¦âªº,¬õªº,¬õ¦âªº,¬õ¬õªº,¤õ¬õ¦â,¾íªº,¾í¦âªº,¾ïªº,¾ï¦âªº,¶Àªº,¶À¦âªº,¶À¶Àªº,ºñªº,ºñ¦âªº,ºñºñªº,¶Àºñªº,¶Àºñ¦âªº,ºñªoªoªº,¤g¶Àªº,¤g¶À¦âªº,©@°Ø¦â,©@°Ø¦âªº,ÂÅªº,ÂÅ¦âªº,ÂÅÂÅªº,¤ôÂÅ¦â,µµªº,µµ¦âªº,µµµµªº,¥Õªº,¥Õ¦âªº,¥Õ¥Õªº,¥Õªáªáªº,¨Å¥Õ¦â,¨Å¥Õ¦âªº,¶Âªº,¶Â¦âªº,¶Â¶Âªº,·t¶Âªº,¶Âº£º£ªº,¯»¬õ,¯»¬õ¦âªº,¯»¯»ªº,,µL¦âªº,µL±m¦âªº,¶Â¥Õªº,¶Â¥Õ¦âªº,¥©§J¤O¦â,¥©§J¤O¦âªº,Ãaªº,¦nªº,·sªº,¥ş·sªº,·sÂAªº,¬Ã¶Qªº,°·±dªº,¯S§Oªº,°®²bªº,Àu¨}ªº".split(",");NounToAdjective.put("¨F©ÔÂæ" , MatchedAdjArrayForNoun);
+		MatchedAdjArrayForNoun="¯äªº,¯ä¯äªº,¾ò¶êªº,«óªº,«ó«óªº,ÂHÂHªº,µwµwªº,«Cªº,«C¦âªº,ºñªº,ºñ¦âªº,ºñºñªº,¶Àºñªº,¶Àºñ¦âªº,¤g¶Àªº,¤g¶À¦âªº,©@°Ø¦â,©@°Ø¦âªº,¶Âªº,¶Â¦âªº,¶Â¶Âªº,·t¶Âªº,¶Âº£º£ªº,ºCªº,ºCºCªº,¤pªº,¤p¤pªº,¶ê¶êªº,Å¼Å¼ªº,Å¼¤¼¤¼ªº,°·±dªº,¥Í¯fªº,¯h¾Îªº,¯S§Oªº,°®²bªº,·Å¹¥ªº,«e­±ªº,«á­±ªº,¥ªÃäªº,¥kÃäªº,¤¤¶¡ªº,¸Ì­±ªº,¤W­±ªº,¤U­±ªº,¥ª«e¤èªº,¥k«e¤èªº,¥ª«á¤èªº,¥k«á¤èªº".split(",");NounToAdjective.put("¯QÀt" , MatchedAdjArrayForNoun);
+		MatchedAdjArrayForNoun="­»ªº,­»­»ªº,²Hªº,²H²Hªº,¿@ªº,¿@¿@ªº,¨ë»óªº,§@¹Ãªº,¸{¸{ªº,ÄÌÄÌªº,µL¨ıªº,­»¼Q¼Qªº,»Äªº,»Ä»Äªº,²¢ªº,²¢²¢ªº,ÄĞªº,ÄĞÄĞªº,»¶ªº,»¶»¶ªº,­Wªº,­W­Wªº,¬ü¨ıªº,Àßªº,ÀßÀßªº,²M²Hªº,ªøªøªº,·Æ·Æªº,¬X¬Xªº,¦B§Nªº,²Dªº,¬õ¦âªº,¾í¦âªº,,¾ï¦âªº,¶À¦âªº,ºñ¦âªº,¶Àºñ¦âªº,¤g¶À¦âªº,©@°Ø¦â,©@°Ø¦âªº,ÂÅ¦âªº,ÂÅÂÅªº,¤ôÂÅ¦â,µµ¦âªº,¥Õ¦âªº,¥Õ¥Õªº,¨Å¥Õ¦â,¨Å¥Õ¦âªº,¶Âªº,¶Â¦âªº,¯»¬õ¦âªº,ª÷¦âªº,¶Àª÷¦âªº,»È¦âªº,Ãaªº,¦nªº,,·sªº,¥ş·sªº,¯S§Oªº,Àu¨}ªº,«e­±ªº,«á­±ªº,¥ªÃäªº,¥kÃäªº,¤¤¶¡ªº,¸Ì­±ªº,¤W­±ªº,¤U­±ªº,¥ª«e¤èªº,¥k«e¤èªº,¥ª«á¤èªº,¥k«á¤èªº".split(",");NounToAdjective.put("¬~¾vºë" , MatchedAdjArrayForNoun);
 
 		
-		MatchedNounArrayForAdj="è˜‹æœ,é¦™è•‰".split(",");AdjectiveToNoun.put("å¥½åƒçš„", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="é¦™è•‰".split(",");AdjectiveToNoun.put("é»ƒè‰²çš„", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="é¦™è•‰".split(",");AdjectiveToNoun.put("é»ƒçš„", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="é¦™è•‰".split(",");AdjectiveToNoun.put("é•·é•·çš„", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="é¦™è•‰".split(",");AdjectiveToNoun.put("é•·çš„", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="è˜‹æœ".split(",");AdjectiveToNoun.put("ç´…çš„", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="è˜‹æœ".split(",");AdjectiveToNoun.put("ç´…è‰²", MatchedNounArrayForAdj);
-		MatchedNounArrayForAdj="è˜‹æœ".split(",");AdjectiveToNoun.put("ç´…è‰²çš„", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="Ä«ªG,­»¿¼".split(",");AdjectiveToNoun.put("¦n¦Yªº", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="­»¿¼".split(",");AdjectiveToNoun.put("¶À¦âªº", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="­»¿¼".split(",");AdjectiveToNoun.put("¶Àªº", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="­»¿¼".split(",");AdjectiveToNoun.put("ªøªøªº", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="­»¿¼".split(",");AdjectiveToNoun.put("ªøªº", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="Ä«ªG".split(",");AdjectiveToNoun.put("¬õªº", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="Ä«ªG".split(",");AdjectiveToNoun.put("¬õ¦â", MatchedNounArrayForAdj);
+		MatchedNounArrayForAdj="Ä«ªG".split(",");AdjectiveToNoun.put("¬õ¦âªº", MatchedNounArrayForAdj);
 		
 	}
 	
@@ -89,14 +92,14 @@ public class OntologyData {
 		Object[] values = AdjectiveToNoun.values().toArray();
 		String[] nouns = (String[])values[random.nextInt(values.length)];
 		return nouns[getRandomInteger(0,nouns.length-1)];
-		//return "åè©è¶…ç¯„åœ";
+		//return "¦Wµü¶W½d³ò";
 	}
 	
 	public String getOneRandomAdj(){
 		Object[] values = NounToAdjective.values().toArray();
 		String[] adjs = (String[])values[random.nextInt(values.length)]; 
 		return adjs[getRandomInteger(0,adjs.length-1)];
-		//return "å½¢å®¹è©è©è¶…ç¯„åœ";
+		//return "§Î®eµüµü¶W½d³ò";
 	}
 	
 	
