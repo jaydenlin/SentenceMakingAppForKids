@@ -3,6 +3,9 @@ package com.asus.activity;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.asus.atc.dialogservice.DMListener;
+import com.asus.atc.dialogservice.DMResult;
+import com.asus.atc.dialogservice.DialogServiceConnector;
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.data.OntologyData;
@@ -16,7 +19,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,7 +26,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-import de.svenjacobs.loremipsum.LoremIpsum;
+
+import com.asus.atc.dialogservice.*;
+
+import core.ckip.datastructure.SPO;
+import core.ckip.datastructure.Sentence;
 
 public class SentenceMakingActivity extends Activity {
 	
@@ -36,12 +42,12 @@ public class SentenceMakingActivity extends Activity {
 	////////////////////////
 	///Member
 	////////////////////////
-	private LoremIpsum ipsum;
 	private static Random random;
 	private OntologyData ontologyData;
 	private Question question;
 	private Animation sentenceAnimation;
 	private DiscussArrayAdapter adapter;
+	private DialogServiceConnector dialogServiceConnector;
 	
 	protected static final int RESULT_SPEECH = 1;
 	
@@ -63,46 +69,21 @@ public class SentenceMakingActivity extends Activity {
 		answerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-	             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-	                try {
-	                    startActivityForResult(intent, RESULT_SPEECH);
-	                } catch (ActivityNotFoundException a) {
-	                    Toast t = Toast.makeText(getApplicationContext(),
-	                            "Opps! Your device doesn't support Speech to Text",
-	                            Toast.LENGTH_SHORT);
-	                    t.show();
-	                }
+//				 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+//	             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+//	                try {
+//	                    startActivityForResult(intent, RESULT_SPEECH);
+//	                } catch (ActivityNotFoundException a) {
+//	                    Toast t = Toast.makeText(getApplicationContext(),
+//	                            "Opps! Your device doesn't support Speech to Text",
+//	                            Toast.LENGTH_SHORT);
+//	                    t.show();
+//	                }
+				//dialogServiceConnector.bindService();
+				dialogServiceConnector.startCSR();
 			}
 		});
 		
-		adapter = new DiscussArrayAdapter(getApplicationContext(), R.layout.bubble_listitem_view);
-		chatListView.setAdapter(adapter);
-//		chatListView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-//			
-//			@Override
-//			public void onChildViewRemoved(View parent, View child) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//			@Override
-//			public void onChildViewAdded(View parent, View child) {
-//				chatListView.post(new Runnable() {
-//					@Override
-//					public void run() {
-//						if(chatListView.getCount()>=1){
-//							Log.w("",Integer.toString(chatListView.getCount()));
-//							chatListView.setSelection(chatListView.getCount()-1);
-//							//chatListView.setStackFromBottom(true);
-//							//chatListView.setTranscriptMode(mode)
-//						}
-//					}
-//				});
-//				
-//			}
-//		});
-//		
 		
 		sentenceAnimation = AnimationUtils.loadAnimation(this, R.layout.quiz_animation);
 		sentencePhoto.setAnimation(sentenceAnimation);
@@ -118,22 +99,55 @@ public class SentenceMakingActivity extends Activity {
 		initView();
 		
 		random = new Random();
-		ipsum = new LoremIpsum();
 		ontologyData=OntologyData.getInstance();
 		question=Question.getInstance();
 		
 		sentenceAnimation.start();
-		addRandomQuestion();
+		
 		//this.deleteDatabase("ontology.db");
+		
+		////db start
 		DBHelper dbHelper = new DBHelper(this);
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-	
-		ContentValues values = new ContentValues();
-		//values.put(dbHelper.C_ID, 1);
-		values.put(dbHelper.C_NOUN, "�e�l");
-		values.put(dbHelper.C_ADJ, "�y�U��");
-		values.put(dbHelper.C_PHOTO_ID, R.drawable.fork);
-		db.insertOrThrow(dbHelper.TABLE_NAME, null, values);
+		//SQLiteDatabase db = dbHelper.getWritableDatabase();
+//	
+//		ContentValues values = new ContentValues();
+
+		//db.insertOrThrow(dbHelper.TABLE_NAME, null, values);
+		//db end
+		dialogServiceConnector = new DialogServiceConnector(this);
+		final DMListener dmListener= new DMListener(){
+			public void onResult(final DMResult dmResult) {
+        		if (dmResult != null) {
+            		String text = dmResult.getText().trim();
+            		adapter.add(new OneComment(false, text));
+	                DialogueDispather.getInstance(question, text, adapter).start();
+            		
+        		} else {
+        		}
+        	}
+
+        	public void onConnected() {
+        		try {
+					Thread.sleep(2000);
+					dialogServiceConnector.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
+					adapter = new DiscussArrayAdapter(getApplicationContext(), R.layout.bubble_listitem_view,dialogServiceConnector);
+					chatListView.setAdapter(adapter);
+	        		addRandomQuestion();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		
+        	}
+			
+			
+		};
+		dialogServiceConnector.setSpeechListener(dmListener);
+		
+		
+		
+		//DMListener dmListener= new DMListener();
+		
 		
 		
 	}
@@ -162,24 +176,28 @@ public class SentenceMakingActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		dialogServiceConnector.bindService();
 	}
-
+	
+	protected void onDestroy() {
+		super.onDestroy();
+		dialogServiceConnector.releaseService();
+	}
+	
 	///////////////////////
 	///Methods
 	///////////////////////		
 	private void addRandomQuestion() {
-		//sentencePhoto.setBackgroundResource(R.drawable.fork);
 		
 		//randomly ask adj or noun
 		if(getRandomInteger(0, 1) == 0 ? true : false){
 			question.questionPhrase = ontologyData.getOneRandomNoun();
 			question.isAskingAdj =true;
-			adapter.add(new OneComment(true, "______��"+question.questionPhrase));
-			
+			adapter.add(new OneComment(true, "試試看這個句子。  ______的"+question.questionPhrase));
 		}else{
 			question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.isAskingAdj =false;
-			adapter.add(new OneComment(true, question.questionPhrase+"______"));
+			adapter.add(new OneComment(true, "試試看這個句子。  "+question.questionPhrase+"______"));
 		}
 	}
 	
@@ -195,3 +213,6 @@ public class SentenceMakingActivity extends Activity {
 	}
 	
 }
+
+
+

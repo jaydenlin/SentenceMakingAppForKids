@@ -50,7 +50,7 @@ public class DialogueDispather implements JudgeManager{
 			
 			@Override
 			public void processFinish(String output) {
-				DialogueDispather.this.adapter.add(new OneComment(true, output));
+				DialogueDispather.this.adapter.add(new OneComment(true, DialogueDispather.this.answer+"çš„æ„æ€æ‡‰è©²æ˜¯..."+output));
 			}
 		}); 
 	}
@@ -91,16 +91,16 @@ public class DialogueDispather implements JudgeManager{
 	@Override
 	public void onWrongAnwser() {
 		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, answer+"? ¦A·Q·Q¬İ¦³¨S¦³§ó¦nªºµü"));
+		adapter.add(new OneComment(true, answer+"? å†æƒ³æƒ³çœ‹æœ‰æ²’æœ‰æ›´å¥½çš„è©"));
 		onTeach();
 	}
 
 	@Override
 	public void onRightAnwser() {
 		if(question.isAskingAdj){
-			adapter.add(new OneComment(true, answer+question.questionPhrase+"! ³yµü³y±o¤£¿ù®@!¦n´Î!"));
+			adapter.add(new OneComment(true, answer+question.questionPhrase+"! é€ è©é€ å¾—ä¸éŒ¯å“¦!å¥½æ£’!"));
 		}else{
-			adapter.add(new OneComment(true, question.questionPhrase+answer+"! ³yµü³y±o¤£¿ù®@!¦n´Î!"));
+			adapter.add(new OneComment(true, question.questionPhrase+answer+"! é€ è©é€ å¾—ä¸éŒ¯å“¦!å¥½æ£’!"));
 		}
 		addDerivedQuestionFormAnwser(matchedAnswer);
 	}
@@ -108,7 +108,7 @@ public class DialogueDispather implements JudgeManager{
 	@Override
 	public void onConfused() {
 		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, answer+"! ¶ã¶ã~³oÃD§Ú¤]ÁÙ¨S·Q¨ìµª®×©O!§Ú­Ì´«¤@ÃD§a"));
+		adapter.add(new OneComment(true, answer+"! å—šå—š~é€™é¡Œæˆ‘ä¹Ÿé‚„æ²’æƒ³åˆ°ç­”æ¡ˆå‘¢!æˆ‘å€‘æ›ä¸€é¡Œå§"));
 	    addRandomQuestion();
 	}
 
@@ -125,14 +125,14 @@ public class DialogueDispather implements JudgeManager{
 		if(question.isAskingAdj){
 			teachDemo= ontologyData.getOneRandomNounForOneAdj(answer);//find noun as teach demo
 			if(teachDemo!=null){
-				adapter.add(new OneComment(true, answer+"¬O¥Î¦b..¨Ò¦p: "+answer+teachDemo));
+				adapter.add(new OneComment(true, answer+"æ˜¯ç”¨åœ¨..ä¾‹å¦‚: "+answer+teachDemo));
 			}else{
 				wikiData.getWikiData(answer);
 			};
 		}else{
 			teachDemo= ontologyData.getOneRandomAdjForOneNoun(answer);//find adj as teach demo
 			if(teachDemo!=null){
-				adapter.add(new OneComment(true, answer+"¬O¥Î¦b..¨Ò¦p: "+teachDemo+answer));
+				adapter.add(new OneComment(true, answer+"æ˜¯ç”¨åœ¨..ä¾‹å¦‚: "+teachDemo+answer));
 			}else{
 				wikiData.getWikiData(answer);
 			};
@@ -143,11 +143,12 @@ public class DialogueDispather implements JudgeManager{
 		if(question.isAskingAdj){
 			question.isAskingAdj=false;
 			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, question.questionPhrase+"______"));
+			adapter.add(new OneComment(true, "è©¦è©¦çœ‹é€™å€‹å¥å­ã€‚  "+question.questionPhrase+"______"));
 		}else{
 			question.isAskingAdj=true;
 			question.questionPhrase = matchedKeyword;
-			adapter.add(new OneComment(true, "______"+question.questionPhrase));
+			adapter.add(new OneComment(true, "è©¦è©¦çœ‹é€™å€‹å¥å­ã€‚  ______çš„"+question.questionPhrase));
+			
 		}
 	}
 	
@@ -156,11 +157,14 @@ public class DialogueDispather implements JudgeManager{
 		if(getRandomInteger(0, 1) == 0 ? true : false){
 			question.questionPhrase = ontologyData.getOneRandomNoun();
 			question.isAskingAdj =true;
-			adapter.add(new OneComment(true, "______ªº"+question.questionPhrase));
+			adapter.add(new OneComment(true, "è©¦è©¦çœ‹é€™å€‹å¥å­ã€‚  ______çš„"+question.questionPhrase));
+			
 		}else{
 			question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.isAskingAdj =false;
-			adapter.add(new OneComment(true, question.questionPhrase+"______"));
+			adapter.add(new OneComment(true, "è©¦è©¦çœ‹é€™å€‹å¥å­ã€‚  "+question.questionPhrase+"______"));
+			
+			
 		}
 	}
 	

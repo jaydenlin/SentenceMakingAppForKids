@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.asus.activity.R;
+import com.asus.atc.dialogservice.DialogServiceConnector;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,18 +22,24 @@ public class DiscussArrayAdapter extends ArrayAdapter<OneComment> {
 	private TextView countryName;
 	private List<OneComment> countries = new ArrayList<OneComment>();
 	private LinearLayout wrapper;
-
+	private DialogServiceConnector dialogServiceConnector;
+	
 	@Override
 	public void add(OneComment object) {
 		if(countries.size()>=4){
 			countries.remove(0);
 		}
 		countries.add(object);
+		
+		if(object.left){
+			dialogServiceConnector.responseToUser(object.comment);
+		}
 		super.add(object);
 	}
 
-	public DiscussArrayAdapter(Context context, int textViewResourceId) {
+	public DiscussArrayAdapter(Context context, int textViewResourceId,DialogServiceConnector dialogServiceConnector) {
 		super(context, textViewResourceId);
+		this.dialogServiceConnector = dialogServiceConnector;
 	}
 	
 	@Override
