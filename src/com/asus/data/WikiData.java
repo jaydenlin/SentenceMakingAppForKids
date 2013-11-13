@@ -22,21 +22,21 @@ public class WikiData {
 	private static WikiData instance;
 	private AsyncTaskResponse<String> delegate=null;
 	HtmlCleaner htmlCleaner;
-	public static WikiData getInstance(AsyncTaskResponse<String> delegate){
+	public static WikiData getInstance(){
 		if(instance==null){
-			instance = new WikiData(delegate);
+			instance = new WikiData();
 		}
 		return instance;
 	}
 	
-	private WikiData(AsyncTaskResponse<String> delegate){
-		this.delegate=delegate;
+	private WikiData(){
 		htmlCleaner = new HtmlCleaner();
 	}
 	
-	public void getWikiData(String searchData){
+	public void searchWikiData(String searchData,AsyncTaskResponse<String> delegate){
 		getWikiDataAsyncTask wikiDataAsyncTask =new getWikiDataAsyncTask(); 
 		wikiDataAsyncTask.execute(searchData);
+		this.delegate=delegate;
 	}
 	
 	class getWikiDataAsyncTask extends AsyncTask<String, Void, String>{
@@ -45,8 +45,8 @@ public class WikiData {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet("http://zh.wikipedia.org/wiki/"+params[0]);
 			try {
+				HttpGet get = new HttpGet("http://zh.wikipedia.org/wiki/"+params[0].trim());
 				HttpResponse response = client.execute(get);
 				HttpEntity resEntity = response.getEntity();
 				String result = EntityUtils.toString(resEntity);

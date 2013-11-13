@@ -1,5 +1,7 @@
 package com.asus.engine;
 
+import android.util.Log;
+
 import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.data.OntologyData;
 import com.asus.data.WikiData;
@@ -13,38 +15,33 @@ public abstract class JudgeEngine {
 	public abstract String onWrongResponse();
 	public abstract String onTeachResponse();
 	public abstract String onConfusedResponse();
-	public abstract String onWikiDataGet(String output);
-	
+	public abstract String onNextQuestionResponse();
+	public abstract String getCurrentQuestion();
 	OntologyData ontologyData;
 	WikiData wikiData;
 	Question question;
 	String answer;
 	String[] keywords;
-	private String rightAnswer;
-	private String wrongAnswer;
+	public boolean toTeachFlag=false;
+	private static String rightAnswer="";
+	private static String wrongAnswer="";
 	
 	public JudgeEngine(Question question,String answer){
 		this.question=question;
 		this.ontologyData=OntologyData.getInstance();
 		this.answer = answer;
-		this.wikiData = WikiData.getInstance(new AsyncTaskResponse<String>() {
-			@Override
-			public void processFinish(String output) {
-				onWikiDataGet(output);
-			}
-		});
+		this.wikiData = WikiData.getInstance();
 		setKeywords();
-		
 	}
 	
 	public boolean IsRight() {
 		if (keywords == null) {
 			return false;
 		}
-		boolean isFail = true;
+		boolean isRight = false;
 		for (int i = 0; i < keywords.length; i++) {
 			if (answer.indexOf(keywords[i]) != -1) {
-				isFail = false;
+				isRight = true;
 				rightAnswer = keywords[i];
 				break;
 			} else {
@@ -52,7 +49,7 @@ public abstract class JudgeEngine {
 				wrongAnswer = answer;
 			}
 		}
-		return isFail;
+		return isRight;
 	}
 
 	public boolean IsConfused() {
@@ -67,6 +64,7 @@ public abstract class JudgeEngine {
 		try{
 			return rightAnswer;
 		}catch(Exception e){
+			Log.w(getClass().getSimpleName(), "rightAnswer is empty");
 			return "";
 		}
 	}
@@ -75,12 +73,14 @@ public abstract class JudgeEngine {
 		try{
 			return wrongAnswer;
 		}catch(Exception e){
+			Log.w(getClass().getSimpleName(), "wrongAnswer is empty");
 			return "";
 		}
 	}
 	
-	protected void searchWikiData(String searchData) {
-		wikiData.getWikiData(searchData);
+	
+	public void searchWikiData(String searchData,AsyncTaskResponse<String> delegate) {
+		wikiData.searchWikiData(searchData, delegate);
 	}
 	
 }

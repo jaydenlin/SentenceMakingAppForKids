@@ -1,25 +1,13 @@
 package com.asus.dialogue;
 
-import java.io.IOException;
 import java.util.Random;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
-import android.text.Html.TagHandler;
-
 import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.bubbles.DiscussArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.data.OntologyData;
 import com.asus.data.WikiData;
 
-public class DialogueDispather implements JudgeManager{
+public class DialogueDispather{
 	
 	public static DialogueDispather instance;
 	private Question question;
@@ -46,13 +34,7 @@ public class DialogueDispather implements JudgeManager{
 		this.answer = answer;
 		this.adapter = adapter;
 		this.ontologyData=OntologyData.getInstance();
-		this.wikiData = WikiData.getInstance(new AsyncTaskResponse<String>() {
-			
-			@Override
-			public void processFinish(String output) {
-				DialogueDispather.this.adapter.add(new OneComment(true, output));
-			}
-		}); 
+		this.wikiData = WikiData.getInstance(); 
 	}
 	
 	public void start(){
@@ -88,14 +70,12 @@ public class DialogueDispather implements JudgeManager{
 		}
 	}
 	
-	@Override
 	public void onWrongAnwser() {
 		// TODO Auto-generated method stub
 		adapter.add(new OneComment(true, answer+"? 再想想看有沒有更好的詞"));
 		onTeach();
 	}
 
-	@Override
 	public void onRightAnwser() {
 		if(question.isAskingAdj){
 			adapter.add(new OneComment(true, answer+question.questionPhrase+"! 造詞造得不錯哦!好棒!"));
@@ -105,20 +85,17 @@ public class DialogueDispather implements JudgeManager{
 		addDerivedQuestionFormAnwser(matchedAnswer);
 	}
 
-	@Override
 	public void onConfused() {
 		// TODO Auto-generated method stub
 		adapter.add(new OneComment(true, answer+"! 嗚嗚~這題我也還沒想到答案呢!我們換一題吧"));
 	    addRandomQuestion();
 	}
 
-	@Override
 	public void onAsked() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onTeach() {
 		// TODO Auto-generated method stub
 		String teachDemo;
@@ -127,14 +104,26 @@ public class DialogueDispather implements JudgeManager{
 			if(teachDemo!=null){
 				adapter.add(new OneComment(true, answer+"是用在..例如: "+answer+teachDemo));
 			}else{
-				wikiData.getWikiData(answer);
+				wikiData.searchWikiData(answer,new AsyncTaskResponse<String>() {
+					
+					@Override
+					public void processFinish(String output) {
+						DialogueDispather.this.adapter.add(new OneComment(true, output));
+					}
+				});
 			};
 		}else{
 			teachDemo= ontologyData.getOneRandomAdjForOneNoun(answer);//find adj as teach demo
 			if(teachDemo!=null){
 				adapter.add(new OneComment(true, answer+"是用在..例如: "+teachDemo+answer));
 			}else{
-				wikiData.getWikiData(answer);
+				wikiData.searchWikiData(answer,new AsyncTaskResponse<String>() {
+					
+					@Override
+					public void processFinish(String output) {
+						DialogueDispather.this.adapter.add(new OneComment(true, output));
+					}
+				});
 			};
 		}
 	}

@@ -17,4 +17,11 @@ public class WrongDialogueHandler extends DialogueHandler{
 		adapter.add(new OneComment(true, engine.onWrongResponse()));
 	}
 
+	@Override
+	public void putQuestionFrom(JudgeEngine engine) {
+		// TODO Auto-generated method stub
+		adapter.add(new OneComment(true,engine.getCurrentQuestion()));
+	}
+
+
 }

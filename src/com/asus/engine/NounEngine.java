@@ -1,7 +1,6 @@
 package com.asus.engine;
 
 import android.util.Log;
-
 import com.asus.dialogue.Question;
 
 public class NounEngine extends JudgeEngine {
@@ -12,16 +11,15 @@ public class NounEngine extends JudgeEngine {
 	
 	@Override
 	protected void setKeywords() {
-		keywords = ontologyData
-				.getMatchedAdjArrayForOneNoun(question.questionPhrase);
+		keywords = ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
 	}
 	
 	@Override
-	public String onWikiDataGet(String output) {
+	public String getCurrentQuestion() {
 		// TODO Auto-generated method stub
-		return null;
+		return "試試看這個句子。  "+ question.questionPhrase +"_______";
 	}
-
+	
 	@Override
 	public String onRightResponse() {
 		// TODO Auto-generated method stub
@@ -37,13 +35,12 @@ public class NounEngine extends JudgeEngine {
 	@Override
 	public String onTeachResponse() {
 		// TODO Auto-generated method stub
-		try{
-			String teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
-			return answer+"應該用在...例如:"+teachString+answer;//if null??
-		}catch(Exception exception){
+		String teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
+		if(teachString.equals("")){
 			Log.w(getClass().getSimpleName(),"teachString is empty");
-			searchWikiData(answer);
 			return "";
+		}else{
+			return answer+"應該用在...例如:"+teachString+answer;
 		}
 	}
 
@@ -52,7 +49,20 @@ public class NounEngine extends JudgeEngine {
 		// TODO Auto-generated method stub
 		return "這一題名詞的用法我也還沒有想到答案耶..來換一題吧";
 	}
-	
+
+	@Override
+	public String onNextQuestionResponse() {
+		// TODO Auto-generated method stub
+		setQuestion();
+		return "試試看這個句子。   _______的"+question.questionPhrase;
+	}
+
+	private void setQuestion(){
+		//use user's answer to ask "adj" question
+		String proposedQuestion=getRightAnswer();//answer is noun
+		question.isAskingAdj=true;
+		question.questionPhrase=proposedQuestion.equals("")?ontologyData.getOneRandomNoun():proposedQuestion;
+	}
 
 	
 	

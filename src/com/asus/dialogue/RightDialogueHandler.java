@@ -6,7 +6,6 @@ import com.asus.engine.JudgeEngine;
 
 public class RightDialogueHandler extends DialogueHandler{
 	
-	private JudgeEngine engine;
 	
 	public RightDialogueHandler(DiscussArrayAdapter adapter) {
 		super(adapter);
@@ -16,10 +15,15 @@ public class RightDialogueHandler extends DialogueHandler{
 	@Override
 	public void putResponseFrom(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		this.engine =engine;
 		adapter.add(new OneComment(true, engine.onRightResponse()));
-		
 	}
+
+	@Override
+	public void putQuestionFrom(JudgeEngine engine) {
+		// TODO Auto-generated method stub
+		adapter.add(new OneComment(true, engine.onNextQuestionResponse()));
+	}
+
 	
 	
 

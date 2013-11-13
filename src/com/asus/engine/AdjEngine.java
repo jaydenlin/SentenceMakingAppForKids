@@ -14,13 +14,13 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	protected void setKeywords() {
 		// TODO Auto-generated method stub
-		keywords = ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
+		keywords = ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
 	}
 	
 	@Override
-	public String onWikiDataGet(String output) {
+	public String getCurrentQuestion() {
 		// TODO Auto-generated method stub
-		return null;
+		return "試試看這個句子。   _______的"+question.questionPhrase;
 	}
 	
 	@Override
@@ -32,19 +32,19 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String onWrongResponse() {
 		// TODO Auto-generated method stub
+		
 		return getWrongAnswer()+"? 再想想看有沒有更好的詞";
 	}
 
 	@Override
 	public String onTeachResponse() {
 		// TODO Auto-generated method stub
-		try{
-			String teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
-			return answer+"應該用在...例如:"+answer+teachString;//if null??
-		}catch(Exception exception){
-			searchWikiData(answer);
+		String teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
+		if(teachString.equals("")){
 			Log.w(getClass().getSimpleName(), "teachString is empty");
 			return "";
+		}else{
+			return answer+"應該用在...例如:"+answer+teachString;
 		}
 	}
 
@@ -53,5 +53,23 @@ public class AdjEngine extends JudgeEngine{
 		// TODO Auto-generated method stub
 		return "這一題形容詞的用法我也還沒有想到答案耶..來換一題吧";
 	}
+
+	@Override
+	public String onNextQuestionResponse() {
+		// TODO Auto-generated method stub
+		setQuestion();
+		return "試試看這個句子。  "+ question.questionPhrase +"_______";
+	}
+	
+	
+	
+	private void setQuestion(){
+		//use user's answer to ask "noun" question
+		String proposedQuestion=getRightAnswer();//answer is adj
+		question.isAskingAdj=false;
+		question.questionPhrase=proposedQuestion.equals("")?ontologyData.getOneRandomAdj():proposedQuestion;
+	}
+
+	
 
 }

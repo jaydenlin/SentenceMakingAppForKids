@@ -12,4 +12,5 @@ public abstract class DialogueHandler {
 	}
 	
 	public abstract void putResponseFrom(JudgeEngine engine);
+	public abstract void putQuestionFrom(JudgeEngine engine);
 }
