@@ -1,5 +1,7 @@
 package com.asus.engine;
 
+import android.util.Log;
+
 import com.asus.dialogue.Question;
 
 public class NounEngine extends JudgeEngine {
@@ -9,7 +11,7 @@ public class NounEngine extends JudgeEngine {
 	}
 	
 	@Override
-	public void setKeywords() {
+	protected void setKeywords() {
 		keywords = ontologyData
 				.getMatchedAdjArrayForOneNoun(question.questionPhrase);
 	}
@@ -35,7 +37,14 @@ public class NounEngine extends JudgeEngine {
 	@Override
 	public String onTeachResponse() {
 		// TODO Auto-generated method stub
-		return answer+"應該用在...例如:";
+		try{
+			String teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
+			return answer+"應該用在...例如:"+teachString+answer;//if null??
+		}catch(Exception exception){
+			Log.w(getClass().getSimpleName(),"teachString is empty");
+			searchWikiData(answer);
+			return "";
+		}
 	}
 
 	@Override

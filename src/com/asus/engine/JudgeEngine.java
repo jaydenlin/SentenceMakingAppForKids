@@ -8,7 +8,7 @@ import com.asus.dialogue.Question;
 public abstract class JudgeEngine {
 	
 	
-	public abstract void setKeywords();
+	protected abstract void setKeywords();
 	public abstract String onRightResponse();
 	public abstract String onWrongResponse();
 	public abstract String onTeachResponse();
@@ -77,6 +77,10 @@ public abstract class JudgeEngine {
 		}catch(Exception e){
 			return "";
 		}
+	}
+	
+	protected void searchWikiData(String searchData) {
+		wikiData.getWikiData(searchData);
 	}
 	
 }

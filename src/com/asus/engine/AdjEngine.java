@@ -1,5 +1,7 @@
 package com.asus.engine;
 
+import android.util.Log;
+
 import com.asus.dialogue.Question;
 
 public class AdjEngine extends JudgeEngine{
@@ -7,11 +9,10 @@ public class AdjEngine extends JudgeEngine{
 	public AdjEngine(Question question,String answer) {
 		super(question,answer);
 		// TODO Auto-generated constructor stub
-		
 	}
 	
 	@Override
-	public void setKeywords() {
+	protected void setKeywords() {
 		// TODO Auto-generated method stub
 		keywords = ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
 	}
@@ -37,8 +38,14 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String onTeachResponse() {
 		// TODO Auto-generated method stub
-		String teachString = ontologyData.getOneRandomNounForOneAdj(answer);
-		return answer+"應該用在...例如:"+teachString+answer;//if null??
+		try{
+			String teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
+			return answer+"應該用在...例如:"+answer+teachString;//if null??
+		}catch(Exception exception){
+			searchWikiData(answer);
+			Log.w(getClass().getSimpleName(), "teachString is empty");
+			return "";
+		}
 	}
 
 	@Override
@@ -46,9 +53,5 @@ public class AdjEngine extends JudgeEngine{
 		// TODO Auto-generated method stub
 		return "這一題形容詞的用法我也還沒有想到答案耶..來換一題吧";
 	}
-
-	
-
-	
 
 }
