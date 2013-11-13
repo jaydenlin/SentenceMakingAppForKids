@@ -2,7 +2,7 @@ package com.asus.dialogue;
 
 import android.util.Log;
 
-import com.asus.bubbles.DiscussArrayAdapter;
+import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.engine.AdjEngine;
 import com.asus.engine.JudgeEngine;
 import com.asus.engine.NounEngine;
@@ -13,10 +13,10 @@ public class InputDispatcher {
 	String answer;
 	JudgeEngine judgeEngine;
 	DialogueHandler dialogueHandler;
-	DiscussArrayAdapter adapter;
+	BubblesArrayAdapter adapter;
 	
 	public static InputDispatcher instance;
-	public static InputDispatcher getInstance(Question question,String answer,DiscussArrayAdapter adapter){
+	public static InputDispatcher getInstance(Question question,String answer,BubblesArrayAdapter adapter){
 		
 		if(instance==null){
 			instance=new InputDispatcher(question,answer,adapter);
@@ -29,7 +29,7 @@ public class InputDispatcher {
 		return instance;
 	}
 	
-	private InputDispatcher(Question question,String answer,DiscussArrayAdapter adapter) {
+	private InputDispatcher(Question question,String answer,BubblesArrayAdapter adapter) {
 		// TODO Auto-generated constructor stub
 		this.question=question;
 		this.answer=answer;

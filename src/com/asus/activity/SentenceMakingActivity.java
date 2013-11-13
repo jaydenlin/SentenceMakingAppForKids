@@ -6,11 +6,10 @@ import java.util.Random;
 import com.asus.atc.dialogservice.DMListener;
 import com.asus.atc.dialogservice.DMResult;
 import com.asus.atc.dialogservice.DialogServiceConnector;
-import com.asus.bubbles.DiscussArrayAdapter;
+import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.bubbles.OneComment;
+import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
-import com.asus.dialogue.DBHelper;
-import com.asus.dialogue.DialogueDispather;
 import com.asus.dialogue.InputDispatcher;
 import com.asus.dialogue.Question;
 import com.asus.util.RandomUtil;
@@ -28,12 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.asus.atc.dialogservice.*;
-
-import core.ckip.datastructure.SPO;
-import core.ckip.datastructure.Sentence;
 
 public class SentenceMakingActivity extends Activity {
 
@@ -50,7 +43,7 @@ public class SentenceMakingActivity extends Activity {
 	private OntologyData ontologyData;
 	private Question question;
 	private Animation sentenceAnimation;
-	private DiscussArrayAdapter adapter;
+	private BubblesArrayAdapter adapter;
 	private DialogServiceConnector dialogServiceConnector;
 
 	protected static final int RESULT_SPEECH = 1;
@@ -141,7 +134,7 @@ public class SentenceMakingActivity extends Activity {
 					Thread.sleep(2000);
 					dialogServiceConnector
 							.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
-					adapter = new DiscussArrayAdapter(getApplicationContext(),
+					adapter = new BubblesArrayAdapter(getApplicationContext(),
 							R.layout.bubble_listitem_view,
 							dialogServiceConnector);
 					chatListView.setAdapter(adapter);

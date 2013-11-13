@@ -6,7 +6,6 @@ import java.util.Random;
 
 import android.util.Log;
 
-import com.asus.dialogue.DBHelper;
 
 public class OntologyData {
 	

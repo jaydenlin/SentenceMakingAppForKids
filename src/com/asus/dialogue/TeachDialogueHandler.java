@@ -1,7 +1,7 @@
 package com.asus.dialogue;
 
 import com.asus.asyctask.AsyncTaskResponse;
-import com.asus.bubbles.DiscussArrayAdapter;
+import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.engine.JudgeEngine;
 
@@ -9,7 +9,7 @@ public class TeachDialogueHandler extends DialogueHandler{
 	
 	private String wrongAnswer;
 	
-	public TeachDialogueHandler(DiscussArrayAdapter adapter) {
+	public TeachDialogueHandler(BubblesArrayAdapter adapter) {
 		super(adapter);
 		// TODO Auto-generated constructor stub
 	}

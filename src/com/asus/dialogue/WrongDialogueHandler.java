@@ -1,12 +1,12 @@
 package com.asus.dialogue;
 
-import com.asus.bubbles.DiscussArrayAdapter;
+import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.engine.JudgeEngine;
 
 public class WrongDialogueHandler extends DialogueHandler{
 
-	public WrongDialogueHandler(DiscussArrayAdapter discussArrayAdapter) {
+	public WrongDialogueHandler(BubblesArrayAdapter discussArrayAdapter) {
 		super(discussArrayAdapter);
 		// TODO Auto-generated constructor stub
 	}

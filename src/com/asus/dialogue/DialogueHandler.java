@@ -1,12 +1,12 @@
 package com.asus.dialogue;
 
-import com.asus.bubbles.DiscussArrayAdapter;
+import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.engine.JudgeEngine;
 
 public abstract class DialogueHandler {
 	
-	DiscussArrayAdapter adapter;
-	public DialogueHandler(DiscussArrayAdapter adapter) {
+	BubblesArrayAdapter adapter;
+	public DialogueHandler(BubblesArrayAdapter adapter) {
 		// TODO Auto-generated constructor stub
 		this.adapter=adapter;
 	}
