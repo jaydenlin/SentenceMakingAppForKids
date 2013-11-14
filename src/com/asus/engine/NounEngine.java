@@ -58,7 +58,7 @@ public class NounEngine extends JudgeEngine {
 	}
 
 	@Override
-	public String onNextQuestionResponse() {
+	public String getNextQuestion() {
 		// TODO Auto-generated method stub
 		setQuestion();
 		return "試試看這個句子。   _______的"+question.questionPhrase;
@@ -69,6 +69,18 @@ public class NounEngine extends JudgeEngine {
 		String proposedQuestion=getRightAnswer();//answer is noun
 		question.isAskingAdj=true;
 		question.questionPhrase=proposedQuestion.equals("")?ontologyData.getOneRandomNoun():proposedQuestion;
+	}
+
+	@Override
+	public String getNextHintPhotos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCurrentHintPhotos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

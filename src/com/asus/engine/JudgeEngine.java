@@ -16,8 +16,10 @@ public abstract class JudgeEngine {
 	public abstract String onWrongResponse();
 	public abstract String onTeachResponse();
 	public abstract String onConfusedResponse();
-	public abstract String onNextQuestionResponse();
+	public abstract String getNextQuestion();
 	public abstract String getCurrentQuestion();
+	public abstract String getNextHintPhotos();
+	public abstract String getCurrentHintPhotos();
 	OntologyData ontologyData;
 	WikiData wikiData;
 	Question question;

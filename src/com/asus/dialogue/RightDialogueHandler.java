@@ -21,7 +21,7 @@ public class RightDialogueHandler extends DialogueHandler{
 	@Override
 	public void putQuestionFrom(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, engine.onNextQuestionResponse()));
+		adapter.add(new OneComment(true, engine.getNextQuestion()));
 	}
 
 	

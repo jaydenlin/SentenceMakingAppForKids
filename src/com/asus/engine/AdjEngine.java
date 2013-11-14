@@ -61,12 +61,11 @@ public class AdjEngine extends JudgeEngine{
 	}
 
 	@Override
-	public String onNextQuestionResponse() {
+	public String getNextQuestion() {
 		// TODO Auto-generated method stub
 		setQuestion();
 		return "試試看這個句子。  "+ question.questionPhrase +"_______";
 	}
-	
 	
 	
 	private void setQuestion(){
@@ -74,6 +73,18 @@ public class AdjEngine extends JudgeEngine{
 		String proposedQuestion=getRightAnswer();//answer is adj
 		question.isAskingAdj=false;
 		question.questionPhrase=proposedQuestion.equals("")?ontologyData.getOneRandomAdj():proposedQuestion;
+	}
+
+	@Override
+	public String getNextHintPhotos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCurrentHintPhotos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
