@@ -12,6 +12,7 @@ import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.dialogue.InputDispatcher;
 import com.asus.dialogue.Question;
+import com.asus.photos.PhotosArrayAdapter;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,6 +43,7 @@ public class SentenceMakingActivity extends Activity{
 	private Question question;
 	private Animation sentenceAnimation;
 	private BubblesArrayAdapter adapter;
+	private PhotosArrayAdapter photosArrayAdapter;
 	private DialogServiceConnector dialogServiceConnector;
 	protected static final int RESULT_SPEECH = 1;
 
@@ -48,11 +51,13 @@ public class SentenceMakingActivity extends Activity{
 	// /UI
 	// /////////////////////
 	private ListView chatListView;
+	private GridView photoGridView;
 	private ImageButton answerButton;
 	ImageView sentencePhoto;
 
 	private void initView() {
 		chatListView = (ListView) findViewById(R.id.chatListView);
+		photoGridView = (GridView) findViewById(R.id.photoGridView);
 		answerButton = (ImageButton) findViewById(R.id.answerButton);
 		sentencePhoto = (ImageView) findViewById(R.id.sentence_photo);
 		setUI();
@@ -114,6 +119,10 @@ public class SentenceMakingActivity extends Activity{
 							R.layout.bubble_listitem_view,
 							dialogServiceConnector);
 					chatListView.setAdapter(adapter);
+					
+					photosArrayAdapter = new PhotosArrayAdapter(getApplicationContext(), R.layout.photo_griditem_view);
+					
+					
 					addRandomQuestion();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
