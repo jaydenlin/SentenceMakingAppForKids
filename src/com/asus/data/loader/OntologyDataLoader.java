@@ -26,7 +26,7 @@ public class OntologyDataLoader extends CursorLoader{
 		String[] columns= {dbHelper.C_NOUN}; 
 		String[] selectArgs={"¬õ¥V¥V"};
 		Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null, null);
-//		database.close();
+//		database.close(); don't close!
 		return cursor;
 	}
 	
