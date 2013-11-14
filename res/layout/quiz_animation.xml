@@ -8,7 +8,7 @@
    	       android:fromYScale="0.1"
    	       android:toYScale="1"
    	       android:pivotY="20%"
-   	       android:duration="20000"/>
+   	       android:duration="500"/>
    	
    	    
 </set>
