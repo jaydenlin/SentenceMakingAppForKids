@@ -10,21 +10,12 @@ import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
-import com.asus.data.OntologyDataDB;
 import com.asus.dialogue.InputDispatcher;
 import com.asus.dialogue.Question;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 
 import android.util.Log;
 import android.view.View;
@@ -174,11 +165,13 @@ public class SentenceMakingActivity extends Activity{
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
+			sentencePhoto.setBackgroundResource(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase));
 		} else {
 			question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.isAskingAdj = false;
 			adapter.add(new OneComment(true, "試試看這個句子。  "
 					+ question.questionPhrase + "______"));
+			
 		}
 	}
 

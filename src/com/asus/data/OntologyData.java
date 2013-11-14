@@ -9,7 +9,6 @@ import com.asus.util.RandomUtil;
 import android.R.integer;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 import android.util.Log;
 
 public class OntologyData {
@@ -38,10 +37,9 @@ public class OntologyData {
 		this.dbHelper = SentenceMakingActivity.dbHelper;
 		this.database = dbHelper.getReadableDatabase();
 		
+		//test for db
 		String[] columns = { dbHelper.C_NOUN };
 		String[] selectArgs = { "»Ä·È·È" };
-		
-		// database.query(table, columns, selection, selectionArgs, groupBy,having, orderBy, limit)
 		Cursor cursor = database.query(dbHelper.TABLE_NAME, columns,dbHelper.C_ADJ + "=?", selectArgs, dbHelper.C_NOUN, null, null,null);
 		while (cursor.moveToNext()) {
 			Log.w(getClass().getSimpleName(), cursor.getString(0));
@@ -58,6 +56,21 @@ public class OntologyData {
 		cursor.close();
 		return list.toArray(new String[list.size()]);
 	}
+	
+	private int[] cursorIntToArray(Cursor cursor){
+		List<Integer> list = new ArrayList<Integer>();
+		while (cursor.moveToNext()) {
+			list.add(cursor.getInt(0));
+		}
+		cursor.close();
+		
+		int[] ints = new int[list.size()];
+		for(int i=0, len = list.size(); i < len; i++){
+		   ints[i] = list.get(i);
+		}
+		return ints;
+	}
+	
 	
 	// ////////////////////////////////////////
 	// //Find Answer
@@ -134,5 +147,35 @@ public class OntologyData {
 		return cursor.getString(0);
 		// return "§Î®eµüµü¶W½d³ò";
 	}
-
+	
+	public int getOnePhotoIdOfOneNoun(String noun){
+		columns[0] = dbHelper.C_PHOTO_ID;
+		selection = dbHelper.C_NOUN+"=?";
+		selectArgs[0]=noun;
+		groupBy= dbHelper.C_NOUN;
+		Cursor cursor=database.query(dbHelper.TABLE_NAME,columns,selection,selectArgs,groupBy,null,null,null);
+		if(cursor.getCount()>0){
+			cursor.moveToNext();
+			return cursor.getInt(0);
+		}else{
+			Log.w(getClass().getSimpleName(), "Not found photo id for one noun");
+			return 0;
+		}
+	}
+	
+	public int[] getPhotoIdsOfOneAdj(String adj){
+		
+		String sql="SELECT "+dbHelper.C_PHOTO_ID+" FROM "+dbHelper.TABLE_NAME
+				+" Where "+dbHelper.C_ADJ+"=?"
+				+ "GROUP BY "+dbHelper.C_PHOTO_ID
+				+" ORDER BY RANDOM() LIMIT 6";
+		Cursor cursor=database.rawQuery(sql, null);
+		
+		if(cursor.getCount()>0){
+			return cursorIntToArray(cursor);
+		}else{
+			return new int[0];
+		}
+	}
+	
 }
