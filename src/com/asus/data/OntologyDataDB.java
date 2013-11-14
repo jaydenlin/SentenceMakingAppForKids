@@ -20,8 +20,11 @@ public class OntologyDataDB {
 		// TODO Auto-generated constructor stub
 		SQLiteDatabase database=dbHelper.getReadableDatabase();
 		String[] columns= {dbHelper.C_NOUN}; 
-		String[] selectArgs={"¬õ¥V¥V"};
-		Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null, null);
+		String[] selectArgs={"»Ä·È·È"};
+		//Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, null, null, null, null, null, null);
+		              //database.query(table, columns, selection, selectionArgs, groupBy, having, orderBy)
+						//database.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit)
+		Cursor cursor = database.query(dbHelper.TABLE_NAME, columns, dbHelper.C_ADJ+"=?", selectArgs, dbHelper.C_NOUN, null, null, null);
 		while(cursor.moveToNext()){
 			Log.w(getClass().getSimpleName(), cursor.getString(0));
 		}

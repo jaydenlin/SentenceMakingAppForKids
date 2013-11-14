@@ -35,7 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class SentenceMakingActivity extends Activity implements LoaderCallbacks<Cursor>{
+public class SentenceMakingActivity extends Activity{
 
 	// //////////////////////
 	// /Debug
@@ -46,7 +46,6 @@ public class SentenceMakingActivity extends Activity implements LoaderCallbacks<
 	// //////////////////////
 	// /Member
 	// //////////////////////
-	private static Random random;
 	private OntologyData ontologyData;
 	private Question question;
 	private Animation sentenceAnimation;
@@ -74,19 +73,6 @@ public class SentenceMakingActivity extends Activity implements LoaderCallbacks<
 		answerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// Intent intent = new
-				// Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-				// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-				// "en-US");
-				// try {
-				// startActivityForResult(intent, RESULT_SPEECH);
-				// } catch (ActivityNotFoundException a) {
-				// Toast t = Toast.makeText(getApplicationContext(),
-				// "Opps! Your device doesn't support Speech to Text",
-				// Toast.LENGTH_SHORT);
-				// t.show();
-				// }
-				// dialogServiceConnector.bindService();
 				dialogServiceConnector.startCSR();
 			}
 		});
@@ -106,10 +92,8 @@ public class SentenceMakingActivity extends Activity implements LoaderCallbacks<
 		setContentView(R.layout.sentence_making_activity);
 		initView();
 
-		random = new Random();
 		ontologyData = OntologyData.getInstance();
 		question = Question.getInstance();
-
 		sentenceAnimation.start();
 		
 		Log.w(getClass().getSimpleName(), "onCreate");
@@ -150,7 +134,6 @@ public class SentenceMakingActivity extends Activity implements LoaderCallbacks<
 		//TEMP
 		////////////
 		this.deleteDatabase("ontology.db");
-		//getLoaderManager().initLoader(1, null, this);
 		adapter = new BubblesArrayAdapter(getApplicationContext(),R.layout.bubble_listitem_view,dialogServiceConnector);
 		
 	}
@@ -196,31 +179,5 @@ public class SentenceMakingActivity extends Activity implements LoaderCallbacks<
 		}
 	}
 
-
-	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		// TODO Auto-generated method stub
-		return new OntologyDataLoader(getApplicationContext());
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		// TODO Auto-generated method stub
-		while(cursor.moveToNext()){
-//	
-//	adapter.add(new OneComment(true, cursor.getString(0)));
-			Log.w(getClass().getSimpleName(), cursor.getString(0));
-//	System.out.print(cursor.getString(0));
-//	
-		}
-		cursor.close();
-		
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
