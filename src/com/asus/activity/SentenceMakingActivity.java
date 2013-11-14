@@ -12,9 +12,11 @@ import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.dialogue.InputDispatcher;
 import com.asus.dialogue.Question;
+import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
 import com.asus.util.RandomUtil;
 
+import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -174,12 +176,18 @@ public class SentenceMakingActivity extends Activity{
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
-			sentencePhoto.setBackgroundResource(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase));
+			//sentencePhoto.setBackgroundResource(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase));
+			photosArrayAdapter.add(new OnePhoto(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase), ""));
 		} else {
 			question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.isAskingAdj = false;
 			adapter.add(new OneComment(true, "試試看這個句子。  "
 					+ question.questionPhrase + "______"));
+			
+			int[] photoIdArray=ontologyData.getPhotoIdsOfOneAdj(question.questionPhrase);
+			for(int i=0;i<photoIdArray.length;i++){
+				photosArrayAdapter.add(new OnePhoto(photoIdArray[i], ""));
+			}
 			
 		}
 	}
