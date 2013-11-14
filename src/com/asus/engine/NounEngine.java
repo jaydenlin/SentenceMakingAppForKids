@@ -1,6 +1,8 @@
 package com.asus.engine;
 
 import android.util.Log;
+
+import com.asus.data.DBHelper;
 import com.asus.dialogue.Question;
 
 public class NounEngine extends JudgeEngine {
@@ -12,6 +14,11 @@ public class NounEngine extends JudgeEngine {
 	@Override
 	protected void setKeywords() {
 		keywords = ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
+		if(keywords==null){
+			Log.w(getClass().getSimpleName(),"setKeywords keywrods is null");
+		}else{
+			Log.w(getClass().getSimpleName(),"setKeywords keywrods not null");
+		}
 	}
 	
 	@Override

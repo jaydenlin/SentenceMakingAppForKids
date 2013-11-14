@@ -2,6 +2,7 @@ package com.asus.engine;
 
 import android.util.Log;
 
+import com.asus.data.DBHelper;
 import com.asus.dialogue.Question;
 
 public class AdjEngine extends JudgeEngine{
@@ -15,6 +16,11 @@ public class AdjEngine extends JudgeEngine{
 	protected void setKeywords() {
 		// TODO Auto-generated method stub
 		keywords = ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
+		if(keywords==null){
+			Log.w(getClass().getSimpleName(),"setKeywords keywrods is null");
+		}else{
+			Log.w(getClass().getSimpleName(),"setKeywords keywrods not null");
+		}
 	}
 	
 	@Override

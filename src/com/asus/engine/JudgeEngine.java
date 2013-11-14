@@ -3,6 +3,7 @@ package com.asus.engine;
 import android.util.Log;
 
 import com.asus.asyctask.AsyncTaskResponse;
+import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.data.WikiData;
 import com.asus.dialogue.Question;

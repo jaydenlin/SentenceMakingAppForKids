@@ -11,7 +11,6 @@ import com.asus.bubbles.OneComment;
 import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.data.OntologyDataDB;
-import com.asus.data.loader.OntologyDataLoader;
 import com.asus.dialogue.InputDispatcher;
 import com.asus.dialogue.Question;
 import com.asus.util.RandomUtil;
@@ -46,12 +45,12 @@ public class SentenceMakingActivity extends Activity{
 	// //////////////////////
 	// /Member
 	// //////////////////////
+	public static DBHelper dbHelper;
 	private OntologyData ontologyData;
 	private Question question;
 	private Animation sentenceAnimation;
 	private BubblesArrayAdapter adapter;
 	private DialogServiceConnector dialogServiceConnector;
-
 	protected static final int RESULT_SPEECH = 1;
 
 	// /////////////////////
@@ -89,14 +88,19 @@ public class SentenceMakingActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		
 		setContentView(R.layout.sentence_making_activity);
 		initView();
-
-		ontologyData = OntologyData.getInstance();
+		
 		question = Question.getInstance();
 		sentenceAnimation.start();
 		
 		Log.w(getClass().getSimpleName(), "onCreate");
+		this.deleteDatabase("ontology.db");
+		dbHelper = new DBHelper(this);
+		ontologyData = OntologyData.getInstance();
+		
 		
 		dialogServiceConnector = new DialogServiceConnector(this);
 		final DMListener dmListener = new DMListener() {
@@ -104,7 +108,7 @@ public class SentenceMakingActivity extends Activity{
 				if (dmResult != null) {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
-					InputDispatcher.getInstance(question, text, adapter)
+					InputDispatcher.getInstance(question, text, adapter,dbHelper)
 							.start();
 				} else {
 				}
@@ -133,8 +137,7 @@ public class SentenceMakingActivity extends Activity{
 		/////////////
 		//TEMP
 		////////////
-		this.deleteDatabase("ontology.db");
-		adapter = new BubblesArrayAdapter(getApplicationContext(),R.layout.bubble_listitem_view,dialogServiceConnector);
+		
 		
 	}
 
@@ -142,21 +145,21 @@ public class SentenceMakingActivity extends Activity{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		dialogServiceConnector.bindService();
 		
 	}
 
 	protected void onDestroy() {
 		super.onDestroy();
-		//dialogServiceConnector.releaseService();
+		dialogServiceConnector.releaseService();
 	}
 	
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub 
 		super.onStart();
-		DBHelper dbHelper = new DBHelper(this);
-		OntologyDataDB ontologyDataDB = OntologyDataDB.getInstance(dbHelper);
-		//dialogServiceConnector.bindService();
+		
+		//OntologyDataDB ontologyDataDB = OntologyDataDB.getInstance(dbHelper);
 
 	}
 

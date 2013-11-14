@@ -3,6 +3,7 @@ package com.asus.dialogue;
 import android.util.Log;
 
 import com.asus.bubbles.BubblesArrayAdapter;
+import com.asus.data.DBHelper;
 import com.asus.engine.AdjEngine;
 import com.asus.engine.JudgeEngine;
 import com.asus.engine.NounEngine;
@@ -14,26 +15,28 @@ public class InputDispatcher {
 	JudgeEngine judgeEngine;
 	DialogueHandler dialogueHandler;
 	BubblesArrayAdapter adapter;
-	
+	DBHelper dbHelper;
 	public static InputDispatcher instance;
-	public static InputDispatcher getInstance(Question question,String answer,BubblesArrayAdapter adapter){
+	public static InputDispatcher getInstance(Question question,String answer,BubblesArrayAdapter adapter,DBHelper dbHelper){
 		
 		if(instance==null){
-			instance=new InputDispatcher(question,answer,adapter);
+			instance=new InputDispatcher(question,answer,adapter,dbHelper);
 		}else{
 			//update question and answer when receive user input
 			instance.question=question;
 			instance.answer=answer;
+			instance.dbHelper=dbHelper;
 		}
 		
 		return instance;
 	}
 	
-	private InputDispatcher(Question question,String answer,BubblesArrayAdapter adapter) {
+	private InputDispatcher(Question question,String answer,BubblesArrayAdapter adapter,DBHelper dbHelper) {
 		// TODO Auto-generated constructor stub
 		this.question=question;
 		this.answer=answer;
 		this.adapter=adapter;
+		this.dbHelper=dbHelper;
 	}
 	
 	public void start(){
