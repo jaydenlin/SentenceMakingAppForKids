@@ -103,8 +103,7 @@ public class SentenceMakingActivity extends Activity{
 				if (dmResult != null) {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
-					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter)
-							.start();
+					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
 				} else {
 				}
 			}
@@ -173,7 +172,6 @@ public class SentenceMakingActivity extends Activity{
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
-			//sentencePhoto.setBackgroundResource(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase));
 			photosArrayAdapter.add(new OnePhoto(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase), ""));
 		} else {
 			question.questionPhrase = ontologyData.getOneRandomAdj();

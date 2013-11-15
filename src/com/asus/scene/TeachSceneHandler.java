@@ -16,8 +16,10 @@ public class TeachSceneHandler extends SceneHandler{
 	@Override
 	public void putHintPhotoFrom(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		photosArrayAdapter.clear();
-		photosArrayAdapter.add(new OnePhoto(engine.getTeachPhoto(), ""));
+		int photoid=engine.getTeachPhoto();
+		if(photoid!=0){
+			photosArrayAdapter.add(new OnePhoto(engine.getTeachPhoto(), ""));
+		}
 	}
 
 }

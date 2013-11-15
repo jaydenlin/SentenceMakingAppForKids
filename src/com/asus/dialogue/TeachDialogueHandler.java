@@ -17,7 +17,6 @@ public class TeachDialogueHandler extends DialogueHandler{
 	@Override
 	public void putResponseFrom(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		engine.toTeachFlag=false;
 		wrongAnswer=engine.getWrongAnswer();
 		if(engine.onTeachResponse().equals("")){
 			

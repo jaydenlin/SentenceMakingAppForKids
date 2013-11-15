@@ -7,6 +7,7 @@ import java.util.Map;
 import com.asus.activity.R;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		}
 		//set column
 		setColumns(getCount(), (GridView)parent);
+		Log.w(getClass().getSimpleName(), "getView called : set colums");
 		//get item data
 		OnePhoto onePhoto=getItem(position);
 		//get view

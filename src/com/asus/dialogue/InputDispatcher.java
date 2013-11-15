@@ -50,13 +50,6 @@ public class InputDispatcher {
 		setHandler(judgeEngine);
 		
 		dialogueHandler.putResponseFrom(judgeEngine);
-		
-		if(judgeEngine.toTeachFlag){
-			dialogueHandler=new TeachDialogueHandler(adapter);
-			sceneHandler = new TeachSceneHandler(photosArrayAdapter);
-			dialogueHandler.putResponseFrom(judgeEngine);
-		}
-		
 		dialogueHandler.putQuestionFrom(judgeEngine);
 		sceneHandler.putHintPhotoFrom(judgeEngine);
 		
@@ -79,7 +72,6 @@ public class InputDispatcher {
 				dialogueHandler=new RightDialogueHandler(adapter);
 				sceneHandler = new RightSceneHandler(photosArrayAdapter);
 			}else{
-				judgeEngine.toTeachFlag=true;
 				dialogueHandler=new WrongDialogueHandler(adapter);
 				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
 			}

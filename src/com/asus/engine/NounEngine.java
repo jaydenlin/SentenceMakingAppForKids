@@ -82,9 +82,11 @@ public class NounEngine extends JudgeEngine {
 		if(question.isAskingAdj==true){
 			//asking adj so that put noun photo
 			photoArrayId[0]=ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase);
+			Log.w(getClass().getSimpleName(),question.questionPhrase);
 		}else{
 			//asking noun so that put adj photo
 			photoArrayId=ontologyData.getPhotoIdsOfOneAdj(question.questionPhrase);
+			Log.w(getClass().getSimpleName(),question.questionPhrase);
 		}
 		return photoArrayId;
 	}

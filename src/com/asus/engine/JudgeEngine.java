@@ -20,7 +20,6 @@ public abstract class JudgeEngine {
 	public abstract String getCurrentQuestion();
 	public abstract int getTeachPhoto();
 	
-	public boolean toTeachFlag=false;
 	public String teachString;
 	
 	OntologyData ontologyData;
