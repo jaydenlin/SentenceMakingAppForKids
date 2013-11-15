@@ -163,10 +163,10 @@ public class OntologyData {
 		Cursor cursor=database.query(dbHelper.TABLE_NAME,columns,selection,selectArgs,groupBy,null,null,null);
 		if(cursor.getCount()>0){
 			cursor.moveToNext();
-			Log.w(getClass().getSimpleName(), "photo id found for one noun");
+			Log.w(getClass().getSimpleName(), "photo id found for one noun:"+noun);
 			return cursor.getInt(0);
 		}else{
-			Log.w(getClass().getSimpleName(), "Not found photo id for one noun");
+			Log.w(getClass().getSimpleName(), "Not found photo id for one noun:"+noun);
 			return 0;
 		}
 	}
@@ -181,10 +181,10 @@ public class OntologyData {
 		Cursor cursor=database.rawQuery(sql, selectArgs);
 		
 		if(cursor.getCount()>0){
-			Log.w(getClass().getSimpleName(), "photo ids found for one adj");
+			Log.w(getClass().getSimpleName(), "photo ids found for one adj:"+adj);
 			return cursorIntToArray(cursor);
 		}else{
-			Log.w(getClass().getSimpleName(), "Not found photo ids for one adj");
+			Log.w(getClass().getSimpleName(), "Not found photo ids for one adj:"+adj);
 			return new int[0];
 		}
 	}

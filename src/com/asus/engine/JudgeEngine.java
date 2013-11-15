@@ -18,14 +18,17 @@ public abstract class JudgeEngine {
 	public abstract String onConfusedResponse();
 	public abstract String getNextQuestion();
 	public abstract String getCurrentQuestion();
-	public abstract String getNextHintPhotos();
-	public abstract String getCurrentHintPhotos();
+	public abstract int getTeachPhoto();
+	
+	public boolean toTeachFlag=false;
+	public String teachString;
+	
 	OntologyData ontologyData;
 	WikiData wikiData;
 	Question question;
 	String answer;
 	String[] keywords;
-	public boolean toTeachFlag=false;
+	
 	private static String rightAnswer="";
 	private static String wrongAnswer="";
 	
@@ -86,4 +89,5 @@ public abstract class JudgeEngine {
 		wikiData.searchWikiData(searchData, delegate);
 	}
 	
+	public abstract int[] getHintPhotos();
 }

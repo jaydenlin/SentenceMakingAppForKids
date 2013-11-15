@@ -103,7 +103,7 @@ public class SentenceMakingActivity extends Activity{
 				if (dmResult != null) {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
-					InputDispatcher.getInstance(question, text, adapter,dbHelper)
+					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter)
 							.start();
 				} else {
 				}

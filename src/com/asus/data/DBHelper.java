@@ -290,7 +290,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		values.put(this.C_PHOTO_ID, R.drawable.cockrooster);
 		database.insertOrThrow(this.TABLE_NAME, null, values);
 		values.put(this.C_NOUN, "Âû");
-		values.put(this.C_ADJ, "¤ò¯ñ¯ñ¶ê");
+		values.put(this.C_ADJ, "¤ò¯ñ¯ñ");
 		values.put(this.C_PHOTO_ID, R.drawable.cockrooster);
 		database.insertOrThrow(this.TABLE_NAME, null, values);
 		values.put(this.C_NOUN, "Âû");

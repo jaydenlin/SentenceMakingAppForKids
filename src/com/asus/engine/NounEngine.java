@@ -42,7 +42,7 @@ public class NounEngine extends JudgeEngine {
 	@Override
 	public String onTeachResponse() {
 		// TODO Auto-generated method stub
-		String teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
+		teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
 		if(teachString.equals("")){
 			Log.w(getClass().getSimpleName(),"teachString is empty");
 			return "";
@@ -60,11 +60,11 @@ public class NounEngine extends JudgeEngine {
 	@Override
 	public String getNextQuestion() {
 		// TODO Auto-generated method stub
-		setQuestion();
+		setNextQuestion();
 		return "試試看這個句子。   _______的"+question.questionPhrase;
 	}
 
-	private void setQuestion(){
+	private void setNextQuestion(){
 		//use user's answer to ask "adj" question
 		String proposedQuestion=getRightAnswer();//answer is noun
 		question.isAskingAdj=true;
@@ -72,18 +72,22 @@ public class NounEngine extends JudgeEngine {
 	}
 
 	@Override
-	public String getNextHintPhotos() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getTeachPhoto(){
+		return ontologyData.getOnePhotoIdOfOneNoun(answer);
 	}
 
-	@Override
-	public String getCurrentHintPhotos() {
+	public int[] getHintPhotos() {
 		// TODO Auto-generated method stub
-		return null;
+		int[] photoArrayId = new int[1];
+		if(question.isAskingAdj==true){
+			//asking adj so that put noun photo
+			photoArrayId[0]=ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase);
+		}else{
+			//asking noun so that put adj photo
+			photoArrayId=ontologyData.getPhotoIdsOfOneAdj(question.questionPhrase);
+		}
+		return photoArrayId;
 	}
-
-	
 	
 	
 

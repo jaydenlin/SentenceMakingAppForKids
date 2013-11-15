@@ -46,6 +46,13 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		// TODO Auto-generated method stub
 		return photos.get(position);
 	}
+	
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		super.clear();
+		photos.clear();
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -54,10 +61,10 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		if(convertView==null){
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.photo_griditem_view, parent, false);
-            //set column
-    		setColumns(getCount(), (GridView)parent);
+            
 		}
-		
+		//set column
+		setColumns(getCount(), (GridView)parent);
 		//get item data
 		OnePhoto onePhoto=getItem(position);
 		//get view
@@ -66,28 +73,18 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		//setting
 		hintPhoto.setBackgroundResource(onePhoto.photoId);
 		hintText.setText(onePhoto.phototext);
-		setWidthAndHeight(getCount(), hintPhoto, hintText);
 		
 		return convertView;
 	}
 	
 	private void setColumns(int count,GridView gridView){
-		if(count>=6){
+		if(count>=3){
 			gridView.setNumColumns(3);
 		}else{
 			gridView.setNumColumns(count);
 		}
 	}
 	
-	private void setWidthAndHeight(int count,ImageView imageView,TextView textView){
-		if(count==1){
-			imageView.setLayoutParams(new LinearLayout.LayoutParams(R.dimen.hint_photo_height_big, R.dimen.hint_photo_width_big));
-		}else if(count==2){
-			imageView.setLayoutParams(new LinearLayout.LayoutParams(R.dimen.hint_photo_height_mid, R.dimen.hint_photo_width_mid));
-		}else{
-			imageView.setLayoutParams(new LinearLayout.LayoutParams(R.dimen.hint_photo_height_small, R.dimen.hint_photo_width_small));
-		}
-	}
 	
 	
 

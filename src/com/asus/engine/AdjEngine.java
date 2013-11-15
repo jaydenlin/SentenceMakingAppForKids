@@ -1,5 +1,6 @@
 package com.asus.engine;
 
+import android.R.integer;
 import android.util.Log;
 
 import com.asus.data.DBHelper;
@@ -45,7 +46,7 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String onTeachResponse() {
 		// TODO Auto-generated method stub
-		String teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
+		teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
 		if(teachString.equals("")){
 			Log.w(getClass().getSimpleName(), "teachString is empty");
 			return "";
@@ -63,30 +64,34 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String getNextQuestion() {
 		// TODO Auto-generated method stub
-		setQuestion();
+		setNextQuestion();
 		return "試試看這個句子。  "+ question.questionPhrase +"_______";
 	}
 	
 	
-	private void setQuestion(){
+	private void setNextQuestion(){
 		//use user's answer to ask "noun" question
 		String proposedQuestion=getRightAnswer();//answer is adj
 		question.isAskingAdj=false;
 		question.questionPhrase=proposedQuestion.equals("")?ontologyData.getOneRandomAdj():proposedQuestion;
 	}
-
 	@Override
-	public String getNextHintPhotos() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getTeachPhoto(){
+		return ontologyData.getOnePhotoIdOfOneNoun(teachString);
 	}
 
-	@Override
-	public String getCurrentHintPhotos() {
+	public int[] getHintPhotos() {
 		// TODO Auto-generated method stub
-		return null;
+		int[] photoArrayId = new int[1];
+		if(question.isAskingAdj==true){
+			//asking adj so that put noun photo
+			photoArrayId[0]=ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase);
+		}else{
+			//asking noun so that put adj photo
+			photoArrayId=ontologyData.getPhotoIdsOfOneAdj(question.questionPhrase);
+		}
+		return photoArrayId;
 	}
-
 	
 
 }
