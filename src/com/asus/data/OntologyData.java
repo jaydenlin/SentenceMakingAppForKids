@@ -156,6 +156,7 @@ public class OntologyData {
 		Cursor cursor=database.query(dbHelper.TABLE_NAME,columns,selection,selectArgs,groupBy,null,null,null);
 		if(cursor.getCount()>0){
 			cursor.moveToNext();
+			Log.w(getClass().getSimpleName(), "photo id found for one noun");
 			return cursor.getInt(0);
 		}else{
 			Log.w(getClass().getSimpleName(), "Not found photo id for one noun");
@@ -169,11 +170,14 @@ public class OntologyData {
 				+" Where "+dbHelper.C_ADJ+"=?"
 				+ "GROUP BY "+dbHelper.C_PHOTO_ID
 				+" ORDER BY RANDOM() LIMIT 6";
-		Cursor cursor=database.rawQuery(sql, null);
+		selectArgs[0]=adj;
+		Cursor cursor=database.rawQuery(sql, selectArgs);
 		
 		if(cursor.getCount()>0){
+			Log.w(getClass().getSimpleName(), "photo ids found for one adj");
 			return cursorIntToArray(cursor);
 		}else{
+			Log.w(getClass().getSimpleName(), "Not found photo ids for one adj");
 			return new int[0];
 		}
 	}

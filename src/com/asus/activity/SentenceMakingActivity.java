@@ -123,7 +123,7 @@ public class SentenceMakingActivity extends Activity{
 					chatListView.setAdapter(adapter);
 					
 					photosArrayAdapter = new PhotosArrayAdapter(getApplicationContext(), R.layout.photo_griditem_view);
-					
+					photoGridView.setAdapter(photosArrayAdapter);
 					
 					addRandomQuestion();
 				} catch (InterruptedException e) {
