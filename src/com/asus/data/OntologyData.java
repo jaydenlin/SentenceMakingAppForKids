@@ -38,11 +38,17 @@ public class OntologyData {
 		this.database = dbHelper.getReadableDatabase();
 		
 		//test for db
-		String[] columns = { dbHelper.C_NOUN };
-		String[] selectArgs = { "»Ä·È·È" };
-		Cursor cursor = database.query(dbHelper.TABLE_NAME, columns,dbHelper.C_ADJ + "=?", selectArgs, dbHelper.C_NOUN, null, null,null);
+//		String[] columns = { dbHelper.C_NOUN };
+//		String[] selectArgs = { "»Ä·È·È" };
+//		Cursor cursor = database.query(dbHelper.TABLE_NAME, columns,dbHelper.C_ADJ + "=?", selectArgs, dbHelper.C_NOUN, null, null,null);
+		String sql="SELECT "+dbHelper.C_PHOTO_ID+" FROM "+dbHelper.TABLE_NAME
+				+" Where "+dbHelper.C_ADJ+"=?"
+				+ "GROUP BY "+dbHelper.C_PHOTO_ID
+				+" ORDER BY RANDOM() LIMIT 6";
+		selectArgs[0]="ÄÐÄÐªº";
+		Cursor cursor=database.rawQuery(sql, selectArgs);
 		while (cursor.moveToNext()) {
-			Log.w(getClass().getSimpleName(), cursor.getString(0));
+			Log.w(getClass().getSimpleName(), Integer.toString(cursor.getInt(0)));
 		}
 		cursor.close();
 
@@ -67,6 +73,7 @@ public class OntologyData {
 		int[] ints = new int[list.size()];
 		for(int i=0, len = list.size(); i < len; i++){
 		   ints[i] = list.get(i);
+		   Log.w(getClass().getSimpleName(), Integer.toString(ints[i]));
 		}
 		return ints;
 	}

@@ -43,7 +43,6 @@ public class SentenceMakingActivity extends Activity{
 	public static DBHelper dbHelper;
 	private OntologyData ontologyData;
 	private Question question;
-	private Animation sentenceAnimation;
 	private BubblesArrayAdapter adapter;
 	private PhotosArrayAdapter photosArrayAdapter;
 	private DialogServiceConnector dialogServiceConnector;
@@ -55,13 +54,11 @@ public class SentenceMakingActivity extends Activity{
 	private ListView chatListView;
 	private GridView photoGridView;
 	private ImageButton answerButton;
-	ImageView sentencePhoto;
 
 	private void initView() {
 		chatListView = (ListView) findViewById(R.id.chatListView);
 		photoGridView = (GridView) findViewById(R.id.photoGridView);
 		answerButton = (ImageButton) findViewById(R.id.answerButton);
-		sentencePhoto = (ImageView) findViewById(R.id.sentence_photo);
 		setUI();
 	}
 
@@ -74,9 +71,9 @@ public class SentenceMakingActivity extends Activity{
 			}
 		});
 
-		sentenceAnimation = AnimationUtils.loadAnimation(this,
-				R.layout.quiz_animation);
-		sentencePhoto.setAnimation(sentenceAnimation);
+//		sentenceAnimation = AnimationUtils.loadAnimation(this,
+//				R.layout.quiz_animation);
+//		sentencePhoto.setAnimation(sentenceAnimation);
 
 	}
 
@@ -92,7 +89,7 @@ public class SentenceMakingActivity extends Activity{
 		initView();
 		
 		question = Question.getInstance();
-		sentenceAnimation.start();
+		
 		
 		Log.w(getClass().getSimpleName(), "onCreate");
 		this.deleteDatabase("ontology.db");
@@ -188,7 +185,6 @@ public class SentenceMakingActivity extends Activity{
 			for(int i=0;i<photoIdArray.length;i++){
 				photosArrayAdapter.add(new OnePhoto(photoIdArray[i], ""));
 			}
-			
 		}
 	}
 
