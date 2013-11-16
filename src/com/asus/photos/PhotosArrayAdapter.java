@@ -22,6 +22,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 	private List<OnePhoto> photos=new ArrayList<OnePhoto>();
 	private ImageView hintPhoto;
 	private TextView hintText;
+	private GridView gridView;
 	
 	
 	public PhotosArrayAdapter(Context context,int resource) {
@@ -34,6 +35,15 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		// TODO Auto-generated method stub
 		super.add(object);
 		photos.add(object);
+		if(gridView!=null){
+			if(getCount()>=3){
+				gridView.setNumColumns(3);
+				Log.w(getClass().getSimpleName(), "add called : set column3");
+			}else{
+				gridView.setNumColumns(getCount());
+				Log.w(getClass().getSimpleName(), "add called : set column"+getCount());
+			}
+		}
 	}
 
 	@Override
@@ -65,8 +75,10 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
             
 		}
 		//set column
-		setColumns(getCount(), (GridView)parent);
-		Log.w(getClass().getSimpleName(), "getView called : set colums");
+		gridView=(GridView)parent;
+		setColumns(getCount(), gridView);
+		
+		
 		//get item data
 		OnePhoto onePhoto=getItem(position);
 		//get view
@@ -82,8 +94,10 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 	private void setColumns(int count,GridView gridView){
 		if(count>=3){
 			gridView.setNumColumns(3);
+			
 		}else{
 			gridView.setNumColumns(count);
+			Log.w(getClass().getSimpleName(), "getView called : set column"+count);
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.asus.scene;
 
 import android.R.integer;
+import android.util.Log;
 
 import com.asus.engine.JudgeEngine;
 import com.asus.photos.OnePhoto;
@@ -18,7 +19,9 @@ public class TeachSceneHandler extends SceneHandler{
 		// TODO Auto-generated method stub
 		int photoid=engine.getTeachPhoto();
 		if(photoid!=0){
+			photosArrayAdapter.clear();
 			photosArrayAdapter.add(new OnePhoto(engine.getTeachPhoto(), ""));
+			
 		}
 	}
 

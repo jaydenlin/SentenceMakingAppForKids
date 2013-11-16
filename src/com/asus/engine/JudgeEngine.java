@@ -63,6 +63,19 @@ public abstract class JudgeEngine {
 		} else {
 			return false;
 		}
+//		String[] confusedWords={"提示","不知道","聽不懂","不會","怎麼","難"};
+//		boolean IsConfused = false;
+//		for (int i = 0; i < confusedWords.length; i++) {
+//			if (answer.indexOf(confusedWords[i]) != -1) {
+//				IsConfused = true;
+//				//rightAnswer = confusedWords[i];
+//				break;
+//			} else {
+//				//do nothing
+//				//wrongAnswer = answer;
+//			}
+//		}
+//		return IsConfused;
 	}
 	
 	public String getRightAnswer() {
