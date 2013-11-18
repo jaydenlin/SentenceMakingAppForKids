@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ConceptNetData {
 
@@ -37,6 +38,7 @@ public class ConceptNetData {
 	
 	public void searchConceptNet(String text,String surfaceText,AsyncTaskResponse<String> delegate){
 		this.delegate=delegate;
+		new getConceptNetData().execute(text,surfaceText);
 	}
 	
 	class getConceptNetData extends AsyncTask<String, Void, String>{
@@ -59,10 +61,12 @@ public class ConceptNetData {
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Log.w(getClass().getSimpleName(), "ClientProtocolException");
 				return "";
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Log.w(getClass().getSimpleName(), "IOException");
 				return "";
 			}
 		}
@@ -71,9 +75,15 @@ public class ConceptNetData {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			String parsedResult="";
+			
+			Log.w(getClass().getSimpleName(), "result:"+result);
 			JsonElement jsonElement=new JsonParser().parse(result);
 			JsonObject jsonObject=jsonElement.getAsJsonObject();
-			String parsedResult=jsonObject.getAsJsonArray("edges").get(0).getAsJsonObject().get("surfaceText").toString();
+			if(jsonObject.getAsJsonArray("edges").size()!=0){
+				parsedResult=jsonObject.getAsJsonArray("edges").get(0).getAsJsonObject().get("surfaceText").toString();
+			}
+			Log.w(getClass().getSimpleName(), "parsedResult:"+parsedResult);
 			delegate.processFinish(parsedResult);
 		}
 		
