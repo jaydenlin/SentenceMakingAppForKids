@@ -19,6 +19,8 @@ import com.asus.util.RandomUtil;
 import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import android.util.Log;
 import android.view.View;
@@ -61,7 +63,7 @@ public class SentenceMakingActivity extends Activity{
 		answerButton = (ImageButton) findViewById(R.id.answerButton);
 		setUI();
 	}
-
+	
 	private void setUI() {
 
 		answerButton.setOnClickListener(new View.OnClickListener() {

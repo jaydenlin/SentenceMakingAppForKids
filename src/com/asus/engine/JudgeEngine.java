@@ -3,6 +3,7 @@ package com.asus.engine;
 import android.util.Log;
 
 import com.asus.asyctask.AsyncTaskResponse;
+import com.asus.data.ConceptNetData;
 import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.data.WikiData;
@@ -23,6 +24,7 @@ public abstract class JudgeEngine {
 	public String teachString;
 	
 	OntologyData ontologyData;
+	ConceptNetData conceptNetData;
 	WikiData wikiData;
 	Question question;
 	String answer;
@@ -36,6 +38,7 @@ public abstract class JudgeEngine {
 		this.ontologyData=OntologyData.getInstance();
 		this.answer = answer;
 		this.wikiData = WikiData.getInstance();
+		this.conceptNetData=ConceptNetData.getInstance();
 		setKeywords();
 	}
 	
@@ -58,11 +61,13 @@ public abstract class JudgeEngine {
 	}
 
 	public boolean IsConfused() {
-		if (keywords == null) {
-			return true;
-		} else {
-			return false;
-		}
+		
+		return true;
+//		if (keywords == null) {
+//			return true;
+//		} else {
+//			return false;
+//		}
 //		String[] confusedWords={"提示","不知道","聽不懂","不會","怎麼","難"};
 //		boolean IsConfused = false;
 //		for (int i = 0; i < confusedWords.length; i++) {
@@ -100,6 +105,11 @@ public abstract class JudgeEngine {
 	public void searchWikiData(String searchData,AsyncTaskResponse<String> delegate) {
 		wikiData.searchWikiData(searchData, delegate);
 	}
+	
+	public void searchConceptNet(AsyncTaskResponse<String> delegate) {
+		conceptNetData.searchConceptNet(answer, question.questionPhrase, delegate);
+	}
+	
 	
 	public abstract int[] getHintPhotos();
 }

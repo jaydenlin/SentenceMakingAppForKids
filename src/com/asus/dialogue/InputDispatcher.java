@@ -65,6 +65,7 @@ public class InputDispatcher {
 	
 	private void setHandler(JudgeEngine judgeEngine){
 		try{
+			
 			if(judgeEngine.IsConfused()){
 				dialogueHandler=new ConfusedDialogueHandler(adapter);
 				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);

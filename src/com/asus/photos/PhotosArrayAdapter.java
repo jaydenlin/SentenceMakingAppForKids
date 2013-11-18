@@ -36,13 +36,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		super.add(object);
 		photos.add(object);
 		if(gridView!=null){
-			if(getCount()>=3){
-				gridView.setNumColumns(3);
-				Log.w(getClass().getSimpleName(), "add called : set column3");
-			}else{
-				gridView.setNumColumns(getCount());
-				Log.w(getClass().getSimpleName(), "add called : set column"+getCount());
-			}
+			setColumns(getCount());
 		}
 	}
 
@@ -76,8 +70,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		}
 		//set column
 		gridView=(GridView)parent;
-		setColumns(getCount(), gridView);
-		
+		setColumns(getCount());
 		
 		//get item data
 		OnePhoto onePhoto=getItem(position);
@@ -91,10 +84,10 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		return convertView;
 	}
 	
-	private void setColumns(int count,GridView gridView){
+	private void setColumns(int count){
 		if(count>=3){
 			gridView.setNumColumns(3);
-			
+			Log.w(getClass().getSimpleName(), "getView called : set column"+count);
 		}else{
 			gridView.setNumColumns(count);
 			Log.w(getClass().getSimpleName(), "getView called : set column"+count);
