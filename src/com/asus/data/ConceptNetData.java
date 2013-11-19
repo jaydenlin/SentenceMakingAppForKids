@@ -1,6 +1,8 @@
 package com.asus.data;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,7 +24,7 @@ import android.util.Log;
 public class ConceptNetData {
 
 	public static ConceptNetData instance;
-	private AsyncTaskResponse<String> delegate;
+	private AsyncTaskResponse<List<String>> delegate;
 	private Gson gson;
 
 	public static ConceptNetData getInstance() {
@@ -36,7 +38,7 @@ public class ConceptNetData {
 
 	}
 	
-	public void searchConceptNet(String text,String surfaceText,AsyncTaskResponse<String> delegate){
+	public void searchConceptNet(String text,String surfaceText,AsyncTaskResponse<List<String>> delegate){
 		this.delegate=delegate;
 		new getConceptNetData().execute(text,surfaceText);
 	}
@@ -48,12 +50,20 @@ public class ConceptNetData {
 			// TODO Auto-generated method stub
 			String text = params[0].trim();
 			String surfaceText = params[1].trim();
-
+			String url;
+			
+			if(surfaceText.equals("")){
+				url="http://conceptnet5.media.mit.edu/data/5.1/search?text="
+						+ text;
+			}else{
+				url="http://conceptnet5.media.mit.edu/data/5.1/search?text="
+						+ text + "&surfaceText=" + surfaceText;
+			}
+			
 			HttpClient client = new DefaultHttpClient();
+			
 			try {
-				HttpGet get = new HttpGet(
-						"http://conceptnet5.media.mit.edu/data/5.1/search?text="
-								+ text + "&surfaceText=" + surfaceText);
+				HttpGet get = new HttpGet(url);
 				HttpResponse response = client.execute(get);
 				HttpEntity resEntity = response.getEntity();
 				String result = EntityUtils.toString(resEntity);
@@ -77,13 +87,19 @@ public class ConceptNetData {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			String parsedResult="";
+			Log.w(getClass().getSimpleName(),result);
+			List<String> parsedResult=new ArrayList<String>();
+			
 			JsonElement jsonElement=new JsonParser().parse(result);
 			Log.w(getClass().getSimpleName(), result);
 			JsonObject jsonObject=jsonElement.getAsJsonObject();
+			
 			if(jsonObject.getAsJsonArray("edges").size()>0){
-				parsedResult=jsonObject.getAsJsonArray("edges").get(0).getAsJsonObject().get("surfaceText").toString();
+				for (int i=0;i<jsonObject.getAsJsonArray("edges").size();i++){
+					parsedResult.add(jsonObject.getAsJsonArray("edges").get(i).getAsJsonObject().get("surfaceText").toString());
+				}
 			}
+			
 			delegate.processFinish(parsedResult);
 		}
 	}

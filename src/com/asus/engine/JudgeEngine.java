@@ -1,5 +1,7 @@
 package com.asus.engine;
 
+import java.util.List;
+
 import android.util.Log;
 
 import com.asus.asyctask.AsyncTaskResponse;
@@ -23,12 +25,12 @@ public abstract class JudgeEngine {
 	
 	public String teachString;
 	
-	OntologyData ontologyData;
-	ConceptNetData conceptNetData;
-	WikiData wikiData;
-	Question question;
-	String answer;
-	String[] keywords;
+	protected OntologyData ontologyData;
+	protected ConceptNetData conceptNetData;
+	protected WikiData wikiData;
+	protected Question question;
+	protected String answer;
+	protected String[] keywords;
 	
 	private static String rightAnswer="";
 	private static String wrongAnswer="";
@@ -62,25 +64,26 @@ public abstract class JudgeEngine {
 
 	public boolean IsConfused() {
 		
-		return true;
 //		if (keywords == null) {
 //			return true;
 //		} else {
 //			return false;
 //		}
-//		String[] confusedWords={"矗ボ","ぃ笵","钮ぃ来","ぃ穦","或","螟"};
-//		boolean IsConfused = false;
-//		for (int i = 0; i < confusedWords.length; i++) {
-//			if (answer.indexOf(confusedWords[i]) != -1) {
-//				IsConfused = true;
-//				//rightAnswer = confusedWords[i];
-//				break;
-//			} else {
-//				//do nothing
-//				//wrongAnswer = answer;
-//			}
-//		}
-//		return IsConfused;
+		String[] confusedWords={"矗ボ","ぃ笵","钮ぃ来","ぃ穦","或","螟","年","毙и","毙厩","传肈","","ぐ或","裕或","或"};
+		boolean IsConfused = false;
+		for (int i = 0; i < confusedWords.length; i++) {
+			if (answer.indexOf(confusedWords[i]) != -1) {
+				IsConfused = true;
+				answer="";//because the user is not answering they are confused,so set this answer as empty
+				rightAnswer = "";
+				wrongAnswer = "";
+				break;
+			} else {
+				//do nothing
+				//wrongAnswer = answer;
+			}
+		}
+		return IsConfused;
 	}
 	
 	public String getRightAnswer() {
@@ -106,10 +109,10 @@ public abstract class JudgeEngine {
 		wikiData.searchWikiData(searchData, delegate);
 	}
 	
-	public void searchConceptNet(AsyncTaskResponse<String> delegate) {
-		conceptNetData.searchConceptNet(answer, question.questionPhrase, delegate);
+	public void searchConceptNet(AsyncTaskResponse<List<String>> delegate) {
+		
+		conceptNetData.searchConceptNet(question.questionPhrase, answer, delegate);
 	}
-	
 	
 	public abstract int[] getHintPhotos();
 }

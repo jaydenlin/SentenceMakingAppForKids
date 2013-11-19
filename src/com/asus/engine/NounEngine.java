@@ -5,6 +5,7 @@ import android.util.Log;
 import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.data.DBHelper;
 import com.asus.dialogue.Question;
+import com.asus.util.RandomUtil;
 
 public class NounEngine extends JudgeEngine {
 
@@ -55,7 +56,14 @@ public class NounEngine extends JudgeEngine {
 	@Override
 	public String onConfusedResponse() {
 		// TODO Auto-generated method stub
-		return "這一題名詞的用法我也還沒有想到答案耶..來換一題吧";
+		String[] confusedResponse={
+				"唉呀..真抱歉出題出太難了..不懂"+question.questionPhrase+"的話..",
+				"其實這題沒有那麼難啦...既然不懂"+question.questionPhrase+"的話..",
+				"不會"+question.questionPhrase+"嗎? 這樣子噢...那..",
+				"不了解"+question.questionPhrase+"嗎?好吧,既然這樣的話..",
+				"是噢,看來你還不清楚"+question.questionPhrase+"? 既然這樣的話,那...",
+		};
+		return confusedResponse[RandomUtil.getRandomInteger(0, confusedResponse.length-1)];
 	}
 
 	@Override
