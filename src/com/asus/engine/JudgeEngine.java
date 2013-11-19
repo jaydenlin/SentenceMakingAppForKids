@@ -31,24 +31,34 @@ public abstract class JudgeEngine {
 	protected Question question;
 	protected String answer;
 	protected String[] keywords;
-	
+	protected List<String> demoSentences;
+	protected JudgeEngineCallback judgeEngineCallback;
+	private boolean isRight;
+	private boolean isConfused;
 	private static String rightAnswer="";
 	private static String wrongAnswer="";
 	
-	public JudgeEngine(Question question,String answer){
+	public JudgeEngine(Question question,String answer,JudgeEngineCallback judgeEngineCallback){
 		this.question=question;
 		this.ontologyData=OntologyData.getInstance();
 		this.answer = answer;
 		this.wikiData = WikiData.getInstance();
 		this.conceptNetData=ConceptNetData.getInstance();
+		this.judgeEngineCallback=judgeEngineCallback;
 		setKeywords();
 	}
 	
-	public boolean IsRight() {
-		if (keywords == null) {
-			return false;
+	public void start(){//use callback here,so u can call this start() to automatically bind callback
+		if(IsConfused()){
+			judgeEngineCallback.onConfused();
+		}else{
+			checkRightOrWrong();
 		}
-		boolean isRight = false;
+	}
+	
+	private void checkRightOrWrong() {
+		//checkout db
+		isRight = false;
 		for (int i = 0; i < keywords.length; i++) {
 			if (answer.indexOf(keywords[i]) != -1) {
 				isRight = true;
@@ -59,21 +69,32 @@ public abstract class JudgeEngine {
 				wrongAnswer = answer;
 			}
 		}
-		return isRight;
+		//checkout concept net
+		conceptNetData.searchConceptNet(question.questionPhrase, answer, new AsyncTaskResponse<List<String>>() {
+			@Override
+			public void processFinish(List<String> output) {
+				if(output.size()>0){
+					isRight=true;
+					demoSentences=output;
+				}
+				//finally
+				if(isRight){
+					judgeEngineCallback.onRight();
+				}else{
+					judgeEngineCallback.onWrong();
+				}
+			}
+		});
+		
 	}
 
-	public boolean IsConfused() {
+	private boolean IsConfused() {
 		
-//		if (keywords == null) {
-//			return true;
-//		} else {
-//			return false;
-//		}
 		String[] confusedWords={"矗ボ","ぃ笵","钮ぃ来","ぃ穦","或","螟","年","毙и","毙厩","传肈","","ぐ或","裕或","或"};
-		boolean IsConfused = false;
+		isConfused = false;
 		for (int i = 0; i < confusedWords.length; i++) {
 			if (answer.indexOf(confusedWords[i]) != -1) {
-				IsConfused = true;
+				isConfused = true;
 				answer="";//because the user is not answering they are confused,so set this answer as empty
 				rightAnswer = "";
 				wrongAnswer = "";
@@ -83,7 +104,7 @@ public abstract class JudgeEngine {
 				//wrongAnswer = answer;
 			}
 		}
-		return IsConfused;
+		return isConfused;
 	}
 	
 	public String getRightAnswer() {
@@ -104,6 +125,9 @@ public abstract class JudgeEngine {
 		}
 	}
 	
+	public List<String> getDemoSentences(){
+		return demoSentences;
+	}
 	
 	public void searchWikiData(String searchData,AsyncTaskResponse<String> delegate) {
 		wikiData.searchWikiData(searchData, delegate);
@@ -115,4 +139,6 @@ public abstract class JudgeEngine {
 	}
 	
 	public abstract int[] getHintPhotos();
+	
+	
 }

@@ -1,9 +1,10 @@
 package com.asus.dialogue;
 
+import com.asus.agent.AgentObserver;
 import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.engine.JudgeEngine;
 
-public abstract class DialogueHandler {
+public abstract class DialogueHandler implements AgentObserver{
 	
 	BubblesArrayAdapter adapter;
 	public DialogueHandler(BubblesArrayAdapter adapter) {

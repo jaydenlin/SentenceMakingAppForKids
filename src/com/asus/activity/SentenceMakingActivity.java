@@ -107,6 +107,7 @@ public class SentenceMakingActivity extends Activity{
 					adapter.add(new OneComment(false, text));
 					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
 				} else {
+					
 				}
 			}
 

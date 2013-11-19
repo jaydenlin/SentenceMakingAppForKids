@@ -23,5 +23,12 @@ public class RightSceneHandler extends SceneHandler{
 		}
 		
 	}
+	
+	@Override
+	public void update(JudgeEngine judgeEngine) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

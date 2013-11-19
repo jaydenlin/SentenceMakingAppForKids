@@ -30,6 +30,13 @@ public class WrongSceneHandler extends SceneHandler{
 		
 	}
 	
+	@Override
+	public void update(JudgeEngine judgeEngine) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	class TeachSceneHandlerAsyncTask extends AsyncTask<JudgeEngine, Void, String>{
 		
 		JudgeEngine engineAtInnerClass;
@@ -50,6 +57,7 @@ public class WrongSceneHandler extends SceneHandler{
 			TeachSceneHandler teachSceneHandler=new TeachSceneHandler(photosArrayAdapter);
 			teachSceneHandler.putHintPhotoFrom(engineAtInnerClass);
 		}
+		
 		
 		
 	}
@@ -87,6 +95,8 @@ public class WrongSceneHandler extends SceneHandler{
 				
 			}
 		}
+		
+		
 		
 	}
 	

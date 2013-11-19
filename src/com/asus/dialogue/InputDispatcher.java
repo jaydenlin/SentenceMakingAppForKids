@@ -6,6 +6,7 @@ import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.data.DBHelper;
 import com.asus.engine.AdjEngine;
 import com.asus.engine.JudgeEngine;
+import com.asus.engine.JudgeEngineCallback;
 import com.asus.engine.NounEngine;
 import com.asus.photos.PhotosArrayAdapter;
 import com.asus.scene.ConfusedSceneHandler;
@@ -23,6 +24,7 @@ public class InputDispatcher {
 	SceneHandler sceneHandler;
 	BubblesArrayAdapter adapter;
 	PhotosArrayAdapter photosArrayAdapter;
+	JudgeEngineCallback judgeEngineCallback;
 	public static InputDispatcher instance;
 	public static InputDispatcher getInstance(Question question,String answer,BubblesArrayAdapter adapter,PhotosArrayAdapter photosArrayAdapter){
 		
@@ -47,38 +49,72 @@ public class InputDispatcher {
 	
 	public void start(){
 		setJudgeEngine();
-		setHandler(judgeEngine);
-		
-		dialogueHandler.putResponseFrom(judgeEngine);
-		dialogueHandler.putQuestionFrom(judgeEngine);
-		sceneHandler.putHintPhotoFrom(judgeEngine);
+		judgeEngine.start();
+
+//		dialogueHandler.putResponseFrom(judgeEngine);
+//		dialogueHandler.putQuestionFrom(judgeEngine);
+//		sceneHandler.putHintPhotoFrom(judgeEngine);
 		
 	}
 	
 	private void setJudgeEngine(){
+		
+		judgeEngineCallback=new JudgeEngineCallback() {
+			
+			@Override
+			public void onConfused() {
+				// TODO Auto-generated method stub
+				dialogueHandler=new ConfusedDialogueHandler(adapter);
+				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
+				dialogueHandler.putResponseFrom(judgeEngine);
+				dialogueHandler.putQuestionFrom(judgeEngine);
+				sceneHandler.putHintPhotoFrom(judgeEngine);
+			}
+
+			@Override
+			public void onRight() {
+				// TODO Auto-generated method stub
+				dialogueHandler=new RightDialogueHandler(adapter);
+				sceneHandler = new RightSceneHandler(photosArrayAdapter);
+				dialogueHandler.putResponseFrom(judgeEngine);
+				dialogueHandler.putQuestionFrom(judgeEngine);
+				sceneHandler.putHintPhotoFrom(judgeEngine);
+			}
+			
+			@Override
+			public void onWrong() {
+				// TODO Auto-generated method stub
+				dialogueHandler=new WrongDialogueHandler(adapter);
+				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
+				dialogueHandler.putResponseFrom(judgeEngine);
+				dialogueHandler.putQuestionFrom(judgeEngine);
+				sceneHandler.putHintPhotoFrom(judgeEngine);
+			}			
+		};
+		
 		if(question.isAskingAdj){
-			judgeEngine= new AdjEngine(question, answer);
+			judgeEngine= new AdjEngine(question, answer,judgeEngineCallback);
 		}else{
-			judgeEngine=new NounEngine(question, answer);
+			judgeEngine=new NounEngine(question, answer,judgeEngineCallback);
 		}
 	}
 	
-	private void setHandler(JudgeEngine judgeEngine){
-		try{
-			
-			if(judgeEngine.IsConfused()){
-				dialogueHandler=new ConfusedDialogueHandler(adapter);
-				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
-			}else if(judgeEngine.IsRight()){
-				dialogueHandler=new RightDialogueHandler(adapter);
-				sceneHandler = new RightSceneHandler(photosArrayAdapter);
-			}else{
-				dialogueHandler=new WrongDialogueHandler(adapter);
-				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
-			}
-		}catch(NullPointerException exception){
-			Log.w(getClass().getSimpleName(), "judgeEngine must be set up in advance. please call setJudgeEngine() to set it up.");
-		}
-	}
+//	private void setHandler(JudgeEngine judgeEngine){
+//		try{
+//			
+//			if(judgeEngine.IsConfused()){
+//				dialogueHandler=new ConfusedDialogueHandler(adapter);
+//				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
+//			}else if(judgeEngine.IsRight()){
+//				dialogueHandler=new RightDialogueHandler(adapter);
+//				sceneHandler = new RightSceneHandler(photosArrayAdapter);
+//			}else{
+//				dialogueHandler=new WrongDialogueHandler(adapter);
+//				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
+//			}
+//		}catch(NullPointerException exception){
+//			Log.w(getClass().getSimpleName(), "judgeEngine must be set up in advance. please call setJudgeEngine() to set it up.");
+//		}
+//	}
 	
 }

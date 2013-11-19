@@ -9,8 +9,8 @@ import com.asus.util.RandomUtil;
 
 public class AdjEngine extends JudgeEngine{
 	
-	public AdjEngine(Question question,String answer) {
-		super(question,answer);
+	public AdjEngine(Question question,String answer,JudgeEngineCallback judgeEngineCallback) {
+		super(question,answer,judgeEngineCallback);
 		// TODO Auto-generated constructor stub
 	}
 	

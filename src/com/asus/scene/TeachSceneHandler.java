@@ -23,5 +23,12 @@ public class TeachSceneHandler extends SceneHandler{
 			photosArrayAdapter.add(new OnePhoto(engine.getTeachPhoto(), ""));
 		}
 	}
+	
+	@Override
+	public void update(JudgeEngine judgeEngine) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

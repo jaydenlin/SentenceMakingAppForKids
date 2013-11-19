@@ -41,5 +41,11 @@ public class TeachDialogueHandler extends DialogueHandler{
 		// TODO Auto-generated method stub
 		adapter.add(new OneComment(true, engine.getCurrentQuestion()));
 	}
+	
+	@Override
+	public void update(JudgeEngine judgeEngine) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

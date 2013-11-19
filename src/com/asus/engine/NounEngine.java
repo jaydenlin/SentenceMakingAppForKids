@@ -9,8 +9,8 @@ import com.asus.util.RandomUtil;
 
 public class NounEngine extends JudgeEngine {
 
-	public NounEngine(Question question,String answer) {
-		super(question,answer);
+	public NounEngine(Question question,String answer,JudgeEngineCallback judgeEngineCallback) {
+		super(question,answer,judgeEngineCallback);
 	}
 	
 	@Override

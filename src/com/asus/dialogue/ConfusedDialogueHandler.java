@@ -57,4 +57,10 @@ public class ConfusedDialogueHandler extends DialogueHandler{
 		adapter.add(new OneComment(true, "我們換一題吧!"+engine.getNextQuestion()));
 	}
 
+	@Override
+	public void update(JudgeEngine judgeEngine) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

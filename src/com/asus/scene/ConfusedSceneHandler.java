@@ -21,5 +21,12 @@ public class ConfusedSceneHandler extends SceneHandler{
 			photosArrayAdapter.add(new OnePhoto(photoArrayId[i], ""));
 		}
 	}
+	
+	@Override
+	public void update(JudgeEngine judgeEngine) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
