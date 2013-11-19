@@ -37,10 +37,11 @@ public class ConceptNetData {
 	private ConceptNetData() {
 
 	}
-	
-	public void searchConceptNet(String text,String surfaceText,AsyncTaskResponse<List<String>> delegate){
-		this.delegate=delegate;
-		new getConceptNetData().execute(text,surfaceText);
+
+	public void searchConceptNet(String text, String surfaceText,
+			AsyncTaskResponse<List<String>> delegate) {
+		this.delegate = delegate;
+		new getConceptNetData().execute(text, surfaceText);
 	}
 
 	class getConceptNetData extends AsyncTask<String, Void, String> {
@@ -51,17 +52,17 @@ public class ConceptNetData {
 			String text = params[0].trim();
 			String surfaceText = params[1].trim();
 			String url;
-			
-			if(surfaceText.equals("")){
-				url="http://conceptnet5.media.mit.edu/data/5.1/search?text="
+
+			if (surfaceText.equals("")) {
+				url = "http://conceptnet5.media.mit.edu/data/5.1/search?text="
 						+ text;
-			}else{
-				url="http://conceptnet5.media.mit.edu/data/5.1/search?text="
+			} else {
+				url = "http://conceptnet5.media.mit.edu/data/5.1/search?text="
 						+ text + "&surfaceText=" + surfaceText;
 			}
-			
+
 			HttpClient client = new DefaultHttpClient();
-			
+
 			try {
 				HttpGet get = new HttpGet(url);
 				HttpResponse response = client.execute(get);
@@ -87,19 +88,21 @@ public class ConceptNetData {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			Log.w(getClass().getSimpleName(),result);
-			List<String> parsedResult=new ArrayList<String>();
-			
-			JsonElement jsonElement=new JsonParser().parse(result);
 			Log.w(getClass().getSimpleName(), result);
-			JsonObject jsonObject=jsonElement.getAsJsonObject();
-			
-			if(jsonObject.getAsJsonArray("edges").size()>0){
-				for (int i=0;i<jsonObject.getAsJsonArray("edges").size();i++){
-					parsedResult.add(jsonObject.getAsJsonArray("edges").get(i).getAsJsonObject().get("surfaceText").toString());
+			List<String> parsedResult = new ArrayList<String>();
+
+			JsonElement jsonElement = new JsonParser().parse(result);
+			Log.w(getClass().getSimpleName(), result);
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			for (int i = 0; i < jsonObject.getAsJsonArray("edges").size(); i++) {
+				JsonObject edges = jsonObject.getAsJsonArray("edges").get(i)
+						.getAsJsonObject();
+				if (edges.has("surfaceText")) {
+					parsedResult.add(edges.get("surfaceText").toString());
 				}
 			}
-			
+
 			delegate.processFinish(parsedResult);
 		}
 	}

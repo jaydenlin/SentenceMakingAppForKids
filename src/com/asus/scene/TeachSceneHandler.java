@@ -21,7 +21,6 @@ public class TeachSceneHandler extends SceneHandler{
 		if(photoid!=0){
 			photosArrayAdapter.clear();
 			photosArrayAdapter.add(new OnePhoto(engine.getTeachPhoto(), ""));
-			
 		}
 	}
 
