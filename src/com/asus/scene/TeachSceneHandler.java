@@ -1,6 +1,5 @@
 package com.asus.scene;
 
-import android.R.integer;
 import android.util.Log;
 
 import com.asus.engine.JudgeEngine;
@@ -25,10 +24,10 @@ public class TeachSceneHandler extends SceneHandler{
 	}
 	
 	@Override
-	public void update(JudgeEngine judgeEngine) {
+	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		
+		putHintPhotoFrom(engine);
+		notifyDoneCallback.doNextHandler(engine);
 	}
-
 
 }

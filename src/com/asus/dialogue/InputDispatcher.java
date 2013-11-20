@@ -2,12 +2,15 @@ package com.asus.dialogue;
 
 import android.util.Log;
 
+import com.asus.agent.Agent;
 import com.asus.bubbles.BubblesArrayAdapter;
+import com.asus.bubbles.OneComment;
 import com.asus.data.DBHelper;
 import com.asus.engine.AdjEngine;
 import com.asus.engine.JudgeEngine;
 import com.asus.engine.JudgeEngineCallback;
 import com.asus.engine.NounEngine;
+import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
 import com.asus.scene.ConfusedSceneHandler;
 import com.asus.scene.RightSceneHandler;
@@ -25,6 +28,7 @@ public class InputDispatcher {
 	BubblesArrayAdapter adapter;
 	PhotosArrayAdapter photosArrayAdapter;
 	JudgeEngineCallback judgeEngineCallback;
+	Agent agent;
 	public static InputDispatcher instance;
 	public static InputDispatcher getInstance(Question question,String answer,BubblesArrayAdapter adapter,PhotosArrayAdapter photosArrayAdapter){
 		
@@ -48,6 +52,7 @@ public class InputDispatcher {
 	}
 	
 	public void start(){
+		
 		setJudgeEngine();
 		judgeEngine.start();
 
@@ -57,38 +62,52 @@ public class InputDispatcher {
 		
 	}
 	
+	
 	private void setJudgeEngine(){
-		
+		agent=new Agent();
 		judgeEngineCallback=new JudgeEngineCallback() {
 			
 			@Override
 			public void onConfused() {
 				// TODO Auto-generated method stub
-				dialogueHandler=new ConfusedDialogueHandler(adapter);
-				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
-				dialogueHandler.putResponseFrom(judgeEngine);
-				dialogueHandler.putQuestionFrom(judgeEngine);
-				sceneHandler.putHintPhotoFrom(judgeEngine);
+				agent.addHandler(new ConfusedDialogueHandler(adapter));
+				agent.addHandler(new ConfusedSceneHandler(photosArrayAdapter));
+				agent.execHandler(judgeEngine);
+//				dialogueHandler=new ConfusedDialogueHandler(adapter);
+//				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
+				
+//				dialogueHandler.putResponseFrom(judgeEngine);
+//				dialogueHandler.putQuestionFrom(judgeEngine);
+//				sceneHandler.putHintPhotoFrom(judgeEngine);
 			}
 
 			@Override
 			public void onRight() {
 				// TODO Auto-generated method stub
-				dialogueHandler=new RightDialogueHandler(adapter);
-				sceneHandler = new RightSceneHandler(photosArrayAdapter);
-				dialogueHandler.putResponseFrom(judgeEngine);
-				dialogueHandler.putQuestionFrom(judgeEngine);
-				sceneHandler.putHintPhotoFrom(judgeEngine);
+				agent.addHandler(new RightDialogueHandler(adapter));
+				agent.addHandler(new RightSceneHandler(photosArrayAdapter));
+				agent.execHandler(judgeEngine);
+				
+//				dialogueHandler=new RightDialogueHandler(adapter);
+//				sceneHandler = new RightSceneHandler(photosArrayAdapter);
+				
+//				dialogueHandler.putResponseFrom(judgeEngine);
+//				dialogueHandler.putQuestionFrom(judgeEngine);
+//				sceneHandler.putHintPhotoFrom(judgeEngine);
 			}
 			
 			@Override
 			public void onWrong() {
 				// TODO Auto-generated method stub
-				dialogueHandler=new WrongDialogueHandler(adapter);
-				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
-				dialogueHandler.putResponseFrom(judgeEngine);
-				dialogueHandler.putQuestionFrom(judgeEngine);
-				sceneHandler.putHintPhotoFrom(judgeEngine);
+				agent.addHandler(new WrongDialogueHandler(adapter));
+				agent.addHandler(new WrongSceneHandler(photosArrayAdapter));
+				agent.execHandler(judgeEngine);
+//				dialogueHandler=new WrongDialogueHandler(adapter);
+//				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
+				
+//				dialogueHandler.putResponseFrom(judgeEngine);
+//				dialogueHandler.putQuestionFrom(judgeEngine);
+//				sceneHandler.putHintPhotoFrom(judgeEngine);
 			}			
 		};
 		

@@ -25,9 +25,10 @@ public class RightSceneHandler extends SceneHandler{
 	}
 	
 	@Override
-	public void update(JudgeEngine judgeEngine) {
+	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		
+		putHintPhotoFrom(engine);
+		notifyDoneCallback.doNextHandler(engine);
 	}
 
 

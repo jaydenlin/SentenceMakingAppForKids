@@ -16,7 +16,7 @@ public class RightDialogueHandler extends DialogueHandler{
 	public void putResponseFrom(JudgeEngine engine) {
 		// TODO Auto-generated method stub
 		adapter.add(new OneComment(true, engine.onRightResponse()));
-		adapter.add(new OneComment(true, "哈哈～你是指.."+engine.getDemoSentences().get(0)));
+		adapter.add(new OneComment(true, "哦～不錯哦!我想你是指.."+engine.getDemoSentences().get(0)));
 	}
 
 	@Override
@@ -26,9 +26,14 @@ public class RightDialogueHandler extends DialogueHandler{
 	}
 
 	@Override
-	public void update(JudgeEngine judgeEngine) {
+	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		
+		adapter.add(new OneComment(true, engine.onRightResponse()));
+		if(engine.getDemoSentences().size()>0){
+			adapter.add(new OneComment(true, "哦～不錯哦!我想你是指.."+engine.getDemoSentences().get(0)));
+		}
+		adapter.add(new OneComment(true, engine.getNextQuestion()));
+		notifyDoneCallback.doNextHandler(engine);
 	}
 
 	

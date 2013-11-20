@@ -7,7 +7,7 @@ import com.asus.data.OntologyData;
 import com.asus.engine.JudgeEngine;
 import com.asus.photos.PhotosArrayAdapter;
 
-public abstract class SceneHandler implements AgentObserver{
+public abstract class SceneHandler extends AgentObserver{
 	
 	protected PhotosArrayAdapter photosArrayAdapter;
 	public SceneHandler(PhotosArrayAdapter photosArrayAdapter) {

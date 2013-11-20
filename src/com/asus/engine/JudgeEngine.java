@@ -1,5 +1,6 @@
 package com.asus.engine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
@@ -31,7 +32,7 @@ public abstract class JudgeEngine {
 	protected Question question;
 	protected String answer;
 	protected String[] keywords;
-	protected List<String> demoSentences;
+	protected List<String> demoSentences=new ArrayList<String>();
 	protected JudgeEngineCallback judgeEngineCallback;
 	private boolean isRight;
 	private boolean isConfused;
@@ -59,14 +60,16 @@ public abstract class JudgeEngine {
 	private void checkRightOrWrong() {
 		//checkout db
 		isRight = false;
-		for (int i = 0; i < keywords.length; i++) {
-			if (answer.indexOf(keywords[i]) != -1) {
-				isRight = true;
-				rightAnswer = keywords[i];
-				break;
-			} else {
-				//do nothing
-				wrongAnswer = answer;
+		if(keywords!=null){
+			for (int i = 0; i < keywords.length; i++) {
+				if (answer.indexOf(keywords[i]) != -1) {
+					isRight = true;
+					rightAnswer = keywords[i];
+					break;
+				} else {
+					//do nothing
+					wrongAnswer = answer;
+				}
 			}
 		}
 		//checkout concept net
@@ -74,8 +77,16 @@ public abstract class JudgeEngine {
 			@Override
 			public void processFinish(List<String> output) {
 				if(output.size()>0){
-					isRight=true;
+					rightAnswer=answer;
 					demoSentences=output;
+					
+					if(isRight!=true){
+						isRight=true;
+						answer="";
+					}
+					
+				}else{
+					wrongAnswer=answer;
 				}
 				//finally
 				if(isRight){

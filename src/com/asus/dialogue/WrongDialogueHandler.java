@@ -28,10 +28,15 @@ public class WrongDialogueHandler extends DialogueHandler{
 	}
 	
 	@Override
-	public void update(JudgeEngine judgeEngine) {
+	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
+adapter.add(new OneComment(true, engine.onWrongResponse()));
 		
+		//do teach things
+		TeachDialogueHandler tachDialogueHandler=new TeachDialogueHandler(adapter);
+		tachDialogueHandler.putResponseFrom(engine);
+		adapter.add(new OneComment(true,engine.getCurrentQuestion()));
+		notifyDoneCallback.doNextHandler(engine);
 	}
-
 
 }

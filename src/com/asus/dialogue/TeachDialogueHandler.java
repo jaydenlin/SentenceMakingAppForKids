@@ -43,9 +43,26 @@ public class TeachDialogueHandler extends DialogueHandler{
 	}
 	
 	@Override
-	public void update(JudgeEngine judgeEngine) {
+	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
-		
+		wrongAnswer=engine.getWrongAnswer();
+		if(engine.onTeachResponse().equals("")){
+			
+			engine.searchWikiData(engine.getWrongAnswer(), new AsyncTaskResponse<String>() {
+				@Override
+				public void processFinish(String output) {
+					// TODO Auto-generated method stub
+					if(!output.trim().equals("")){
+						adapter.add(new OneComment(true, wrongAnswer+"的意思應該是..."+output));
+					}
+				}
+			});
+			
+		}else{
+			adapter.add(new OneComment(true, engine.onTeachResponse()));
+		}
+		adapter.add(new OneComment(true, engine.getCurrentQuestion()));
+		notifyDoneCallback.doNextHandler(engine);
 	}
 
 }
