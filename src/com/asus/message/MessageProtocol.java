@@ -1,4 +1,4 @@
-package comasus.message;
+package com.asus.message;
 
 import android.R.integer;
 
