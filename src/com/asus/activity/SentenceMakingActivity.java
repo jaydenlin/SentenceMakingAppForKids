@@ -12,15 +12,14 @@ import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.dialogue.InputDispatcher;
 import com.asus.dialogue.Question;
+import com.asus.exception.PhotoIdsNotFound;
 import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
 import com.asus.util.RandomUtil;
 
-import android.R.integer;
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 
 import android.util.Log;
 import android.view.View;
@@ -48,6 +47,7 @@ public class SentenceMakingActivity extends Activity{
 	private BubblesArrayAdapter adapter;
 	private PhotosArrayAdapter photosArrayAdapter;
 	private DialogServiceConnector dialogServiceConnector;
+	private boolean isAnswering=false;
 	protected static final int RESULT_SPEECH = 1;
 
 	// /////////////////////
@@ -69,7 +69,23 @@ public class SentenceMakingActivity extends Activity{
 		answerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				
+				
 				dialogServiceConnector.startCSR();
+				answerButton.setBackgroundResource(R.drawable.btn_pressed);
+//				answerButton.setBackgroundResource(R.drawable.btn_frame_list);
+//				final AnimationDrawable answerButtonAnimation=(AnimationDrawable)answerButton.getBackground();
+//				if(isAnswering){
+//					answerButton.post(new Runnable() {
+//						
+//						@Override
+//						public void run() {
+//							// TODO Auto-generated method stub
+//							answerButtonAnimation.start();
+//						}
+//					});
+//				}
+				
 			}
 		});
 
@@ -102,6 +118,7 @@ public class SentenceMakingActivity extends Activity{
 		dialogServiceConnector = new DialogServiceConnector(this);
 		final DMListener dmListener = new DMListener() {
 			public void onResult(final DMResult dmResult) {
+				answerButton.setBackgroundResource(R.drawable.btn_normal);
 				if (dmResult != null) {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
@@ -175,17 +192,29 @@ public class SentenceMakingActivity extends Activity{
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
-			photosArrayAdapter.add(new OnePhoto(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase), ""));
+			try {
+				photosArrayAdapter.add(new OnePhoto(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase), ""));
+			} catch (PhotoIdsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.isAskingAdj = false;
 			adapter.add(new OneComment(true, "試試看這個句子。  "
 					+ question.questionPhrase + "______"));
 			
-			int[] photoIdArray=ontologyData.getPhotoIdsOfOneAdj(question.questionPhrase);
-			for(int i=0;i<photoIdArray.length;i++){
-				photosArrayAdapter.add(new OnePhoto(photoIdArray[i], ""));
+			int[] photoIdArray;
+			try {
+				photoIdArray = ontologyData.getPhotoIdsOfOneAdj(question.questionPhrase);
+				for(int i=0;i<photoIdArray.length;i++){
+					photosArrayAdapter.add(new OnePhoto(photoIdArray[i], ""));
+				}
+			} catch (PhotoIdsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
 		}
 	}
 

@@ -5,6 +5,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.asus.engine.JudgeEngine;
+import com.asus.exception.PhotoIdsNotFound;
 import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
 
@@ -88,13 +89,20 @@ public class WrongSceneHandler extends SceneHandler{
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			
-			int[] photoArrayId=engineAtInnerClass.getHintPhotos();
-			photosArrayAdapter.clear();
-			for(int i=0;i<photoArrayId.length;i++){
-				photosArrayAdapter.add(new OnePhoto(photoArrayId[i], ""));
-				Log.w(getClass().getSimpleName(), Integer.toString(photoArrayId[i]));
-				
+			int[] photoArrayId;
+			try {
+				photoArrayId = engineAtInnerClass.getHintPhotos();
+				photosArrayAdapter.clear();
+				for(int i=0;i<photoArrayId.length;i++){
+					photosArrayAdapter.add(new OnePhoto(photoArrayId[i], ""));
+					Log.w(getClass().getSimpleName(), Integer.toString(photoArrayId[i]));
+					
+				}
+			} catch (PhotoIdsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
 		}
 		
 		

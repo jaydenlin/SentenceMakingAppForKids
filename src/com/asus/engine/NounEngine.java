@@ -5,6 +5,9 @@ import android.util.Log;
 import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.data.DBHelper;
 import com.asus.dialogue.Question;
+import com.asus.exception.MatchedWordsNotFound;
+import com.asus.exception.PhotoIdsNotFound;
+import com.asus.exception.TeachStringResponseNotFound;
 import com.asus.util.RandomUtil;
 
 public class NounEngine extends JudgeEngine {
@@ -14,13 +17,8 @@ public class NounEngine extends JudgeEngine {
 	}
 	
 	@Override
-	protected void setKeywords() {
+	protected void setKeywords() throws MatchedWordsNotFound {
 		keywords = ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
-		if(keywords==null){
-			Log.w(getClass().getSimpleName(),"setKeywords keywrods is null");
-		}else{
-			Log.w(getClass().getSimpleName(),"setKeywords keywrods not null");
-		}
 	}
 	
 	@Override
@@ -42,14 +40,14 @@ public class NounEngine extends JudgeEngine {
 	}
 
 	@Override
-	public String onTeachResponse() {
+	public String onTeachResponse() throws TeachStringResponseNotFound {
 		// TODO Auto-generated method stub
-		teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
-		if(teachString.equals("")){
-			Log.w(getClass().getSimpleName(),"teachString is empty");
-			return "";
-		}else{
+		try {
+			teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
 			return answer+"應該用在...例如:"+teachString+answer;
+		} catch (MatchedWordsNotFound e) {
+			e.printStackTrace();
+			throw new TeachStringResponseNotFound("No teachString found in db");
 		}
 	}
 
@@ -81,11 +79,11 @@ public class NounEngine extends JudgeEngine {
 	}
 
 	@Override
-	public int getTeachPhoto(){
+	public int getTeachPhoto() throws PhotoIdsNotFound{
 		return ontologyData.getOnePhotoIdOfOneNoun(answer);
 	}
 
-	public int[] getHintPhotos() {
+	public int[] getHintPhotos() throws PhotoIdsNotFound{
 		// TODO Auto-generated method stub
 		int[] photoArrayId = new int[1];
 		if(question.isAskingAdj==true){

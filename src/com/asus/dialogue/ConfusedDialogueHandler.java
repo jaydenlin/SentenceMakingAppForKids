@@ -4,7 +4,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.asus.agent.NotifyDoneCallback;
+import com.asus.agent.NotifyCallback;
 import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.bubbles.OneComment;

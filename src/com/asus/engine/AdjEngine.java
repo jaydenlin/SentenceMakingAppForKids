@@ -5,6 +5,9 @@ import android.util.Log;
 
 import com.asus.data.DBHelper;
 import com.asus.dialogue.Question;
+import com.asus.exception.MatchedWordsNotFound;
+import com.asus.exception.PhotoIdsNotFound;
+import com.asus.exception.TeachStringResponseNotFound;
 import com.asus.util.RandomUtil;
 
 public class AdjEngine extends JudgeEngine{
@@ -15,14 +18,9 @@ public class AdjEngine extends JudgeEngine{
 	}
 	
 	@Override
-	protected void setKeywords() {
+	protected void setKeywords() throws MatchedWordsNotFound {
 		// TODO Auto-generated method stub
 		keywords = ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
-		if(keywords==null){
-			Log.w(getClass().getSimpleName(),"setKeywords keywrods is null");
-		}else{
-			Log.w(getClass().getSimpleName(),"setKeywords keywrods not null");
-		}
 	}
 	
 	@Override
@@ -45,15 +43,14 @@ public class AdjEngine extends JudgeEngine{
 	}
 
 	@Override
-	public String onTeachResponse() {
-		// TODO Auto-generated method stub
-		teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
-		if(teachString.equals("")){
-			Log.w(getClass().getSimpleName(), "teachString is empty");
-			return "";
-		}else{
+	public String onTeachResponse() throws TeachStringResponseNotFound {
+		try {
+			teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
 			return answer+"應該用在...例如:"+answer+teachString;
+		} catch (MatchedWordsNotFound e) {
+			throw new TeachStringResponseNotFound("No teachString found for"+answer);
 		}
+		
 	}
 
 	@Override
@@ -85,11 +82,11 @@ public class AdjEngine extends JudgeEngine{
 		question.questionPhrase=proposedQuestion.equals("")?ontologyData.getOneRandomAdj():proposedQuestion;
 	}
 	@Override
-	public int getTeachPhoto(){
+	public int getTeachPhoto() throws PhotoIdsNotFound{
 		return ontologyData.getOnePhotoIdOfOneNoun(teachString);
 	}
 
-	public int[] getHintPhotos() {
+	public int[] getHintPhotos() throws PhotoIdsNotFound {
 		// TODO Auto-generated method stub
 		int[] photoArrayId = new int[1];
 		if(question.isAskingAdj==true){

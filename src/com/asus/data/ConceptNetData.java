@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import com.asus.asyctask.AsyncTaskResponse;
+import com.asus.translate.TranslateApi;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -53,6 +54,11 @@ public class ConceptNetData {
 			String surfaceText = params[1].trim();
 			String url;
 
+//			text=TranslateApi.translate("zh", "en", text);
+//			surfaceText=TranslateApi.translate("zh", "en", surfaceText);
+//			Log.w("text:", text);
+//			Log.w("surfacetext:", surfaceText);
+			
 			if (surfaceText.equals("")) {
 				url = "http://conceptnet5.media.mit.edu/data/5.1/search?text="
 						+ text;
@@ -102,7 +108,7 @@ public class ConceptNetData {
 					parsedResult.add(edges.get("surfaceText").toString());
 				}
 			}
-
+			
 			delegate.processFinish(parsedResult);
 		}
 	}

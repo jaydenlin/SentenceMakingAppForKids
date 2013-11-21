@@ -4,6 +4,7 @@ import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.bubbles.BubblesArrayAdapter;
 import com.asus.bubbles.OneComment;
 import com.asus.engine.JudgeEngine;
+import com.asus.exception.TeachStringResponseNotFound;
 
 public class TeachDialogueHandler extends DialogueHandler{
 	
@@ -18,8 +19,11 @@ public class TeachDialogueHandler extends DialogueHandler{
 	public void putResponseFrom(JudgeEngine engine) {
 		// TODO Auto-generated method stub
 		wrongAnswer=engine.getWrongAnswer();
-		if(engine.onTeachResponse().equals("")){
+		try{
+			adapter.add(new OneComment(true, engine.onTeachResponse()));
 			
+		}catch(TeachStringResponseNotFound e){
+			//search wiki data
 			engine.searchWikiData(engine.getWrongAnswer(), new AsyncTaskResponse<String>() {
 				@Override
 				public void processFinish(String output) {
@@ -29,11 +33,7 @@ public class TeachDialogueHandler extends DialogueHandler{
 					}
 				}
 			});
-			
-		}else{
-			adapter.add(new OneComment(true, engine.onTeachResponse()));
 		}
-		
 	}
 
 	@Override
@@ -46,8 +46,11 @@ public class TeachDialogueHandler extends DialogueHandler{
 	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
 		wrongAnswer=engine.getWrongAnswer();
-		if(engine.onTeachResponse().equals("")){
+		try{
+			adapter.add(new OneComment(true, engine.onTeachResponse()));
 			
+		}catch(TeachStringResponseNotFound e){
+			//search wiki data
 			engine.searchWikiData(engine.getWrongAnswer(), new AsyncTaskResponse<String>() {
 				@Override
 				public void processFinish(String output) {
@@ -57,9 +60,6 @@ public class TeachDialogueHandler extends DialogueHandler{
 					}
 				}
 			});
-			
-		}else{
-			adapter.add(new OneComment(true, engine.onTeachResponse()));
 		}
 		adapter.add(new OneComment(true, engine.getCurrentQuestion()));
 		notifyDoneCallback.doNextHandler(engine);

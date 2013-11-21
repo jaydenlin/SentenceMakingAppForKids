@@ -14,8 +14,8 @@
             android:textColor="@android:color/primary_text_light" />
         <ImageView
             android:id="@+id/hint_photo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:contentDescription="hint_photo"/>

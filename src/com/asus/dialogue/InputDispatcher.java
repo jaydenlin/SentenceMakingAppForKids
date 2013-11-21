@@ -55,10 +55,6 @@ public class InputDispatcher {
 		
 		setJudgeEngine();
 		judgeEngine.start();
-
-//		dialogueHandler.putResponseFrom(judgeEngine);
-//		dialogueHandler.putQuestionFrom(judgeEngine);
-//		sceneHandler.putHintPhotoFrom(judgeEngine);
 		
 	}
 	
@@ -73,12 +69,6 @@ public class InputDispatcher {
 				agent.addHandler(new ConfusedDialogueHandler(adapter));
 				agent.addHandler(new ConfusedSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
-//				dialogueHandler=new ConfusedDialogueHandler(adapter);
-//				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
-				
-//				dialogueHandler.putResponseFrom(judgeEngine);
-//				dialogueHandler.putQuestionFrom(judgeEngine);
-//				sceneHandler.putHintPhotoFrom(judgeEngine);
 			}
 
 			@Override
@@ -88,12 +78,6 @@ public class InputDispatcher {
 				agent.addHandler(new RightSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
 				
-//				dialogueHandler=new RightDialogueHandler(adapter);
-//				sceneHandler = new RightSceneHandler(photosArrayAdapter);
-				
-//				dialogueHandler.putResponseFrom(judgeEngine);
-//				dialogueHandler.putQuestionFrom(judgeEngine);
-//				sceneHandler.putHintPhotoFrom(judgeEngine);
 			}
 			
 			@Override
@@ -102,12 +86,6 @@ public class InputDispatcher {
 				agent.addHandler(new WrongDialogueHandler(adapter));
 				agent.addHandler(new WrongSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
-//				dialogueHandler=new WrongDialogueHandler(adapter);
-//				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
-				
-//				dialogueHandler.putResponseFrom(judgeEngine);
-//				dialogueHandler.putQuestionFrom(judgeEngine);
-//				sceneHandler.putHintPhotoFrom(judgeEngine);
 			}			
 		};
 		
@@ -118,22 +96,5 @@ public class InputDispatcher {
 		}
 	}
 	
-//	private void setHandler(JudgeEngine judgeEngine){
-//		try{
-//			
-//			if(judgeEngine.IsConfused()){
-//				dialogueHandler=new ConfusedDialogueHandler(adapter);
-//				sceneHandler = new ConfusedSceneHandler(photosArrayAdapter);
-//			}else if(judgeEngine.IsRight()){
-//				dialogueHandler=new RightDialogueHandler(adapter);
-//				sceneHandler = new RightSceneHandler(photosArrayAdapter);
-//			}else{
-//				dialogueHandler=new WrongDialogueHandler(adapter);
-//				sceneHandler=new WrongSceneHandler(photosArrayAdapter);
-//			}
-//		}catch(NullPointerException exception){
-//			Log.w(getClass().getSimpleName(), "judgeEngine must be set up in advance. please call setJudgeEngine() to set it up.");
-//		}
-//	}
 	
 }

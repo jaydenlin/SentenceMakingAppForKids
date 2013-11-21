@@ -64,7 +64,7 @@ public class BubblesArrayAdapter extends ArrayAdapter<OneComment> {
                 countryName = (TextView) row.findViewById(R.id.comment);
                 //set up properties
                 countryName.setText(coment.comment);
-                countryName.setBackgroundResource(coment.left ? R.drawable.bubble_yellow : R.drawable.bubble_green);
+                countryName.setBackgroundResource(coment.left ? R.drawable.bubble_white : R.drawable.bubble_blue);
                 wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 
                 return row;

@@ -11,20 +11,25 @@ import com.asus.data.DBHelper;
 import com.asus.data.OntologyData;
 import com.asus.data.WikiData;
 import com.asus.dialogue.Question;
+import com.asus.exception.AsyncTaskResponseNotFound;
+import com.asus.exception.MatchedWordsNotFound;
+import com.asus.exception.PhotoIdsNotFound;
+import com.asus.exception.TeachStringResponseNotFound;
 
 public abstract class JudgeEngine {
 	
 	
-	protected abstract void setKeywords();
+	protected abstract void setKeywords() throws MatchedWordsNotFound;
 	public abstract String onRightResponse();
 	public abstract String onWrongResponse();
-	public abstract String onTeachResponse();
+	public abstract String onTeachResponse() throws TeachStringResponseNotFound;
 	public abstract String onConfusedResponse();
 	public abstract String getNextQuestion();
 	public abstract String getCurrentQuestion();
-	public abstract int getTeachPhoto();
+	public abstract int getTeachPhoto() throws PhotoIdsNotFound;
+	public abstract int[] getHintPhotos() throws PhotoIdsNotFound;
 	
-	public String teachString;
+	public String teachString="";
 	
 	protected OntologyData ontologyData;
 	protected ConceptNetData conceptNetData;
@@ -46,60 +51,66 @@ public abstract class JudgeEngine {
 		this.wikiData = WikiData.getInstance();
 		this.conceptNetData=ConceptNetData.getInstance();
 		this.judgeEngineCallback=judgeEngineCallback;
-		setKeywords();
+		
 	}
 	
 	public void start(){//use callback here,so u can call this start() to automatically bind callback
-		if(IsConfused()){
+		if(IsConfusedThenSetAnswers()){
 			judgeEngineCallback.onConfused();
 		}else{
-			checkRightOrWrong();
+			checkRightOrWrongThenSetAnswersAndDemoString();
 		}
 	}
 	
-	private void checkRightOrWrong() {
-		//checkout db
-		isRight = false;
-		if(keywords!=null){
-			for (int i = 0; i < keywords.length; i++) {
-				if (answer.indexOf(keywords[i]) != -1) {
-					isRight = true;
-					rightAnswer = keywords[i];
-					break;
-				} else {
-					//do nothing
-					wrongAnswer = answer;
-				}
-			}
+	private void checkRightOrWrongThenSetAnswersAndDemoString() {
+		try {
+			setKeywords();
+		} catch (MatchedWordsNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		//checkout concept net
-		conceptNetData.searchConceptNet(question.questionPhrase, answer, new AsyncTaskResponse<List<String>>() {
-			@Override
-			public void processFinish(List<String> output) {
-				if(output.size()>0){
-					rightAnswer=answer;
-					demoSentences=output;
-					
-					if(isRight!=true){
-						isRight=true;
-						answer="";
-					}
-					
-				}else{
-					wrongAnswer=answer;
-				}
-				//finally
-				if(isRight){
-					judgeEngineCallback.onRight();
-				}else{
-					judgeEngineCallback.onWrong();
-				}
-			}
-		});
+		//checkout db
+        isRight = false;
+        if(keywords!=null){
+                for (int i = 0; i < keywords.length; i++) {
+                        if (answer.indexOf(keywords[i]) != -1) {
+                                isRight = true;
+                                rightAnswer = keywords[i];
+                                break;
+                        } else {
+                                //do nothing
+                                wrongAnswer = answer;
+                        }
+                }
+        }
+        //checkout concept net
+        conceptNetData.searchConceptNet(question.questionPhrase, answer, new AsyncTaskResponse<List<String>>() {
+                @Override
+                public void processFinish(List<String> output) {
+                        if(output.size()>0){
+                                rightAnswer=answer;
+                                demoSentences=output;
+                                
+                                if(isRight!=true){
+                                        isRight=true;
+                                        answer="";
+                                }
+                                
+                        }else{
+                                wrongAnswer=answer;
+                        }
+                        //finally
+                        if(isRight){
+                                judgeEngineCallback.onRight();
+                        }else{
+                                judgeEngineCallback.onWrong();
+                        }
+                }
+        });
 		
 	}
 
-	private boolean IsConfused() {
+	private boolean IsConfusedThenSetAnswers() {
 		
 		String[] confusedWords={"矗ボ","ぃ笵","钮ぃ来","ぃ穦","或","螟","年","毙и","毙厩","传肈","","ぐ或","裕或","或"};
 		isConfused = false;
@@ -141,7 +152,9 @@ public abstract class JudgeEngine {
 	}
 	
 	public void searchWikiData(String searchData,AsyncTaskResponse<String> delegate) {
+		
 		wikiData.searchWikiData(searchData, delegate);
+		
 	}
 	
 	public void searchConceptNet(AsyncTaskResponse<List<String>> delegate) {
@@ -149,7 +162,6 @@ public abstract class JudgeEngine {
 		conceptNetData.searchConceptNet(question.questionPhrase, answer, delegate);
 	}
 	
-	public abstract int[] getHintPhotos();
 	
 	
 }
