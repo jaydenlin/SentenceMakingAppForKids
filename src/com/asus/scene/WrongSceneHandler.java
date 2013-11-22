@@ -75,7 +75,7 @@ public class WrongSceneHandler extends SceneHandler{
 			
 			//in order to show teach photo first
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(7000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

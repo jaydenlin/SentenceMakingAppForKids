@@ -40,6 +40,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		if(gridView!=null){
 			setColumns(getCount());
 		}
+		
 	}
 
 	@Override
@@ -74,12 +75,15 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		gridView=(GridView)parent;
 		setColumns(getCount());
 		
+		
+		
 		//get item data
 		OnePhoto onePhoto=getItem(position);
 		//get view
 		hintPhoto = (ImageView)convertView.findViewById(R.id.hint_photo);
 		hintText =(TextView)convertView.findViewById(R.id.hint_text);
 		//setting
+		startAnimation();
 		hintPhoto.setBackgroundResource(onePhoto.photoId);
 		hintText.setText(onePhoto.phototext);
 		
@@ -94,6 +98,12 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 			gridView.setNumColumns(count);
 			Log.w(getClass().getSimpleName(), "getView called : set column"+count);
 		}
+	}
+	
+	private void startAnimation(){
+		Animation animation=AnimationUtils.loadAnimation(getContext(), R.anim.hint_photo_animation);
+		hintPhoto.setAnimation(animation);
+		hintPhoto.startAnimation(animation);
 	}
 	
 

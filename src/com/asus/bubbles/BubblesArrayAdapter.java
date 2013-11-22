@@ -9,6 +9,7 @@ import com.asus.atc.dialogservice.DialogServiceConnector;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +33,14 @@ public class BubblesArrayAdapter extends ArrayAdapter<OneComment> {
                 countries.add(object);
                 
                 if(object.left&&object.comment.indexOf("的意思應該是")==-1){
-                      dialogServiceConnector.responseToUser(object.comment);
+                      //dialogServiceConnector.responseToUser(object.comment);
                 }
                 super.add(object);
         }
 
         public BubblesArrayAdapter(Context context, int textViewResourceId,DialogServiceConnector dialogServiceConnector) {
                 super(context, textViewResourceId);
-                this.dialogServiceConnector = dialogServiceConnector;
+                //this.dialogServiceConnector = dialogServiceConnector;
         }
         
         @Override
@@ -63,6 +64,8 @@ public class BubblesArrayAdapter extends ArrayAdapter<OneComment> {
                 OneComment coment = getItem(position);
                 countryName = (TextView) row.findViewById(R.id.comment);
                 //set up properties
+                Typeface face = Typeface.createFromAsset(getContext().getAssets(),"fonts/appfont.ttf");
+                countryName.setTypeface(face);
                 countryName.setText(coment.comment);
                 countryName.setBackgroundResource(coment.left ? R.drawable.bubble_white : R.drawable.bubble_blue);
                 wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
