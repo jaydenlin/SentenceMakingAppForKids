@@ -18,9 +18,12 @@ import com.asus.photos.PhotosArrayAdapter;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -29,8 +32,9 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class SentenceMakingActivity extends Activity{
+public class SentenceMakingActivity extends Activity {
 
 	// //////////////////////
 	// /Debug
@@ -47,7 +51,6 @@ public class SentenceMakingActivity extends Activity{
 	private BubblesArrayAdapter adapter;
 	private PhotosArrayAdapter photosArrayAdapter;
 	private DialogServiceConnector dialogServiceConnector;
-	private boolean isAnswering=false;
 	protected static final int RESULT_SPEECH = 1;
 
 	// /////////////////////
@@ -61,16 +64,43 @@ public class SentenceMakingActivity extends Activity{
 		chatListView = (ListView) findViewById(R.id.chatListView);
 		photoGridView = (GridView) findViewById(R.id.photoGridView);
 		answerButton = (ImageButton) findViewById(R.id.answerButton);
-		setUI();
+		answerButton.setOnClickListener(getAnswerButtonOnClickListener());
 	}
 	
-	private void setUI() {
+	// /////////////////////
+	// /Listener
+	// /////////////////////
+	private DMListener getDMListener(){
+		return new DMListener() {
+			public void onResult(final DMResult dmResult) {
+				answerButton.setBackgroundResource(R.drawable.btn_normal);
+				if (dmResult != null) {
+					String text = dmResult.getText().trim();
+					adapter.add(new OneComment(false, text));
+					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
+				} 
+			}
 
-		answerButton.setOnClickListener(new View.OnClickListener() {
+			public void onConnected() {
+				try {
+					Thread.sleep(2000);
+					dialogServiceConnector.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
+					setAdapters(dialogServiceConnector);
+					addRandomQuestion();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		};
+	}
+	
+	private View.OnClickListener getAnswerButtonOnClickListener(){
+		return new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				
-				
 				dialogServiceConnector.startCSR();
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 //				answerButton.setBackgroundResource(R.drawable.btn_frame_list);
@@ -85,16 +115,24 @@ public class SentenceMakingActivity extends Activity{
 //						}
 //					});
 //				}
-				
 			}
-		});
-
-//		sentenceAnimation = AnimationUtils.loadAnimation(this,
-//				R.layout.quiz_animation);
-//		sentencePhoto.setAnimation(sentenceAnimation);
-
+		};
 	}
-
+	
+	
+	private void setAdapters(DialogServiceConnector dialogServiceConnector){
+		adapter = new BubblesArrayAdapter(getApplicationContext(),R.layout.bubble_listitem_view,dialogServiceConnector);
+		chatListView.setAdapter(adapter);
+		
+		photosArrayAdapter = new PhotosArrayAdapter(getApplicationContext(), R.layout.photo_griditem_view);
+		photoGridView.setAdapter(photosArrayAdapter);
+	}
+	
+	private void setDatabase(){
+		this.deleteDatabase("ontology.db");
+		dbHelper = new DBHelper(this);
+	}
+	
 	// /////////////////////
 	// /LifeCycle
 	// /////////////////////
@@ -102,60 +140,14 @@ public class SentenceMakingActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		
 		setContentView(R.layout.sentence_making_activity);
 		initView();
-		
+		setDatabase();
+
 		question = Question.getInstance();
-		
-		
-		Log.w(getClass().getSimpleName(), "onCreate");
-		this.deleteDatabase("ontology.db");
-		dbHelper = new DBHelper(this);
 		ontologyData = OntologyData.getInstance();
-		
-		
 		dialogServiceConnector = new DialogServiceConnector(this);
-		final DMListener dmListener = new DMListener() {
-			public void onResult(final DMResult dmResult) {
-				answerButton.setBackgroundResource(R.drawable.btn_normal);
-				if (dmResult != null) {
-					String text = dmResult.getText().trim();
-					adapter.add(new OneComment(false, text));
-					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
-				} else {
-					
-				}
-			}
-
-			public void onConnected() {
-				try {
-					Thread.sleep(2000);
-					dialogServiceConnector
-							.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
-					adapter = new BubblesArrayAdapter(getApplicationContext(),
-							R.layout.bubble_listitem_view,
-							dialogServiceConnector);
-					chatListView.setAdapter(adapter);
-					
-					photosArrayAdapter = new PhotosArrayAdapter(getApplicationContext(), R.layout.photo_griditem_view);
-					photoGridView.setAdapter(photosArrayAdapter);
-					
-					addRandomQuestion();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-
-		};
-		dialogServiceConnector.setSpeechListener(dmListener);
-		
-		/////////////
-		//TEMP
-		////////////
-		
+		dialogServiceConnector.setSpeechListener(getDMListener());
 		
 	}
 
@@ -176,9 +168,6 @@ public class SentenceMakingActivity extends Activity{
 	protected void onStart() {
 		// TODO Auto-generated method stub 
 		super.onStart();
-		
-		//OntologyDataDB ontologyDataDB = OntologyDataDB.getInstance(dbHelper);
-
 	}
 
 	// /////////////////////
@@ -217,6 +206,5 @@ public class SentenceMakingActivity extends Activity{
 			
 		}
 	}
-
-
+	
 }

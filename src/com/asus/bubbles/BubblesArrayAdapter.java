@@ -32,7 +32,7 @@ public class BubblesArrayAdapter extends ArrayAdapter<OneComment> {
                 countries.add(object);
                 
                 if(object.left&&object.comment.indexOf("的意思應該是")==-1){
-                        dialogServiceConnector.responseToUser(object.comment);
+                      dialogServiceConnector.responseToUser(object.comment);
                 }
                 super.add(object);
         }
