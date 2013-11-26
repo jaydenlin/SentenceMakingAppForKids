@@ -21,6 +21,7 @@ import com.asus.util.RandomUtil;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
@@ -34,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SentenceMakingActivity extends Activity {
@@ -62,11 +64,15 @@ public class SentenceMakingActivity extends Activity {
 	private ListView chatListView;
 	private GridView photoGridView;
 	private ImageButton answerButton;
+	private TextView textBoard;
 
 	private void initView() {
 		wrapper=(LinearLayout)findViewById(R.id.wrapper);
 		chatListView = (ListView) findViewById(R.id.chatListView);
 		photoGridView = (GridView) findViewById(R.id.photoGridView);
+		textBoard=(TextView)findViewById(R.id.textBoard);
+		Typeface face = Typeface.createFromAsset(getAssets(),"fonts/appfont.ttf");
+		textBoard.setTypeface(face);
 		answerButton = (ImageButton) findViewById(R.id.answerButton);
 		answerButton.setOnClickListener(getAnswerButtonOnClickListener());
 	}
@@ -106,8 +112,8 @@ public class SentenceMakingActivity extends Activity {
 		return new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				//dialogServiceConnector.startCSR();
-				googleTTStart();
+				dialogServiceConnector.startCSR();
+				//googleTTStart();
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 				wrapper.getBackground().setAlpha(100);
 				
@@ -161,7 +167,7 @@ public class SentenceMakingActivity extends Activity {
 		//////
 		//Google TTS
 		/////
-		init();
+		//init();
 		
 		
 	}
@@ -170,13 +176,13 @@ public class SentenceMakingActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		//dialogServiceConnector.bindService();
+		dialogServiceConnector.bindService();
 		
 	}
 
 	protected void onDestroy() {
 		super.onDestroy();
-		//dialogServiceConnector.releaseService();
+		dialogServiceConnector.releaseService();
 	}
 	
 	@Override
@@ -196,6 +202,7 @@ public class SentenceMakingActivity extends Activity {
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
+			//textBoard.setText(question.questionPhrase);
 			try {
 				photosArrayAdapter.add(new OnePhoto(ontologyData.getOnePhotoIdOfOneNoun(question.questionPhrase), ""));
 			} catch (PhotoIdsNotFound e) {
@@ -207,6 +214,7 @@ public class SentenceMakingActivity extends Activity {
 			question.isAskingAdj = false;
 			adapter.add(new OneComment(true, "試試看這個句子。  "
 					+ question.questionPhrase + "______"));
+			//textBoard.setText(question.questionPhrase);
 			
 			int[] photoIdArray;
 			try {

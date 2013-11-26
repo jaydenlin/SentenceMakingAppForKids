@@ -88,7 +88,8 @@ public abstract class JudgeEngine {
                 @Override
                 public void processFinish(List<String> output) {
                         if(output.size()>0){
-                                rightAnswer=answer;
+                                //rightAnswer=answer;
+                        	    rightAnswer="";
                                 demoSentences=output;
                                 
                                 if(isRight!=true){

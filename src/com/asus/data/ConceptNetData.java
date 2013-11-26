@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 import com.asus.asyctask.AsyncTaskResponse;
 import com.asus.translate.TranslateApi;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -66,7 +67,14 @@ public class ConceptNetData {
 				url = "http://conceptnet5.media.mit.edu/data/5.1/search?text="
 						+ text + "&surfaceText=" + surfaceText;
 			}
-
+			
+			
+//			if (surfaceText.equals("")) {
+//				url = "http://192.168.1.21:8983/solr/select?indent=on&version=2.2&q=text:"+text+"&fq=&start=0&rows=10&fl=*%2Cscore&qt=&wt=json&explainOther=&hl.fl=";
+//			} else {
+//				url = "http://192.168.1.21:8983/solr/select?indent=on&version=2.2&q=text:"+text+"%20surfaceText:"+surfaceText+"&fq=&start=0&rows=10&fl=*%2Cscore&qt=&wt=json&explainOther=&hl.fl=";
+//			}
+			
 			HttpClient client = new DefaultHttpClient();
 
 			try {
@@ -108,6 +116,16 @@ public class ConceptNetData {
 					parsedResult.add(edges.get("surfaceText").toString());
 				}
 			}
+			
+//			JsonArray jsonArray=jsonObject.get("response").getAsJsonObject().get("docs").getAsJsonArray();
+//			for (int i = 0; i < jsonArray.size(); i++) {
+//				JsonObject doc = jsonArray.get(i)
+//						.getAsJsonObject();
+//				if (doc.has("surfaceText")) {
+//					parsedResult.add(doc.get("surfaceText").toString());
+//				}
+//			}
+			
 			
 			delegate.processFinish(parsedResult);
 		}

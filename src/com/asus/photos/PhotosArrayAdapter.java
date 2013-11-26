@@ -85,6 +85,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		//setting
 		startAnimation();
 		hintPhoto.setBackgroundResource(onePhoto.photoId);
+		
 		hintText.setText(onePhoto.phototext);
 		
 		return convertView;
@@ -97,6 +98,7 @@ public class PhotosArrayAdapter extends ArrayAdapter<OnePhoto>{
 		}else{
 			gridView.setNumColumns(count);
 			Log.w(getClass().getSimpleName(), "getView called : set column"+count);
+			
 		}
 	}
 	

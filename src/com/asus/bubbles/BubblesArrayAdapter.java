@@ -27,20 +27,20 @@ public class BubblesArrayAdapter extends ArrayAdapter<OneComment> {
         
         @Override
         public void add(OneComment object) {
-                if(countries.size()>=4){
+                if(countries.size()>=3){
                         countries.remove(0);
                 }
                 countries.add(object);
                 
                 if(object.left&&object.comment.indexOf("的意思應該是")==-1){
-                      //dialogServiceConnector.responseToUser(object.comment);
+                      dialogServiceConnector.responseToUser(object.comment);
                 }
                 super.add(object);
         }
 
         public BubblesArrayAdapter(Context context, int textViewResourceId,DialogServiceConnector dialogServiceConnector) {
                 super(context, textViewResourceId);
-                //this.dialogServiceConnector = dialogServiceConnector;
+                this.dialogServiceConnector = dialogServiceConnector;
         }
         
         @Override
