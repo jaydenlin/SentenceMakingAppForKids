@@ -15,10 +15,10 @@ public class ConfusedDialogueHandler extends DialogueHandler{
 	
 	
 	String[] openingResponse={
-			"讓我告訴你吧..例如:",
-			"別洩氣哦!我說明一下這個詞,它會用在..例如:",
-			"我教你,這個詞的意思會用在..例如:",
-			"仔細聽囉..這個詞有時候你會這樣用..例如:",
+			"或是這樣用..例如:",
+			"也可以這樣用..例如:",
+			"另外,這個詞的也會用在..例如:",
+			"還有呀..這個詞有時候你會這樣用..例如:",
 	};
 	
 	JudgeEngine engineForInnerClassEngineToUse;

@@ -61,7 +61,17 @@ public class NounEngine extends JudgeEngine {
 				"不了解"+question.questionPhrase+"嗎?好吧,既然這樣的話..",
 				"是噢,看來你還不清楚"+question.questionPhrase+"? 既然這樣的話,那...",
 		};
-		return confusedResponse[RandomUtil.getRandomInteger(0, confusedResponse.length-1)];
+		
+		String responseConfusedString;
+		try {
+			responseConfusedString = "我教你吧!"+question.questionPhrase+"會用在..例如:"+question.questionPhrase+ontologyData.getOneRandomNounForOneAdj(question.questionPhrase);
+		} catch (MatchedWordsNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			responseConfusedString="";
+		}
+		
+		return confusedResponse[RandomUtil.getRandomInteger(0, confusedResponse.length-1)]+responseConfusedString;
 	}
 
 	@Override

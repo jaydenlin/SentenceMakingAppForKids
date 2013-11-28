@@ -1,5 +1,8 @@
 package com.asus.activity;
 
+import intentionidentifier.datastructure.Data;
+import intentionidentifier.datastructure.Intention;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,6 +10,9 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Random;
+
+import nlgmodule.NLGConstant;
+import nlgmodule.NaturalLanguageGenerator;
 
 import com.asus.atc.dialogservice.DMListener;
 import com.asus.atc.dialogservice.DMResult;
@@ -95,6 +101,17 @@ public class SentenceMakingActivity extends Activity {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
 					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
+					
+					Intention intention = dmResult.getIntention();
+					String intentionStr = intention.getIntention();
+					Data data = (Data) intention.getCoreData();
+					if(data==null){
+						Toast.makeText(SentenceMakingActivity.this, "intention :null",  Toast.LENGTH_SHORT).show();
+					}else{
+						String key = data.getKey();
+						Toast.makeText(SentenceMakingActivity.this, "intention :"+key,  Toast.LENGTH_SHORT).show();
+					}
+
 				} 
 			}
 
@@ -196,6 +213,7 @@ public class SentenceMakingActivity extends Activity {
 		// TODO Auto-generated method stub 
 		super.onStart();
 		//exportDB();
+		//NaturalLanguageGenerator nlg = NaturalLanguageGenerator.getNLG(NLGConstant.);
 	}
 	
 	private void exportDB(){
