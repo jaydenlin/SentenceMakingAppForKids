@@ -22,8 +22,6 @@ public class WrongSceneHandler extends SceneHandler{
 		//do teach things
 		Log.w(getClass().getSimpleName(),"do teach");
 		new TeachSceneHandlerAsyncTask().execute(engine);
-//		TeachSceneHandler teachSceneHandler=new TeachSceneHandler(photosArrayAdapter);
-//		teachSceneHandler.putHintPhotoFrom(engine);
 //		
 		//put original photo
 		Log.w(getClass().getSimpleName(),"do put photo");

@@ -11,31 +11,30 @@ public class WrongDialogueHandler extends DialogueHandler{
 		// TODO Auto-generated constructor stub
 	}
 
+//	@Override
+//	public void putResponseFrom(JudgeEngine engine) {
+//		// TODO Auto-generated method stub
+//		adapter.add(new OneComment(true, engine.onWrongResponse()));
+//		
+//		//do teach things
+//		TeachDialogueHandler tachDialogueHandler=new TeachDialogueHandler(adapter);
+//		tachDialogueHandler.putResponseFrom(engine);
+//	}
+//
+//	@Override
+//	public void putQuestionFrom(JudgeEngine engine) {
+//		// TODO Auto-generated method stub
+//		adapter.add(new OneComment(true,engine.getCurrentQuestion()));
+//	}
+	
 	@Override
-	public void putResponseFrom(JudgeEngine engine) {
+	public void update(JudgeEngine engine) {
 		// TODO Auto-generated method stub
 		adapter.add(new OneComment(true, engine.onWrongResponse()));
 		
 		//do teach things
 		TeachDialogueHandler tachDialogueHandler=new TeachDialogueHandler(adapter);
-		tachDialogueHandler.putResponseFrom(engine);
-	}
-
-	@Override
-	public void putQuestionFrom(JudgeEngine engine) {
-		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true,engine.getCurrentQuestion()));
-	}
-	
-	@Override
-	public void update(JudgeEngine engine) {
-		// TODO Auto-generated method stub
-adapter.add(new OneComment(true, engine.onWrongResponse()));
-		
-		//do teach things
-		TeachDialogueHandler tachDialogueHandler=new TeachDialogueHandler(adapter);
-		tachDialogueHandler.putResponseFrom(engine);
-		adapter.add(new OneComment(true,engine.getCurrentQuestion()));
+		tachDialogueHandler.update(engine);
 		notifyDoneCallback.doNextHandler(engine);
 	}
 

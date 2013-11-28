@@ -12,18 +12,18 @@ public class RightDialogueHandler extends DialogueHandler{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void putResponseFrom(JudgeEngine engine) {
-		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, engine.onRightResponse()));
-		adapter.add(new OneComment(true, "哦～!我想你是指.."+engine.getDemoSentences().get(0)));
-	}
-
-	@Override
-	public void putQuestionFrom(JudgeEngine engine) {
-		// TODO Auto-generated method stub
-		adapter.add(new OneComment(true, engine.getNextQuestion()));
-	}
+//	@Override
+//	public void putResponseFrom(JudgeEngine engine) {
+//		// TODO Auto-generated method stub
+//		adapter.add(new OneComment(true, engine.onRightResponse()));
+//		adapter.add(new OneComment(true, "哦～!我想你是指.."+engine.getDemoSentences().get(0)));
+//	}
+//
+//	@Override
+//	public void putQuestionFrom(JudgeEngine engine) {
+//		// TODO Auto-generated method stub
+//		adapter.add(new OneComment(true, engine.getNextQuestion()));
+//	}
 
 	@Override
 	public void update(JudgeEngine engine) {

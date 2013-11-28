@@ -1,13 +1,21 @@
 package com.asus.data;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+
 import com.asus.activity.R;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper{
 	
@@ -17,9 +25,11 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String C_NOUN="noun";
 	public static final String C_ADJ="adj";
 	public static  final String C_PHOTO_ID="photoid";
+	private Context context;
 	public DBHelper(Context context) {
 		super(context,DB_NAME , null, 1);
 		// TODO Auto-generated constructor stub
+		this.context=context;
 	}
 	
 	@Override
@@ -4859,7 +4869,33 @@ public class DBHelper extends SQLiteOpenHelper{
 		values.put(this.C_PHOTO_ID, R.drawable.zebra);
 		database.insertOrThrow(this.TABLE_NAME, null, values);
 //		database.close(); dont't close!!
+		//exportDB();
+		
+		
+		
 	}
-	
+	private void exportDB(){
+		File sd = Environment.getExternalStorageDirectory();
+	      	File data = Environment.getDataDirectory();
+	       FileChannel source=null;
+	       FileChannel destination=null;
+	       String currentDBPath = "/data/"+ "com.asus.activity" +"/databases/"+"ontology.db";
+	       String backupDBPath = "ontology.db";
+	       File currentDB = new File(data, currentDBPath);
+	       File backupDB = new File(sd, backupDBPath);
+	       try {
+	            source = new FileInputStream(currentDB).getChannel();
+	            destination = new FileOutputStream(backupDB).getChannel();
+	            destination.transferFrom(source, 0, source.size());
+	            source.close();
+	            destination.close();
+	            Toast.makeText(context, "DB Exported!", Toast.LENGTH_LONG).show();
+	            Log.w(getClass().getSimpleName(), "DB exported");
+	        } catch(IOException e) {
+	        	e.printStackTrace();
+	        	Toast.makeText(context, "DB Exported Failed!!", Toast.LENGTH_LONG).show();
+	        	Log.w(getClass().getSimpleName(), "DB exported Fail");
+	        }
+	}
 
 }

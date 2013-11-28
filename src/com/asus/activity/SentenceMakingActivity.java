@@ -1,5 +1,10 @@
 package com.asus.activity;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,6 +29,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -189,8 +195,32 @@ public class SentenceMakingActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub 
 		super.onStart();
+		//exportDB();
 	}
-
+	
+	private void exportDB(){
+		File sd = Environment.getExternalStorageDirectory();
+	      	File data = Environment.getDataDirectory();
+	       FileChannel source=null;
+	       FileChannel destination=null;
+	       String currentDBPath = "/data/"+ "com.asus.activity" +"/databases/"+"ontology.db";
+	       String backupDBPath = "ontology.db";
+	       File currentDB = new File(data, currentDBPath);
+	       File backupDB = new File(sd, backupDBPath);
+	       try {
+	            source = new FileInputStream(currentDB).getChannel();
+	            destination = new FileOutputStream(backupDB).getChannel();
+	            destination.transferFrom(source, 0, source.size());
+	            source.close();
+	            destination.close();
+	            Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
+	            Log.w(getClass().getSimpleName(), "DB exported");
+	        } catch(IOException e) {
+	        	e.printStackTrace();
+	        	Toast.makeText(this, "DB Exported Failed!!", Toast.LENGTH_LONG).show();
+	        	Log.w(getClass().getSimpleName(), "DB exported Fail");
+	        }
+	}
 	// /////////////////////
 	// /Methods
 	// /////////////////////

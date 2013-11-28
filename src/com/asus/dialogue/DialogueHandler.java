@@ -12,6 +12,6 @@ public abstract class DialogueHandler extends AgentObserver{
 		this.adapter=adapter;
 	}
 	
-	public abstract void putResponseFrom(JudgeEngine engine);
-	public abstract void putQuestionFrom(JudgeEngine engine);
+//	public abstract void putResponseFrom(JudgeEngine engine);
+//	public abstract void putQuestionFrom(JudgeEngine engine);
 }
