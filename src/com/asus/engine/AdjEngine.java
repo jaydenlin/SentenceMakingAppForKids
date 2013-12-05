@@ -45,8 +45,8 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String onTeachResponse() throws TeachStringResponseNotFound {
 		try {
-			teachString = ontologyData.getOneRandomNounForOneAdj(answer);//find a proper noun for the adj answer
-			return answer+"應該用在...例如:"+answer+teachString;
+			teachString = ontologyData.getOneRandomNounForOneAdj(getWrongAnswer());//find a proper noun for the adj answer
+			return getWrongAnswer()+"應該用在...例如:"+getWrongAnswer()+teachString;
 		} catch (MatchedWordsNotFound e) {
 			throw new TeachStringResponseNotFound("No teachString found for"+answer);
 		}
@@ -108,6 +108,56 @@ public class AdjEngine extends JudgeEngine{
 		}
 		return photoArrayId;
 	}
+
+	@Override
+	public String onLeaveResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String onDirtyResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String onAskResponse() {
+		String response="哦~你問的是"+question.questionPhrase+"怎麼造句呀!";
+		if(question.isAskingAdj){
+			try {
+				response=response+"我來教你吧!你可以這樣用..例如:"+
+				ontologyData.getOneRandomAdjForOneNoun(question.questionPhrase)+question.questionPhrase+"。換你囉~你試著用["+question.questionPhrase+"]造個句子吧!";
+				
+			} catch (MatchedWordsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				question.questionPhrase=ontologyData.getOneRandomNoun();//set question.questionPhrase
+				response=response+"嗚嗚~你問得太難了，問我別的啦!換我考考你吧~試試看這個句子，____的"+question.questionPhrase;
+			}
+		}else{
+			try {
+				response=response+"我來教你吧!你可以這樣用..例如:"+
+				question.questionPhrase+ontologyData.getOneRandomNounForOneAdj(question.questionPhrase)+"。換你囉~你試著用["+question.questionPhrase+"]造個句子吧!";
+				
+			} catch (MatchedWordsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				question.questionPhrase=ontologyData.getOneRandomAdj();//set question.questionPhrase
+				response=response+"嗚嗚~你問得太難了，問我別的啦!換我考考你吧~試試看這個句子，"+question.questionPhrase+"____";
+			}
+			
+		}
+		
+		return response;
+	}
+
+	@Override
+	public String onShitResponse() {
+		// TODO Auto-generated method stub
+		return "唉噢~專心陪我玩啦!要依照題目說出完整的句子..你要完整說出..例如:[甚麼]的"+question.questionPhrase;
+	}
+
 	
 
 }

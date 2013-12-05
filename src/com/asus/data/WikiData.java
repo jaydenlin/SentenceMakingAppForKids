@@ -13,6 +13,8 @@ import org.apache.http.util.EntityUtils;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import com.asus.asyctask.AsyncTaskResponse;
+import com.asus.translate.SimpleToTraditionText;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -80,6 +82,7 @@ public class WikiData {
 	private String parseDescription(String result){
 		TagNode rootNode=htmlCleaner.clean(result);
 		List<TagNode> Elements = rootNode.getElementListByName("p", true);
-		return Elements.get(0).getText().toString();
+		String description=SimpleToTraditionText.StoT(Elements.get(0).getText().toString());
+		return description;
 	}
 }

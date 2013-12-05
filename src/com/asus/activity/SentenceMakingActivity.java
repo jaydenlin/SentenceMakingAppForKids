@@ -101,7 +101,6 @@ public class SentenceMakingActivity extends Activity {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
 					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
-					
 					Intention intention = dmResult.getIntention();
 					String intentionStr = intention.getIntention();
 					Data data = (Data) intention.getCoreData();
@@ -109,7 +108,7 @@ public class SentenceMakingActivity extends Activity {
 						Toast.makeText(SentenceMakingActivity.this, "intention :null",  Toast.LENGTH_SHORT).show();
 					}else{
 						String key = data.getKey();
-						Toast.makeText(SentenceMakingActivity.this, "intention :"+key,  Toast.LENGTH_SHORT).show();
+						Toast.makeText(SentenceMakingActivity.this, "intention :"+intention.getIntention(),  Toast.LENGTH_SHORT).show();
 					}
 
 				} 
@@ -246,7 +245,8 @@ public class SentenceMakingActivity extends Activity {
 
 		// randomly ask adj or noun
 		if (RandomUtil.getRandomInteger(0, 1) == 0 ? true : false) {
-			question.questionPhrase = ontologyData.getOneRandomNoun();
+			//question.questionPhrase = ontologyData.getOneRandomNoun();
+			question.questionPhrase = "荔枝";
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
@@ -258,7 +258,8 @@ public class SentenceMakingActivity extends Activity {
 				e.printStackTrace();
 			}
 		} else {
-			question.questionPhrase = ontologyData.getOneRandomAdj();
+			//question.questionPhrase = ontologyData.getOneRandomAdj();
+			question.questionPhrase = "溫馴的";
 			question.isAskingAdj = false;
 			adapter.add(new OneComment(true, "試試看這個句子。  "
 					+ question.questionPhrase + "______"));

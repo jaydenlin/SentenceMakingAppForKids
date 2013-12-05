@@ -12,6 +12,7 @@ import com.asus.engine.JudgeEngineCallback;
 import com.asus.engine.NounEngine;
 import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
+import com.asus.scene.AskSceneHandler;
 import com.asus.scene.ConfusedSceneHandler;
 import com.asus.scene.RightSceneHandler;
 import com.asus.scene.SceneHandler;
@@ -64,13 +65,25 @@ public class InputDispatcher {
 		judgeEngineCallback=new JudgeEngineCallback() {
 			
 			@Override
+			public void onAsk() {
+				// TODO Auto-generated method stub
+				agent.addHandler(new AskDialogueHandler(adapter));
+				agent.addHandler(new AskSceneHandler(photosArrayAdapter));
+				agent.execHandler(judgeEngine);
+			}			
+			@Override
 			public void onConfused() {
 				// TODO Auto-generated method stub
 				agent.addHandler(new ConfusedDialogueHandler(adapter));
 				agent.addHandler(new ConfusedSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
 			}
-
+			@Override
+			public void onShit() {
+				// TODO Auto-generated method stub
+				agent.addHandler(new ShitDialogueHandler(adapter));
+				agent.execHandler(judgeEngine);
+			}
 			@Override
 			public void onRight() {
 				// TODO Auto-generated method stub
@@ -86,7 +99,10 @@ public class InputDispatcher {
 				agent.addHandler(new WrongDialogueHandler(adapter));
 				agent.addHandler(new WrongSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
-			}			
+			}
+			
+
+			
 		};
 		
 		if(question.isAskingAdj){

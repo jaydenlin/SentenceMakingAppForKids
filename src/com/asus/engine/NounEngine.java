@@ -43,8 +43,8 @@ public class NounEngine extends JudgeEngine {
 	public String onTeachResponse() throws TeachStringResponseNotFound {
 		// TODO Auto-generated method stub
 		try {
-			teachString = ontologyData.getOneRandomAdjForOneNoun(answer);//find a proper adj for noun answer
-			return answer+"應該用在...例如:"+teachString+answer;
+			teachString = ontologyData.getOneRandomAdjForOneNoun(getWrongAnswer());//find a proper adj for noun answer
+			return getWrongAnswer()+"應該用在...例如:"+teachString+getWrongAnswer();
 		} catch (MatchedWordsNotFound e) {
 			e.printStackTrace();
 			throw new TeachStringResponseNotFound("No teachString found in db");
@@ -90,7 +90,7 @@ public class NounEngine extends JudgeEngine {
 
 	@Override
 	public int getTeachPhoto() throws PhotoIdsNotFound{
-		return ontologyData.getOnePhotoIdOfOneNoun(answer);
+		return ontologyData.getOnePhotoIdOfOneNoun(getWrongAnswer());
 	}
 
 	public int[] getHintPhotos() throws PhotoIdsNotFound{
@@ -106,6 +106,55 @@ public class NounEngine extends JudgeEngine {
 			Log.w(getClass().getSimpleName(),question.questionPhrase);
 		}
 		return photoArrayId;
+	}
+
+	@Override
+	public String onLeaveResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String onDirtyResponse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String onAskResponse() {
+		String response="哦~你問的是"+question.questionPhrase+"怎麼造句呀!";
+		if(question.isAskingAdj){
+			try {
+				response=response+"我來教你吧!你可以這樣用..例如:"+
+				ontologyData.getOneRandomAdjForOneNoun(question.questionPhrase)+question.questionPhrase+"。換你囉~你試著用["+question.questionPhrase+"]造個句子吧!";
+				
+			} catch (MatchedWordsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				question.questionPhrase=ontologyData.getOneRandomNoun();//set question.questionPhrase
+				response=response+"嗚嗚~你問得太難了，問我別的啦!換我考考你吧~試試看這個句子，____的"+question.questionPhrase;
+			}
+		}else{
+			try {
+				response=response+"我來教你吧!你可以這樣用..例如:"+
+				question.questionPhrase+ontologyData.getOneRandomNounForOneAdj(question.questionPhrase)+"。換你囉~你試著用["+question.questionPhrase+"]造個句子吧!";
+				
+			} catch (MatchedWordsNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				question.questionPhrase=ontologyData.getOneRandomAdj();//set question.questionPhrase
+				response=response+"嗚嗚~你問得太難了，問我別的啦!換我考考你吧~試試看這個句子，"+question.questionPhrase+"____";
+			}
+			
+		}
+		
+		return response;
+	}
+
+	@Override
+	public String onShitResponse() {
+		// TODO Auto-generated method stub
+		return "唉噢~專心陪我玩啦!要依照題目說出完整的句子..你要完整說出..例如:"+question.questionPhrase+"[甚麼]";
 	}
 	
 	
