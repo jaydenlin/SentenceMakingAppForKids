@@ -132,14 +132,23 @@ public abstract class JudgeEngine {
 						} else {
 							wrongAnswer = answer.replace(question.questionPhrase,"").trim();
 						}
+						
+						//check negative terms
+						if(answer.matches(".*(的相反|才不是|錯了|哪是|不是|沒有).*")){
+							isRight=false;
+						}	
+						
 						// finally
 						if (isRight) {
 							judgeEngineCallback.onRight();
 						} else {
 							judgeEngineCallback.onWrong();
 						}
+						
 					}
 				});
+		
+		
 
 	}
 	

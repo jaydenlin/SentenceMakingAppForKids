@@ -39,7 +39,7 @@ public class AdjEngine extends JudgeEngine{
 	public String onWrongResponse() {
 		// TODO Auto-generated method stub
 		
-		return getWrongAnswer()+"? 再想想看有沒有更好的詞";
+		return getRawAnswer()+"? 再想想看有沒有更好的詞";
 	}
 
 	@Override
