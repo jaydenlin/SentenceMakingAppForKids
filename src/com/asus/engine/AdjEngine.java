@@ -112,7 +112,7 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String onLeaveResponse() {
 		// TODO Auto-generated method stub
-		return null;
+		return "這樣呀..那掰掰囉~我們下次再玩!";
 	}
 
 	@Override

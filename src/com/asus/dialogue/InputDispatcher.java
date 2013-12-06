@@ -79,6 +79,12 @@ public class InputDispatcher {
 				agent.execHandler(judgeEngine);
 			}
 			@Override
+			public void onLeave() {
+				// TODO Auto-generated method stub
+				agent.addHandler(new LeaveDialogueHandler(adapter));
+				agent.execHandler(judgeEngine);
+			}
+			@Override
 			public void onShit() {
 				// TODO Auto-generated method stub
 				agent.addHandler(new ShitDialogueHandler(adapter));
@@ -100,6 +106,7 @@ public class InputDispatcher {
 				agent.addHandler(new WrongSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
 			}
+			
 			
 
 			

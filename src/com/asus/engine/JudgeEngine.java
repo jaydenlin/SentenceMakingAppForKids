@@ -59,8 +59,9 @@ public abstract class JudgeEngine {
 	protected JudgeEngineCallback judgeEngineCallback;
 	private boolean isRight;
 	private boolean isConfused;
-	private boolean IsAnswering;
-	private boolean IsAsking;
+	private boolean isAnswering;
+	private boolean isAsking;
+	private boolean isLeaving;
 	private static String rightAnswer = "";
 	private static String wrongAnswer = "";
 	private static String rawAnswer = "";
@@ -78,18 +79,14 @@ public abstract class JudgeEngine {
 
 	}
 
-	public void start() {// use callback here,so u can call this start() to
-							// automatically bind callback
-//		if (IsConfusedThenSetAnswers()) {
-//			judgeEngineCallback.onConfused();
-//		} else {
-//			checkRightOrWrongThenSetAnswersAndDemoString();
-//		}
+	public void start() {
 		
 		if(IsAskingThenSetAnswers()){
 			judgeEngineCallback.onAsk();
 		}else if(IsConfusedThenSetAnswers()){
 			judgeEngineCallback.onConfused();
+		}else if(IsLeaving()){
+			judgeEngineCallback.onLeave();
 		}else if(IsAnswering()){
 			checkRightOrWrongThenSetAnswersAndDemoString();
 		}else{
@@ -124,13 +121,12 @@ public abstract class JudgeEngine {
 					@Override
 					public void processFinish(List<String> output) {
 						if (output.size() > 0) {
-							// rightAnswer=answer;
 							rightAnswer = "";
 							demoSentences = output;
 
 							if (isRight != true) {
 								isRight = true;
-								answer = "";
+								//answer = "";
 							}
 
 						} else {
@@ -149,9 +145,9 @@ public abstract class JudgeEngine {
 	
 	private boolean IsAskingThenSetAnswers(){
 		String answerInternalToPreventReset=answer;
-		IsAsking=false;
+		isAsking=false;
 		if(answer.matches(".*[璶笵|稱笵|ぃ笵|ぃ穦|ぃ絋﹚|ぃ罙秆|ぃ秆|ぃ来|或||璶妓|毙и].*("+nounString+"|"+adjString+")*[或||妓].*硑.*")){//ask for noun
-			IsAsking=true;
+			isAsking=true;
 			try {
 				question.questionPhrase=getAskString(answerInternalToPreventReset, nounString, 1);
 				question.isAskingAdj=true;
@@ -171,30 +167,16 @@ public abstract class JudgeEngine {
 				
 			}
 		}else{
-			IsAsking=false;
+			isAsking=false;
 		}
 		
-		return IsAsking;
+		return isAsking;
 	}
 	
 	private boolean IsConfusedThenSetAnswers() {
 
-//		String[] confusedWords = { "矗ボ", "ぃ笵", "ぃ来", "钮ぃ来", "ぃ穦", "或", "硑",
-//				"螟", "年", "毙и", "毙厩", "传肈", "", "ぐ或", "裕或", "或" };
 		isConfused = false;
-//		for (int i = 0; i < confusedWords.length; i++) {
-//			if (answer.indexOf(confusedWords[i]) != -1) {
-//				isConfused = true;
-//				answer = "";// because the user is not answering they are
-//							// confused,so set this answer as empty
-//				rightAnswer = "";
-//				wrongAnswer = "";
-//				break;
-//			} else {
-//				// do nothing
-//			}
-//		}
-		if(answer.matches("(.*矗ボ|ぃ笵|ぃ来|钮ぃ来|ぃ穦|螟|传肈||ぐ或|裕或|或).*")){
+		if(answer.matches(".*(矗ボ|ぃ笵|ぃ来|钮ぃ来|ぃ穦|螟|传肈||ぐ或|裕或|或).*")){
 			resetAnswers();
 			isConfused=true;
 		}
@@ -202,14 +184,27 @@ public abstract class JudgeEngine {
 		return isConfused;
 	}
 	
+	private boolean IsLeaving(){
+		isLeaving = false;
+		if(answer.matches(".*(и稱璶|单璶|и璶|ぃ|礚册|и*翴|赣|非称璶).*(逗|何谋|何|||筿紇|佰簈|筿紇|筿跌|筿福|筿福|碯┮|т狟ね).*")){
+			resetAnswers();
+			isLeaving = true;
+		}else if(answer.matches(".*(礚册|年|年|年硓|ぃ|ぃ稱).*")){
+			resetAnswers();
+			isLeaving = true;
+		}
+		return isLeaving;
+	}
+	
+	
 	private boolean IsAnswering(){
-		IsAnswering=false;
+		isAnswering=false;
 		if(answer.matches(".*"+question.questionPhrase+".*")){
-			IsAnswering=true;
+			isAnswering=true;
 		}else{
 			resetAnswers();
 		}
-		return IsAnswering;
+		return isAnswering;
 	}
 	
 	
@@ -263,7 +258,7 @@ public abstract class JudgeEngine {
 	}
 	
 	private void resetAnswers(){
-		answer = "";
+		//answer = "";
 		rightAnswer = "";
 		wrongAnswer = "";
 	}
