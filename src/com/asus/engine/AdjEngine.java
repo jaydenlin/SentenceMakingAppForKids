@@ -155,7 +155,7 @@ public class AdjEngine extends JudgeEngine{
 	@Override
 	public String onShitResponse() {
 		// TODO Auto-generated method stub
-		return "唉噢~專心陪我玩啦!要依照題目說出完整的句子..你要完整說出..例如:[甚麼]的"+question.questionPhrase;
+		return "要依照題目說出完整的句子..你要完整說出..例如:[甚麼]的"+question.questionPhrase;
 	}
 
 	
