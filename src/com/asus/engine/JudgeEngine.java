@@ -60,6 +60,7 @@ public abstract class JudgeEngine {
 	private boolean isRight;
 	private boolean isConfused;
 	private boolean isAnswering;
+	private boolean isConfirming;
 	private boolean isAsking;
 	private boolean isLeaving;
 	private static String rightAnswer = "";
@@ -87,6 +88,8 @@ public abstract class JudgeEngine {
 			judgeEngineCallback.onConfused();
 		}else if(IsLeaving()){
 			judgeEngineCallback.onLeave();
+		}else if(isConfirming()){
+			judgeEngineCallback.onConfirm();
 		}else if(IsAnswering()){
 			checkRightOrWrongThenSetAnswersAndDemoString();
 		}else{
@@ -205,6 +208,13 @@ public abstract class JudgeEngine {
 		return isLeaving;
 	}
 	
+	private boolean isConfirming(){
+		isConfirming=false;
+		if(answer.matches(".*(明明就|可以這樣用|可以用).*")){
+			isConfirming=true;
+		}
+		return isConfirming;
+	}
 	
 	private boolean IsAnswering(){
 		isAnswering=false;

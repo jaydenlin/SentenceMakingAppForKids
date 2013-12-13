@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,6 +15,7 @@ import java.util.Random;
 import nlgmodule.NLGConstant;
 import nlgmodule.NaturalLanguageGenerator;
 
+import com.asus.asyctask.CSRTimeoutCounter;
 import com.asus.atc.dialogservice.DMListener;
 import com.asus.atc.dialogservice.DMResult;
 import com.asus.atc.dialogservice.DialogServiceConnector;
@@ -27,6 +29,7 @@ import com.asus.dialogue.Question;
 import com.asus.exception.PhotoIdsNotFound;
 import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
+import com.asus.remote.RemoteController;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
@@ -101,15 +104,15 @@ public class SentenceMakingActivity extends Activity {
 					String text = dmResult.getText().trim();
 					adapter.add(new OneComment(false, text));
 					InputDispatcher.getInstance(question, text, adapter,photosArrayAdapter).start();
-					Intention intention = dmResult.getIntention();
-					String intentionStr = intention.getIntention();
-					Data data = (Data) intention.getCoreData();
-					if(data==null){
-						Toast.makeText(SentenceMakingActivity.this, "intention :null",  Toast.LENGTH_SHORT).show();
-					}else{
-						String key = data.getKey();
-						Toast.makeText(SentenceMakingActivity.this, "intention :"+intention.getIntention(),  Toast.LENGTH_SHORT).show();
-					}
+//					Intention intention = dmResult.getIntention();
+//					String intentionStr = intention.getIntention();
+//					Data data = (Data) intention.getCoreData();
+//					if(data==null){
+//						Toast.makeText(SentenceMakingActivity.this, "intention :null",  Toast.LENGTH_SHORT).show();
+//					}else{
+//						String key = data.getKey();
+//						Toast.makeText(SentenceMakingActivity.this, "intention :"+intention.getIntention(),  Toast.LENGTH_SHORT).show();
+//					}
 
 				} 
 			}
@@ -138,6 +141,10 @@ public class SentenceMakingActivity extends Activity {
 				//googleTTStart();
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 				wrapper.getBackground().setAlpha(100);
+				
+				new RemoteController().connect();
+				
+				//new CSRTimeoutCounter().execute(dialogServiceConnector);
 				
 //				answerButton.setBackgroundResource(R.drawable.btn_frame_list);
 //				final AnimationDrawable answerButtonAnimation=(AnimationDrawable)answerButton.getBackground();

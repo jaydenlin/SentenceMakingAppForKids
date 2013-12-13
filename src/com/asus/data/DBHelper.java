@@ -25,11 +25,19 @@ public class DBHelper extends SQLiteOpenHelper{
 	public static final String C_NOUN="noun";
 	public static final String C_ADJ="adj";
 	public static  final String C_PHOTO_ID="photoid";
+	public static DBHelper currentInstance;
+	
 	private Context context;
+	
 	public DBHelper(Context context) {
 		super(context,DB_NAME , null, 1);
 		// TODO Auto-generated constructor stub
 		this.context=context;
+		currentInstance=this;
+	}
+	
+	public DBHelper getCurrentInstance(){
+		return currentInstance;
 	}
 	
 	@Override

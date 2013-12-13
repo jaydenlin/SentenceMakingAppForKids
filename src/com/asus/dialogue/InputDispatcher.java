@@ -106,6 +106,12 @@ public class InputDispatcher {
 				agent.addHandler(new WrongSceneHandler(photosArrayAdapter));
 				agent.execHandler(judgeEngine);
 			}
+			@Override
+			public void onConfirm() {
+				// TODO Auto-generated method stub
+				agent.addHandler(new ConfirmDialogueHandler(adapter));
+				agent.execHandler(judgeEngine);
+			}
 			
 			
 
