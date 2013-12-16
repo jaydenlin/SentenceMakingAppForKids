@@ -29,7 +29,7 @@ import com.asus.dialogue.Question;
 import com.asus.exception.PhotoIdsNotFound;
 import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
-import com.asus.remote.RemoteController;
+import com.asus.remote.RemoteConnection;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
@@ -142,7 +142,7 @@ public class SentenceMakingActivity extends Activity {
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 				wrapper.getBackground().setAlpha(100);
 				
-				new RemoteController().connect();
+				
 				
 				//new CSRTimeoutCounter().execute(dialogServiceConnector);
 				
@@ -192,7 +192,7 @@ public class SentenceMakingActivity extends Activity {
 		dialogServiceConnector = new DialogServiceConnector(this);
 		dialogServiceConnector.setSpeechListener(getDMListener());
 		
-		
+		new RemoteConnection().connect("");
 		//////
 		//Google TTS
 		/////
