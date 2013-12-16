@@ -1,9 +1,13 @@
 package com.asus.remote;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,15 +16,15 @@ import io.socket.*;
 
 public class RemoteConnection {
 	
-	public void connect(String JSONMessage) {
-		new SocketIOConnect(JSONMessage).execute();
+	public void connect(RemoteSelectedCallback callback) {
+		new SocketIOConnect(callback).execute();
 	}
 	
 	class SocketIOConnect extends AsyncTask<Void, Void, Void>{
-		String message;
+		RemoteSelectedCallback callback;
 		SocketIO socket;
-		public SocketIOConnect(String message){
-			this.message=message;
+		public SocketIOConnect(RemoteSelectedCallback callback){
+			this.callback=callback;
 		}
 		
 		@Override
@@ -52,14 +56,18 @@ public class RemoteConnection {
 		            @Override
 		            public void onConnect() {
 		            	Log.w("SocketIO","connected");
-		            	socket.emit("device:questionDone", "{\"preparedAnswers\":[\"firstItem\",\"secendItem\"]}");
+//		            	PreparedAnswersList.getInstance().add("firstItem");
+//		            	PreparedAnswersList.getInstance().add("secendItem");
+		            	
+		            	socket.emit("device:questionDone", PreparedAnswersList.getInstance().outputAndClear());
 		            }
 
 		            @Override
 		            public void on(String event, IOAcknowledge ack, Object... args) {
 		            	Log.w("SocketIO","Server triggered event '" + event + "'");
-		            	if(event.equals("remote:selectAnswer")){
-		            		
+		            	if(event.equals("server:receiveAnswer")){
+		            		Gson gson=new Gson();
+		            		callback.postExec(gson.toJson(args));
 		            	}
 		            }
 		        });

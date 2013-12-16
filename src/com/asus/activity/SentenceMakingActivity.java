@@ -29,7 +29,9 @@ import com.asus.dialogue.Question;
 import com.asus.exception.PhotoIdsNotFound;
 import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
+import com.asus.remote.PreparedAnswersList;
 import com.asus.remote.RemoteConnection;
+import com.asus.remote.RemoteSelectedCallback;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
@@ -123,6 +125,10 @@ public class SentenceMakingActivity extends Activity {
 					dialogServiceConnector.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
 					setAdapters(dialogServiceConnector);
 					addRandomQuestion();
+					
+					
+					
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -192,7 +198,17 @@ public class SentenceMakingActivity extends Activity {
 		dialogServiceConnector = new DialogServiceConnector(this);
 		dialogServiceConnector.setSpeechListener(getDMListener());
 		
-		new RemoteConnection().connect("");
+		PreparedAnswersList.getInstance().add("你好");
+		PreparedAnswersList.getInstance().add("我愛你");
+		new RemoteConnection().connect(new RemoteSelectedCallback() {
+			
+			@Override
+			public void postExec(String selectAnswer) {
+				// TODO Auto-generated method stub
+				//dialogServiceConnector.responseToUser(selectAnswer);
+				Log.w(this.getClass().getSimpleName(),selectAnswer);
+			}
+		});
 		//////
 		//Google TTS
 		/////
