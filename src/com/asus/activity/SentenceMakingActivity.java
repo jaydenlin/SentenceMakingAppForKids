@@ -198,6 +198,7 @@ public class SentenceMakingActivity extends Activity {
 		dialogServiceConnector = new DialogServiceConnector(this);
 		dialogServiceConnector.setSpeechListener(getDMListener());
 		
+		PreparedAnswersList.getInstance().add("你好嗎");
 		
 		new RemoteConnection().connect(new RemoteCallback() {
 			

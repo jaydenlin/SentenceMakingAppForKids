@@ -62,7 +62,7 @@ public class RemoteConnection {
 						// PreparedAnswersList.getInstance().add("firstItem");
 						// PreparedAnswersList.getInstance().add("secendItem");
 						socket.emit("device:questionDone", PreparedAnswersList
-								.getInstance().outputAndClear());
+								.getInstance().output());
 						callback.onConnect();
 					}
 
@@ -77,7 +77,7 @@ public class RemoteConnection {
 						
 						if(event.equals("server:requestAnswers")){
 							socket.emit("device:questionDone", PreparedAnswersList
-									.getInstance().outputAndClear());
+									.getInstance().output());
 						}
 					}
 				});

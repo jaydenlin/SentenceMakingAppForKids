@@ -27,12 +27,15 @@ public class PreparedAnswersList {
 	}
 
 	
-	public String outputAndClear() {
+	public String output() {
 		String jsonString="";
 		Gson gson = new Gson();
 		jsonString = gson.toJson(this);
-		//preparedAnswers.clear();
 		return jsonString;
+	}
+	
+	public void clear(){
+		preparedAnswers.clear();
 	}
 
 }
