@@ -31,7 +31,7 @@ public class PreparedAnswersList {
 		String jsonString="";
 		Gson gson = new Gson();
 		jsonString = gson.toJson(this);
-		preparedAnswers.clear();
+		//preparedAnswers.clear();
 		return jsonString;
 	}
 

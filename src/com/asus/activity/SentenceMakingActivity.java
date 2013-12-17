@@ -31,7 +31,7 @@ import com.asus.photos.OnePhoto;
 import com.asus.photos.PhotosArrayAdapter;
 import com.asus.remote.PreparedAnswersList;
 import com.asus.remote.RemoteConnection;
-import com.asus.remote.RemoteSelectedCallback;
+import com.asus.remote.RemoteCallback;
 import com.asus.util.RandomUtil;
 
 import android.app.Activity;
@@ -198,17 +198,31 @@ public class SentenceMakingActivity extends Activity {
 		dialogServiceConnector = new DialogServiceConnector(this);
 		dialogServiceConnector.setSpeechListener(getDMListener());
 		
-		PreparedAnswersList.getInstance().add("你好");
-		PreparedAnswersList.getInstance().add("我愛你");
-		new RemoteConnection().connect(new RemoteSelectedCallback() {
+		
+		new RemoteConnection().connect(new RemoteCallback() {
 			
 			@Override
-			public void postExec(String selectAnswer) {
+			public void onError(String error) {
 				// TODO Auto-generated method stub
-				//dialogServiceConnector.responseToUser(selectAnswer);
-				Log.w(this.getClass().getSimpleName(),selectAnswer);
+				
+			}
+			
+			@Override
+			public void onConnect() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnswerSelected(String selectedAnswer) {
+				// TODO Auto-generated method stub
+				Log.w(this.getClass().getSimpleName(),selectedAnswer);
+				//adapter.add(new OneComment(false, selectedAnswer));
+				dialogServiceConnector.responseToUser("你說[["+selectedAnswer+"]]?");
+				InputDispatcher.getInstance(question, selectedAnswer, adapter, photosArrayAdapter).start();
 			}
 		});
+		
 		//////
 		//Google TTS
 		/////
@@ -280,6 +294,13 @@ public class SentenceMakingActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			PreparedAnswersList.getInstance().add("甜甜的荔枝");
+			PreparedAnswersList.getInstance().add("好吃的荔枝");
+			PreparedAnswersList.getInstance().add("有夠難吃的荔枝");
+			PreparedAnswersList.getInstance().add("好吃的");
+			PreparedAnswersList.getInstance().add("老虎");
+			PreparedAnswersList.getInstance().add("肯德基");
+			
 		} else {
 			//question.questionPhrase = ontologyData.getOneRandomAdj();
 			question.questionPhrase = "溫馴的";
@@ -298,6 +319,12 @@ public class SentenceMakingActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			PreparedAnswersList.getInstance().add("溫馴的小貓");
+			PreparedAnswersList.getInstance().add("溫馴的老虎");
+			PreparedAnswersList.getInstance().add("溫馴的老鷹");
+			PreparedAnswersList.getInstance().add("你好笨");
+			PreparedAnswersList.getInstance().add("我好餓噢");
+			PreparedAnswersList.getInstance().add("鹹酥雞");
 			
 		}
 	}
