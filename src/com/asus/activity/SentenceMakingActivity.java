@@ -147,7 +147,7 @@ public class SentenceMakingActivity extends Activity {
 				//googleTTStart();
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 				wrapper.getBackground().setAlpha(100);
-				
+				remote();
 				
 				
 				//new CSRTimeoutCounter().execute(dialogServiceConnector);
@@ -200,29 +200,7 @@ public class SentenceMakingActivity extends Activity {
 		
 		PreparedAnswersList.getInstance().add("你好嗎");
 		
-		new RemoteConnection().connect(new RemoteCallback() {
-			
-			@Override
-			public void onError(String error) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onConnect() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnswerSelected(String selectedAnswer) {
-				// TODO Auto-generated method stub
-				Log.w(this.getClass().getSimpleName(),selectedAnswer);
-				//adapter.add(new OneComment(false, selectedAnswer));
-				dialogServiceConnector.responseToUser("你說[["+selectedAnswer+"]]?");
-				InputDispatcher.getInstance(question, selectedAnswer, adapter, photosArrayAdapter).start();
-			}
-		});
+		
 		
 		//////
 		//Google TTS
@@ -249,6 +227,8 @@ public class SentenceMakingActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub 
 		super.onStart();
+		remote();
+		
 		//exportDB();
 		//NaturalLanguageGenerator nlg = NaturalLanguageGenerator.getNLG(NLGConstant.);
 	}
@@ -372,5 +352,37 @@ public class SentenceMakingActivity extends Activity {
                      Toast.LENGTH_SHORT);
              t.show();
          }
+	}
+	
+	private void remote(){
+		new RemoteConnection().execute(new RemoteCallback() {
+			
+			@Override
+			public void onError(String error) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onConnect() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnswerSelected(String selectedAnswer) {
+				// TODO Auto-generated method stub
+				Log.w(this.getClass().getSimpleName(),selectedAnswer);
+				//adapter.add(new OneComment(false, selectedAnswer));
+				dialogServiceConnector.responseToUser("你說[["+selectedAnswer+"]]?");
+				InputDispatcher.getInstance(question, selectedAnswer, adapter, photosArrayAdapter).start();
+			}
+
+			@Override
+			public void onDisconnect() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }
