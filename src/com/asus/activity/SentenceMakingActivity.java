@@ -122,6 +122,7 @@ public class SentenceMakingActivity extends Activity {
 			public void onConnected() {
 				try {
 					Thread.sleep(2000);
+					dialogServiceConnector.setSpeechDomain("google");
 					dialogServiceConnector.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
 					setAdapters(dialogServiceConnector);
 					addRandomQuestion();
@@ -275,6 +276,7 @@ public class SentenceMakingActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			PreparedAnswersList.getInstance().clear();
 			PreparedAnswersList.getInstance().add("甜甜的荔枝");
 			PreparedAnswersList.getInstance().add("好吃的荔枝");
 			PreparedAnswersList.getInstance().add("有夠難吃的荔枝");
@@ -300,6 +302,7 @@ public class SentenceMakingActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			PreparedAnswersList.getInstance().clear();
 			PreparedAnswersList.getInstance().add("溫馴的小貓");
 			PreparedAnswersList.getInstance().add("溫馴的老虎");
 			PreparedAnswersList.getInstance().add("溫馴的老鷹");
@@ -355,7 +358,7 @@ public class SentenceMakingActivity extends Activity {
 	}
 	
 	private void remote(){
-		new RemoteConnection().execute(new RemoteCallback() {
+		new RemoteConnection("8080").execute(new RemoteCallback() {
 			
 			@Override
 			public void onError(String error) {
@@ -371,9 +374,6 @@ public class SentenceMakingActivity extends Activity {
 			
 			@Override
 			public void onAnswerSelected(String selectedAnswer) {
-				// TODO Auto-generated method stub
-				Log.w(this.getClass().getSimpleName(),selectedAnswer);
-				//adapter.add(new OneComment(false, selectedAnswer));
 				dialogServiceConnector.responseToUser("你說[["+selectedAnswer+"]]?");
 				InputDispatcher.getInstance(question, selectedAnswer, adapter, photosArrayAdapter).start();
 			}

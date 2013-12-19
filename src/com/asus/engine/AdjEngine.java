@@ -8,6 +8,7 @@ import com.asus.dialogue.Question;
 import com.asus.exception.MatchedWordsNotFound;
 import com.asus.exception.PhotoIdsNotFound;
 import com.asus.exception.TeachStringResponseNotFound;
+import com.asus.remote.PreparedAnswersList;
 import com.asus.util.RandomUtil;
 
 public class AdjEngine extends JudgeEngine{
@@ -79,8 +80,10 @@ public class AdjEngine extends JudgeEngine{
 	public String getNextQuestion() {
 		// TODO Auto-generated method stub
 		setNextQuestion();
+		prepareAnswer();
 		return "試試看這個句子。  "+ question.questionPhrase +"_______";
 	}
+	
 	
 	
 	private void setNextQuestion(){
@@ -156,6 +159,21 @@ public class AdjEngine extends JudgeEngine{
 	public String onShitResponse() {
 		// TODO Auto-generated method stub
 		return "要依照題目說出完整的句子..你要完整說出..例如:[甚麼]的"+question.questionPhrase;
+	}
+
+	@Override
+	public void prepareAnswer() {
+		try {
+			String[] preanswers=ontologyData.getMatchedNounArrayForOneAdj(question.questionPhrase);
+			PreparedAnswersList.getInstance().clear();
+			for(int i=0;i<preanswers.length;i++){
+				PreparedAnswersList.getInstance().add(question.questionPhrase+preanswers[i]);
+			}
+		} catch (MatchedWordsNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// TODO Auto-generated method stub
 	}
 
 	

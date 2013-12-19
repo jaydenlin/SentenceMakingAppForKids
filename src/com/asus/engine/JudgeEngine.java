@@ -40,6 +40,8 @@ public abstract class JudgeEngine {
 	public abstract String onConfusedResponse();
 
 	public abstract String getNextQuestion();
+	
+	public abstract void prepareAnswer();
 
 	public abstract String getCurrentQuestion();
 

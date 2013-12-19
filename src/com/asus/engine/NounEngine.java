@@ -1,5 +1,6 @@
 package com.asus.engine;
 
+import android.R.integer;
 import android.util.Log;
 
 import com.asus.asyctask.AsyncTaskResponse;
@@ -8,6 +9,7 @@ import com.asus.dialogue.Question;
 import com.asus.exception.MatchedWordsNotFound;
 import com.asus.exception.PhotoIdsNotFound;
 import com.asus.exception.TeachStringResponseNotFound;
+import com.asus.remote.PreparedAnswersList;
 import com.asus.util.RandomUtil;
 
 public class NounEngine extends JudgeEngine {
@@ -91,6 +93,7 @@ public class NounEngine extends JudgeEngine {
 	public String getNextQuestion() {
 		// TODO Auto-generated method stub
 		setNextQuestion();
+		prepareAnswer();
 		return "試試看這個句子。   _______的" + question.questionPhrase;
 	}
 
@@ -172,6 +175,22 @@ public class NounEngine extends JudgeEngine {
 		// TODO Auto-generated method stub
 		return "要依照題目說出完整的句子..你要完整說出..例如:" + question.questionPhrase
 				+ "[甚麼]";
+	}
+
+	@Override
+	public void prepareAnswer() {
+		// TODO Auto-generated method stub
+		try {
+			String[] preanswers=ontologyData.getMatchedAdjArrayForOneNoun(question.questionPhrase);
+			PreparedAnswersList.getInstance().clear();
+			for(int i=0;i<preanswers.length;i++){
+				PreparedAnswersList.getInstance().add(preanswers[i]+question.questionPhrase);
+			}
+		} catch (MatchedWordsNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//
 	}
 
 }

@@ -1,14 +1,8 @@
 package com.asus.remote;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.google.gson.Gson;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,13 +13,17 @@ public class RemoteConnection extends AsyncTask<RemoteCallback, Void, Void>{
 	private RemoteCallback callback;
 	private SocketIO socket;
 	private Gson gson = new Gson();
+	public String port="";
+	public RemoteConnection(String port){
+		this.port=port;
+	}
 	
 	@Override
 	protected Void doInBackground(RemoteCallback... params) {
 		// TODO Auto-generated method stub
 		callback = params[0];
 		try {
-			socket = new SocketIO("http://jaydenlin.tw:8080/");
+			socket = new SocketIO("http://jaydenlin.tw:"+port+"/");
 			
 			socket.connect(new IOCallback() {
 
@@ -49,6 +47,7 @@ public class RemoteConnection extends AsyncTask<RemoteCallback, Void, Void>{
 				@Override
 				public void onDisconnect() {
 					Log.w("SocketIO", "Connection terminated.");
+					socket.reconnect();
 					callback.onDisconnect();
 				}
 
@@ -59,6 +58,8 @@ public class RemoteConnection extends AsyncTask<RemoteCallback, Void, Void>{
 					// PreparedAnswersList.getInstance().add("secendItem");
 					socket.emit("device:questionDone", PreparedAnswersList
 							.getInstance().output());
+					
+					
 					callback.onConnect();
 				}
 
@@ -86,5 +87,7 @@ public class RemoteConnection extends AsyncTask<RemoteCallback, Void, Void>{
 		
 		return null;
 	}
+	
+	
 
 }
