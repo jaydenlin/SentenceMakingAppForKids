@@ -99,6 +99,7 @@ public class SentenceMakingActivity extends Activity {
 		textBoard.setTypeface(face);
 		answerButton = (ImageButton) findViewById(R.id.answerButton);
 		answerButton.setOnClickListener(getAnswerButtonOnClickListener());
+		textBoard.setOnClickListener(getTextBoardOnClickListener());
 	}
 
 	// /////////////////////
@@ -176,7 +177,22 @@ public class SentenceMakingActivity extends Activity {
 
 		};
 	}
+	
+	private View.OnClickListener getTextBoardOnClickListener() {
+		
+		return new View.OnClickListener(){
 
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				remote();
+			}
+			
+			
+		};
+	};
+	
+	
 	private View.OnClickListener getAnswerButtonOnClickListener() {
 		return new View.OnClickListener() {
 			@Override
@@ -185,7 +201,7 @@ public class SentenceMakingActivity extends Activity {
 				// googleTTStart();
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 				wrapper.getBackground().setAlpha(100);
-				remote();
+				//remote();
 
 				// new CSRTimeoutCounter().execute(dialogServiceConnector);
 

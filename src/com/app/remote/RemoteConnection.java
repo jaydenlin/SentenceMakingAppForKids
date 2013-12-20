@@ -59,7 +59,6 @@ public class RemoteConnection extends AsyncTask<RemoteCallback, Void, Void>{
 					socket.emit("device:questionDone", PreparedAnswersList
 							.getInstance().output());
 					
-					
 					callback.onConnect();
 				}
 
