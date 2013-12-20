@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/com/asus/activity/SentenceMakingActivity.java=UTF-8
-encoding//src/com/asus/data/DBHelper.java=UTF-8
-encoding//src/com/asus/dialogue/RightDialogueHandler.java=UTF-8
-encoding//src/com/asus/translate/SimpleToTraditionText.java=UTF-8
+encoding//src/com/app/activity/SentenceMakingActivity.java=UTF-8
+encoding//src/com/app/data/DBHelper.java=UTF-8
+encoding//src/com/app/dialogue/RightDialogueHandler.java=UTF-8
+encoding//src/com/app/translate/SimpleToTraditionText.java=UTF-8
