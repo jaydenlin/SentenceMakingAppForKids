@@ -20,7 +20,6 @@ import org.apache.commons.collections4.MultiMap;
 import nlgmodule.NLGConstant;
 import nlgmodule.NaturalLanguageGenerator;
 
-import com.app.asyctask.CSRTimeoutCounter;
 import com.app.bubbles.BubblesArrayAdapter;
 import com.app.bubbles.OneComment;
 import com.app.data.DBHelper;
@@ -115,36 +114,6 @@ public class SentenceMakingActivity extends Activity {
 					adapter.add(new OneComment(false, text));
 					InputDispatcher.getInstance(question, text, adapter,
 							photosArrayAdapter).start();
-					
-//					List<Intention> intentions = dmResult.getIntentions();
-//					if (intentions != null) {
-//            			for(Intention intent: intentions){
-//            				Map<String, MultiMap<String, String>> coreData = intent.getCoreData();
-//            				for(Object key : coreData.keySet()){
-//            					MultiMap<String, String> data = coreData.get(key);
-//            					String intention = (String) key;
-//            					Toast.makeText(SentenceMakingActivity.this, intention, Toast.LENGTH_SHORT).show();
-//            					for(Object PK: data.keySet()){
-//            						String paraTYPE = (String) PK;
-//            						ArrayList  para = (ArrayList) data.get(PK);
-//            					
-//            					}
-//            				}
-//            			}
-//            		}
-					
-					//Intention intention = dmResult.getIntentions();
-					// String intentionStr = intention.getIntention();
-					// Data data = (Data) intention.getCoreData();
-					// if(data==null){
-					// Toast.makeText(SentenceMakingActivity.this,
-					// "intention :null", Toast.LENGTH_SHORT).show();
-					// }else{
-					// String key = data.getKey();
-					// Toast.makeText(SentenceMakingActivity.this,
-					// "intention :"+intention.getIntention(),
-					// Toast.LENGTH_SHORT).show();
-					// }
 
 				}
 			}
@@ -157,16 +126,6 @@ public class SentenceMakingActivity extends Activity {
 							.responseToUser("歡迎來到造句遊戲，可愛的小朋友，可以開始玩造句囉");
 					setAdapters(dialogServiceConnector);
 					addRandomQuestion();
-
-//					InputStream inputStream = null;
-//					try {
-//						inputStream = getResources().getAssets().open(
-//								"intent.xml");
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					dialogServiceConnector.setIntentionInputStream(inputStream);
 
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -201,23 +160,6 @@ public class SentenceMakingActivity extends Activity {
 				// googleTTStart();
 				answerButton.setBackgroundResource(R.drawable.btn_pressed);
 				wrapper.getBackground().setAlpha(100);
-				//remote();
-
-				// new CSRTimeoutCounter().execute(dialogServiceConnector);
-
-				// answerButton.setBackgroundResource(R.drawable.btn_frame_list);
-				// final AnimationDrawable
-				// answerButtonAnimation=(AnimationDrawable)answerButton.getBackground();
-				// if(isAnswering){
-				// answerButton.post(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				// // TODO Auto-generated method stub
-				// answerButtonAnimation.start();
-				// }
-				// });
-				// }
 			}
 		};
 	}
@@ -279,38 +221,10 @@ public class SentenceMakingActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		
-
-		// exportDB();
-		// NaturalLanguageGenerator nlg =
-		// NaturalLanguageGenerator.getNLG(NLGConstant.);
+	
 	}
 
-	private void exportDB() {
-		File sd = Environment.getExternalStorageDirectory();
-		File data = Environment.getDataDirectory();
-		FileChannel source = null;
-		FileChannel destination = null;
-		String currentDBPath = "/data/" + "com.asus.activity" + "/databases/"
-				+ "ontology.db";
-		String backupDBPath = "ontology.db";
-		File currentDB = new File(data, currentDBPath);
-		File backupDB = new File(sd, backupDBPath);
-		try {
-			source = new FileInputStream(currentDB).getChannel();
-			destination = new FileOutputStream(backupDB).getChannel();
-			destination.transferFrom(source, 0, source.size());
-			source.close();
-			destination.close();
-			Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
-			Log.w(getClass().getSimpleName(), "DB exported");
-		} catch (IOException e) {
-			e.printStackTrace();
-			Toast.makeText(this, "DB Exported Failed!!", Toast.LENGTH_LONG)
-					.show();
-			Log.w(getClass().getSimpleName(), "DB exported Fail");
-		}
-	}
+	
 
 	// /////////////////////
 	// /Methods
@@ -320,7 +234,7 @@ public class SentenceMakingActivity extends Activity {
 		// randomly ask adj or noun
 		if (RandomUtil.getRandomInteger(0, 1) == 0 ? true : false) {
 			// question.questionPhrase = ontologyData.getOneRandomNoun();
-			question.questionPhrase = "荔枝";
+			question.questionPhrase = "蘋果";
 			question.isAskingAdj = true;
 			adapter.add(new OneComment(true, "試試看這個句子。  ______的"
 					+ question.questionPhrase));
@@ -333,8 +247,8 @@ public class SentenceMakingActivity extends Activity {
 				e.printStackTrace();
 			}
 			PreparedAnswersList.getInstance().clear();
-			PreparedAnswersList.getInstance().add("甜甜的荔枝");
-			PreparedAnswersList.getInstance().add("好吃的荔枝");
+			PreparedAnswersList.getInstance().add("紅通通的蘋果");
+			PreparedAnswersList.getInstance().add("好吃的蘋果");
 			PreparedAnswersList.getInstance().add("好吃的");
 			PreparedAnswersList.getInstance().add("老虎");
 			PreparedAnswersList.getInstance().add("肯德基");

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <intents>
+	<global_variable>
+			
+	</global_variable>
+
     <intent>
 		<value>answer_normal</value>
 		<topic>answer_normal</topic>
@@ -34,7 +38,7 @@
 		<value>answer_negtive</value>
 		<topic>answer_negtive</topic>
 		<application>sentence_making</application>
-		<example>蘋果	才不是	紅冬冬的</example>
+		<example>蘋果才不是	紅冬冬的</example>
 		<variables>
 			<item>
 				<name>noun</name>
@@ -72,8 +76,7 @@
 		    <expression>($adj$)($is$)?($noun$)($negtive_end$)</expression>
 		</regex>
 	</intent>
-
-    <intent>
+	 <intent>
 		<value>quit001</value>
 		<topic>quit</topic>
 		<application>sentence_making</application>
@@ -113,9 +116,8 @@
 		<regex>
 		    <expression>($who$)($askto$)($enhance$)?($dowhat$)($end$)?</expression>
 		</regex>
-	</intent> 
-     
-     
+	</intent>
+	
 	<intent>
 		<value>quit002</value>
 		<topic>quit</topic>
@@ -188,13 +190,13 @@
 				<value>我</value>
 			</item>
 			<item>
-				<name>fell</name>
+				<name>feel</name>
 				<source>text</source>
 				<type>String</type>
 				<value>覺得|感到</value>
 			</item>
 			<item>
-				<name>felling</name>
+				<name>feeling</name>
 				<source>text</source>
 				<type>String</type>
 				<value>很無聊|好無聊|不好玩|好爛|你很爛|你很假|好枯燥|不了解|不懂|怎麼|如何|要怎樣|教我</value>
@@ -241,6 +243,7 @@
 			<expression>($me$)($command$)($end$)?</expression>
 		</regex>
 	</intent>
+	
 	<intent>
 		<value>quit005</value>
 		<topic>quit</topic>
@@ -280,7 +283,7 @@
 		<value>quit006</value>
 		<topic>quit</topic>
 		<application>sentence_making</application>
-		<example>****</example>
+		<example>無</example>
 		<variables>
 			<item>
 				<name>who</name>
@@ -305,11 +308,12 @@
 			<expression>($who$)($enhance$)?($action$)</expression>
 		</regex>
 	</intent>
-		<intent>
+	
+	<intent>
 		<value>ask001</value>
 		<topic>ask</topic>
 		<application>sentence_making</application>
-		<example>****</example>
+		<example>無</example>
 		<variables>
 		    <item>
 		        <name>how</name>
@@ -349,14 +353,14 @@
 		    </item>
 		</variables>
 		<regex>
-			<expression>($how$)($use$)?()($noun$)|($adj$))?($make_sentence$)($end$)?</expression>
+			<expression>($how$)($use$)?(($noun$)|($adj$))?($make_sentence$)($end$)?</expression>
 		</regex>
 	</intent>
 	<intent>
 		<value>ask002</value>
 		<topic>ask</topic>
 		<application>sentence_making</application>
-		<example>****</example>
+		<example>無</example>
 		<variables>
 		    <item>
 				<name>wish</name>
@@ -399,7 +403,7 @@
 		<value>ask003</value>
 		<topic>ask</topic>
 		<application>sentence_making</application>
-		<example>****</example>
+		<example>無</example>
 		<variables>
 			<item>
 				<name>me</name>
@@ -433,14 +437,14 @@
 			</item>
 		</variables>
 		<regex>
-			<expression>($me$)($dontknow$)(($noun$)($adj$))?($end$)?</expression>
+			<expression>($me$)($dontknow$)(($noun$)|($adj$))?($end$)?</expression>
 		</regex>
 	</intent>
 	<intent>
 		<value>confirm</value>
 		<topic>confirm</topic>
 		<application>sentence_making</application>
-		<example>****</example>
+		<example>無</example>
 		<variables>
 			<item>
 				<name>ask</name>
@@ -459,5 +463,4 @@
 			<expression>($ask$)($end$)?</expression>
 		</regex>
 	</intent>
-	
 </intents>
